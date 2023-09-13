@@ -1,0 +1,110 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.loginScreen {
+    margin: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.imgLogin {
+    max-width:120%;
+    height: auto;
+    border-radius: 50px;
+}
+
+.imgContainer{
+    justify-content: center;
+}
+
+.login {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    object-fit: fill;
+}
+
+
+.login h1 {
+    margin-top: 180px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.login span {
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 11px;
+    color: purple;
+    margin-left: 30px;
+    font-weight: bold;
+}
+
+
+.login .loginbuttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.login .loginfield {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.loginfield .form-control:focus {
+    box-shadow: none;
+    border-color: purple;
+    color: purple;
+}
+
+
+.loginfield .form-control {
+    border-color: purple;
+    border-radius: 3px;
+    color: purple;
+    width: 291px;
+    height: 56px;
+}
+
+
+.loginfield .form-label {
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    transform: translateY(15px) translateX(-2px) scale(0.85);
+    user-select: none;
+    color: purple;
+    line-height: 1rem;
+}
+
+.loginfield #password {
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    transform: translateY(15px) translateX(2px) scale(0.85);
+    user-select: none;
+    color: purple;
+    line-height: 1rem;
+}
+
+.loginbuttons #login {
+    background-color: #588a4d;
+    border-radius: 200px;
+    border-color: #588a4d;
+    color: white;
+    align-items: center;
+}
+
+.loginbuttons #login:hover {
+    background-color: #ffffff;
+    border-radius: 200px;
+    border-color: #588a4d;
+    color: black;
+    align-items: center;
+}
