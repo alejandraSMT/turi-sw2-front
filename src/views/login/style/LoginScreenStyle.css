@@ -1,5 +1,19 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
+    
+@media (min-width: 1025px) {
+    .h-custom-2 {
+    height: 100%;
+    }
+}
+
 .loginScreen {
     margin: 50px;
     display: flex;
@@ -9,11 +23,8 @@
 .imgLogin {
     max-width:120%;
     height: auto;
-    border-radius: 50px;
-}
-
-.imgContainer{
-    justify-content: center;
+    object-fit: cover;
+    object-position: left;
 }
 
 .login {
@@ -48,6 +59,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .login .loginfield {

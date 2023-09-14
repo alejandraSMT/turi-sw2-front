@@ -53,46 +53,48 @@ function LoginScreen() {
     return (
 
         <>
-            <div class="row d-flex justify-content-center align-items-center" className='loginScreen'>
-                <div class="login col-md-8 col-lg-6">
-                    <h1>¡TURI te da la bienvenida!</h1>
-                    <Container className="LoginScreen">
-                        <br></br>
-                        <Row>
-                            <Form.Group>
-                                <Form.Label>Correo electrónico</Form.Label>
-                                <Form.Control type="text" value={input} onChange={handleInputChange}>
-                                </Form.Control>
-                            </Form.Group>
-                        </Row>
-                        <Row>
-                            <Form.Group>
-                                <Form.Label id='password'>Contraseña</Form.Label>
-                                <Form.Control type="password" value={password} onChange={handlePasswordChange}>
-                                </Form.Control>
-                            </Form.Group>
-                        </Row>
+            <section class="vh-100">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="login col-sm-6 text-black">
 
-                        <span>
-                            <p><a href="#!" class="text-body">Crear cuenta</a></p>
-                            <p>&nbsp; -	&nbsp;</p>
-                            <p><a href="#!" class="text-body">Olvidé mi contraseña</a></p>
-                        </span>
+                            <h1>¡TURI te da la bienvenida!</h1>
+                            <Container className="LoginScreen">
+                                <br></br>
+                                <Row>
+                                    <Form.Group>
+                                        <Form.Label>Correo electrónico</Form.Label>
+                                        <Form.Control type="text" value={input} onChange={handleInputChange}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Row>
+                                <Row>
+                                    <Form.Group>
+                                        <Form.Label id='password'>Contraseña</Form.Label>
+                                        <Form.Control type="password" value={password} onChange={handlePasswordChange}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Row>
 
-                        <div className="loginbuttons">
-                            <Button id="login" onClick={handleButtonClick}>
-                                Iniciar sesión
-                            </Button>
+                                <div className="loginbuttons">
+                                    <Button id="login" onClick={handleButtonClick}>
+                                        Iniciar sesión
+                                    </Button>
+                                </div>
+
+                                <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Olvidé mi contraseña</a></p>
+                                <p>¿Aún no tiene cuenta?<a href="#!" class="link-success">¡Registrese aquí!</a></p>
+
+                            </Container>
+
                         </div>
-
-                    </Container>
+                        <div class="col-sm-6 px-0 d-none d-sm-block">
+                            <img src={img} alt="Login image" class="imgLogin w-100 vh-100" />
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                <div className='imgContainer col-md-9 col-lg-6 col-xl-5'>
-                    <img src={img} class="imgLogin img-fluid" className='imgLogin' />
-                </div>
-
-            </div>
         </>
 
     );
