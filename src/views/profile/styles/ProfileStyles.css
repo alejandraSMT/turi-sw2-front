@@ -2,6 +2,10 @@ body {
     margin-top: 20px;
 }
 
+.profile-password{
+    margin: 10px;
+}
+
 .img-account-profile {
     height: 10rem;
 }
@@ -38,7 +42,7 @@ a:active {
 .card .card-header {
     font-weight: 500;
     background-color: #588a4d;
-    font-size: large;
+    font-size: x-large;
     color: white;
 }
 
@@ -52,6 +56,18 @@ a:active {
     background-color: rgba(33, 40, 50, 0.03);
     border-bottom: 1px solid rgba(33, 40, 50, 0.125);
 }
+
+.active{
+    background-color: #588a4d !important;
+    color: white;
+    border: #588a4d;
+    border-color: #588a4d;
+}
+
+.list-group-item-action:focus{
+    border: none
+}
+
 
 .form-control,
 .dataTable-input {
