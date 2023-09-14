@@ -1,7 +1,5 @@
 body {
     margin-top: 20px;
-    background-color: #f2f6fc;
-    color: #69707a;
 }
 
 .img-account-profile {
@@ -12,12 +10,36 @@ body {
     border-radius: 50% !important;
 }
 
-.card {
-    box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: #265301;
+}
+
+a:visited {
+    color: #437a16;
+}
+
+a:focus {
+    border-bottom: 1px solid;
+    background: #bae498;
+}
+
+a:hover {
+    border-bottom: 1px solid;
+}
+
+a:active {
+    color: black;
 }
 
 .card .card-header {
     font-weight: 500;
+    background-color: #588a4d;
+    font-size: large;
+    color: white;
 }
 
 .card-header:first-child {
@@ -66,4 +88,48 @@ body {
     padding-right: 0;
     margin-left: 1rem;
     margin-right: 1rem;
+}
+
+.btn-profile {
+    background-color: #588a4d;
+    border-radius: 200px;
+    border-color: #588a4d;
+    color: white;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.btn-profile:hover {
+    background-color: #ffffff;
+    border-radius: 200px;
+    border-color: #588a4d;
+    color: black;
+    align-items: center;
+}
+
+.btn-profile-cancel {
+    background-color: #ffffff;
+    border-radius: 200px;
+    border-color: #588a4d;
+    color: black;
+    align-items: center;
+}
+
+.btn-profile-cancel:hover {
+    background-color: #588a4d;
+    border-radius: 200px;
+    border-color: #588a4d;
+    color: white;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.profile-buttons {
+    margin-right: 10px;
+    display: flex;
+}
+
+.messageError{
+    font-size: small;
+    color: red;
 }
