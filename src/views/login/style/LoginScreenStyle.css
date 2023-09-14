@@ -68,6 +68,10 @@
     flex-direction: column;
 }
 
+.form-control{
+    border-radius: 100px;
+}
+
 
 .loginfield .form-control:focus {
     box-shadow: none;
@@ -78,10 +82,8 @@
 
 .loginfield .form-control {
     border-color: rgb(12, 150, 21);
-    border-radius: 3px;
+    border-radius: 100px;
     color: purple;
-    width: 291px;
-    height: 56px;
 }
 
 
