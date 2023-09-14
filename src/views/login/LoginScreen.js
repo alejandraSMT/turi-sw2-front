@@ -55,15 +55,15 @@ function LoginScreen() {
         <>
             <section class="vh-100">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="login col-sm-6 text-black">
+                    <div class="row align-items-center">
+                        <div class="login col-sm-6 h-custom-2 text-black">
 
                             <h1>¡TURI te da la bienvenida!</h1>
-                            <Container className="LoginScreen">
+                            <Container className="LoginScreen align-items-center">
                                 <br></br>
                                 <Row>
                                     <Form.Group>
-                                        <Form.Label>Correo electrónico</Form.Label>
+                                        <Form.Label id='correo'>Correo electrónico</Form.Label>
                                         <Form.Control type="text" value={input} onChange={handleInputChange}>
                                         </Form.Control>
                                     </Form.Group>
@@ -94,7 +94,6 @@ function LoginScreen() {
                     </div>
                 </div>
             </section>
-
         </>
 
     );
