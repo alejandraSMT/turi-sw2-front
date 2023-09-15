@@ -39,7 +39,6 @@ function ProfileScreen() {
                                 <div class="list-group" id="list-tab" role="tablist">
                                     <a class= {activeTab === "tab1" ? "list-group-item list-group-item-action active" :"list-group-item list-group-item-action"} id="list-datos-list" data-bs-toggle="list" href="#list-datos-personales" role="tab" aria-controls="list-datos-personales" onClick={handleTab1}>Datos personales</a>
                                     <a class= {activeTab === "tab2" ? "list-group-item list-group-item-action active" :"list-group-item list-group-item-action"} id="list-contraseña-list" data-bs-toggle="list" href="#list-contraseña" role="tab" aria-controls="list-contraseña" onClick={handleTab2}>Cambiar contraseña</a>
-                                    <a class= "list-group-item list-group-item-action" id="list-logout-list" data-bs-toggle="list" href="#list-logout" role="tab" aria-controls="list-logout">Cerrar sesión</a>
                                 </div>
                             </div>
                         </div>
