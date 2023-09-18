@@ -12,7 +12,8 @@ function ProfileScreen() {
         "last_name": "San Martin",
         "profile_pic": "https://yt3.googleusercontent.com/VB0_8gPDwcKYd_wVCJdWcwjttoQu1Xle7EUInFxxfMM5kgYdoFJWyPJ6pdcdRy3FU2B6MHYOKw=s900-c-k-c0x00ffffff-no-rj",
         "email": "alejandrasanmartin2911@gmail.com",
-        "nro_doc": "1234567"
+        "nro_doc": "1234567",
+        "tipo_documento":"DNI"
     }
 
     const [activeTab, setActiveTab] = useState("tab1");
@@ -35,7 +36,7 @@ function ProfileScreen() {
                 <div class="row">
                     <div class="col-xl-4 col-lg-5 col-md-6 col-sm-4">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 pb-3">
                                 <div class="list-group" id="list-tab" role="tablist">
                                     <a class= {activeTab === "tab1" ? "list-group-item list-group-item-action active" :"list-group-item list-group-item-action"} id="list-datos-list" data-bs-toggle="list" href="#list-datos-personales" role="tab" aria-controls="list-datos-personales" onClick={handleTab1}>Datos personales</a>
                                     <a class= {activeTab === "tab2" ? "list-group-item list-group-item-action active" :"list-group-item list-group-item-action"} id="list-contraseña-list" data-bs-toggle="list" href="#list-contraseña" role="tab" aria-controls="list-contraseña" onClick={handleTab2}>Cambiar contraseña</a>
