@@ -1,9 +1,10 @@
 import "../header/styles/HeaderStyle.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import React, { useState, useEffect } from 'react';
 let img = require("./hello_kitty.png")
 let imgSearch = require("./search.png")
-let favorite = require("./favorite-yellow.png")
+let favorite = require("./favorite.png")
 let planner = require("./planner.png")
 
 function Header() {
@@ -20,6 +21,8 @@ function Header() {
         alert("FAVORITOS")
     }
 
+    const [buttonSelection, setButtonSelection] = useState(-1)
+
     return (
         <>
             <header class="header p-3 mb-3 border-bottom">
@@ -32,10 +35,9 @@ function Header() {
                         </a>
 
                         <ul class="nav col-12 col-lg-auto me-lg-5 mb-3 justify-content-center mb-md-0">
-                            <li><a href="#" class="nav-link px-2 link-light">Principal</a></li>
-                            <li><a href="#" class="nav-link px-2 link-light">Restaurantes</a></li>
-                            <li><a href="#" class="nav-link px-2 link-light">Lugares turísticos</a></li>
-                            <li><a href="#" class="nav-link px-2 link-light">Actividades</a></li>
+                            <li><a href="#" class="nav-link item-header px-2 link-light">Restaurantes</a></li>
+                            <li><a href="#" class="nav-link item-header px-2 link-light">Lugares turísticos</a></li>
+                            <li><a href="#" class="nav-link item-header px-2 link-light">Actividades</a></li>
                         </ul>
 
                         <form class="search-bar-components col-12 col-lg-5 mb-3 mb-lg-0">
@@ -61,11 +63,9 @@ function Header() {
                                 <img src={img} alt="mdo" width="40" height="40" class="rounded-circle" />
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                                <li><a class="dropdown-item" href="#">Mi perfil</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" onMouseOver={()=> setButtonSelection(0)} style={{ backgroundColor: (buttonSelection == 0) ? "#588a4d" : (buttonSelection==1) ? "white":"transparent", color: (buttonSelection == 0) ? "white" : (buttonSelection==1)?"black":"black" }} href="#">Mi perfil</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" onMouseOver={() => setButtonSelection(1)} style={{ backgroundColor: (buttonSelection == 0) ? "white" : (buttonSelection==1) ? "#588a4d":"transparent", color: (buttonSelection == 0) ? "black" : (buttonSelection==1)?"white":"black" }} href="#">Cerrar sesión</a></li>
                             </ul>
                         </div>
                     </div>
