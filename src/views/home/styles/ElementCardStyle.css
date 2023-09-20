@@ -1,0 +1,7 @@
+.card:hover{
+    opacity: 75%;
+}
+
+.card-title:hover{
+    text-decoration: underline;
+}

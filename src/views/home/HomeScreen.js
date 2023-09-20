@@ -12,6 +12,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Tanta",
             "direccion": "Direccion 1",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -21,6 +22,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre La Rosa Náutica",
             "direccion": "Direccion 2",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -30,6 +32,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Sarcletti",
             "direccion": "Direccion 3",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -40,6 +43,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Sarcletti",
             "direccion": "Direccion 3",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -49,6 +53,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Sarcletti",
             "direccion": "Direccion 3",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -58,6 +63,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Sarcletti",
             "direccion": "Direccion 3",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -67,6 +73,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Sarcletti",
             "direccion": "Direccion 3",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -76,6 +83,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Sarcletti",
             "direccion": "Direccion 3",
             "horario": "L-V: 7am - 9pm",
+            "precio": "s/20",
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -85,6 +93,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Lugar 1",
             "direccion": "Direccion 1",
             "horario": "L-V: 7am - 1pm",
+            "precio": "s/20",
             "idTipo": "2",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -94,6 +103,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Lugar 2",
             "direccion": "Direccion 2",
             "horario": "L-V: 7am - 1pm",
+            "precio": "s/20",
             "idTipo": "2",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
@@ -103,6 +113,7 @@ function HomeScreen() {
             "descripcion": "Descripcion sobre Actividad 1",
             "direccion": "Direccion 1",
             "horario": "L-V: 7am - 1pm",
+            "precio": "s/20",
             "idTipo": "3",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         }
@@ -111,7 +122,7 @@ function HomeScreen() {
     return (
         <>
             <div className="w-100">
-                <div class="row" style={{padding:"7rem"}}>
+                <div class="row" style={{padding:"5rem 0 0 5rem"}}>
                     <ElementsGroupView
                         elements={elements}
                     />
