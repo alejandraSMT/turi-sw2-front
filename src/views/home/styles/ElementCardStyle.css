@@ -5,3 +5,7 @@
 .card-title:hover{
     text-decoration: underline;
 }
+
+.card{
+    border-color: transparent;
+}

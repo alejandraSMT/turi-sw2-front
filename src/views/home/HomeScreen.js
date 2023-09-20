@@ -36,7 +36,7 @@ function HomeScreen() {
             "idTipo": "1",
             "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
         },
-        
+
         {
             "id": "4",
             "nombre": "Sarcletti",
@@ -121,13 +121,15 @@ function HomeScreen() {
 
     return (
         <>
-            <div className="w-100">
-                <div class="row" style={{padding:"5rem 0 0 5rem"}}>
-                    <ElementsGroupView
-                        elements={elements}
-                    />
+            <body>
+                <div className="w-100">
+                    <div class="row" style={{ padding: "5rem" }}>
+                        <ElementsGroupView
+                            elements={elements}
+                        />
+                    </div>
                 </div>
-            </div>
+            </body>
         </>
     );
 
