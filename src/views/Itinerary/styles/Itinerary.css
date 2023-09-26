@@ -1,0 +1,25 @@
+#tittle{
+    text-align: center;
+}
+
+#days{
+    width: 60px;
+    height: 40px;
+    margin: 10px;
+}
+
+#subtittle{
+    text-align: center;
+}
+
+#cardDaysContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#header-day{
+    align-items: center;
+    display: flex;
+    margin: 20px;
+}
