@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../styles/ProfileStyles.css"
 
-function TabData({user}) {
+function TabData({ user }) {
 
     const [name, setName] = useState(user.name);
     const [lastName, setLastName] = useState(user.last_name)
@@ -62,9 +62,13 @@ function TabData({user}) {
             <div class="card-header">Datos personales</div>
             <div class="card-body">
                 <form>
-                    <img class="img-account-profile rounded-circle mb-2" src={user.profile_pic} alt="" />
-                    <div>
-                        <p><a href='#'>Cambiar foto de perfil</a></p>
+                    <div class="container d-flex justify-content-center container-photo">
+                        <div>
+                            <img class="img-account-profile rounded-circle mb-2" src={user.profile_pic} alt="" />
+                            <div>
+                                <p><a href='#'>Cambiar foto de perfil</a></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="row gx-3 mb-3">
                         <div class="col-md-6">
@@ -84,9 +88,14 @@ function TabData({user}) {
                     <div class="row gx-3 mb-3">
                         <div class="col-md-6">
                             <label class="small mb-1" for="inputNroDoc">Número de documento</label>
-                            <input class="form-control" id="inputNroDoc" type="text" placeholder="Enter your organization name" value={user.nro_doc} disabled={true} />
+                            <input class="form-control" id="inputNroDoc" type="text" placeholder="" value={user.nro_doc} disabled={true} />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputTypeDoc">Tipo de documento</label>
+                            <input class="form-control" id="inputTypeDoc" type="text" placeholder="" value={user.tipo_documento} disabled={true} />
                         </div>
                     </div>
+
                     {buttonView}
                 </form>
             </div>
