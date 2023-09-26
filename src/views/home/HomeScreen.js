@@ -1,6 +1,7 @@
 import "./styles/HomeScreenStyle.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Header from "../header/Header";
 import ElementsGroupView from "./components/ElementsGroupView";
 
 function HomeScreen() {
@@ -123,7 +124,10 @@ function HomeScreen() {
         <>
             <body>
                 <div className="w-100">
-                    <div class="row" style={{ padding: "5rem" }}>
+                    <div>
+                        <Header/>
+                    </div>
+                    <div class="row" style={{ padding: "0rem 5rem 5rem 5rem" }}>
                         <ElementsGroupView
                             elements={elements}
                         />
