@@ -1,11 +1,11 @@
-.card:hover{
+.card-element:hover{
     opacity: 75%;
 }
 
-.card-title:hover{
+.card-title-element:hover{
     text-decoration: underline;
 }
 
-.card{
+.card-element{
     border-color: transparent;
 }

@@ -122,18 +122,16 @@ function HomeScreen() {
 
     return (
         <>
-            <body>
-                <div className="w-100">
-                    <div>
-                        <Header/>
-                    </div>
-                    <div class="row" style={{ padding: "0rem 5rem 5rem 5rem" }}>
-                        <ElementsGroupView
-                            elements={elements}
-                        />
-                    </div>
+            <div className="w-100">
+                <div>
+                    <Header />
                 </div>
-            </body>
+                <div class="row" style={{ padding: "0rem 5rem 5rem 5rem" }}>
+                    <ElementsGroupView
+                        elements={elements}
+                    />
+                </div>
+            </div>
         </>
     );
 

@@ -14,7 +14,7 @@ function ElementCard({ name, description, url, price }) {
                 <div class="card card-element col-sm-10" onClick={handleCardClick} style={{ borderRadius: "20px" }}>
                     <img src={url} class="card-img-top image w-auto" style={{ borderRadius: "20px 20px 0px 0px" }} alt="..." />
                     <div class="card-body">
-                        <h5 class="card-title">{name}</h5>
+                        <h5 class="card-title card-title-element">{name}</h5>
                         <p class="card-text">{price} por persona</p>
                     </div>
                 </div>
