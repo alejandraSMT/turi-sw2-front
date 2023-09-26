@@ -69,7 +69,7 @@ function LoginScreen() {
                                             <div class="row" style={{justifyContent:"center"}}>
                                                 <img src={logo_black} style={{ width: "45%", height: "30%" }} />
                                             </div>
-                                            <Container className="LoginScreen align-items-center">
+                                            <Container className="LoginScreen align-items-center container">
                                                 <br></br>
                                                 <Row>
                                                     <Form.Group>

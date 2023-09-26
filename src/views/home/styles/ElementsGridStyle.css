@@ -1,7 +1,3 @@
-.container {
-    max-width: fit-content;
-}
-
 .carousel {
     display: flex;
 }
