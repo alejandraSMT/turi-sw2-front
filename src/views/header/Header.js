@@ -38,7 +38,7 @@ function Header() {
                     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
                             <button class="btn btn-logo">
-                                <img class="logo" src={logo} width="70" height="70" />
+                                <img class="logo" src={logo} width="100" height="60" />
                             </button>
                         </a>
 
@@ -59,10 +59,10 @@ function Header() {
                             <div class="container-icons justify-content-start p-2">
                                 <div class="row">
                                     <div class="col-sm">
-                                        <span><img src={planner} width="20" height="20" onClick={handlePlannerClick} /></span>
+                                        <span><img src={planner} width="25" height="25" onClick={handlePlannerClick} /></span>
                                     </div>
                                     <div class="col-sm">
-                                        <span><img src={favorite} width="20" height="20" onClick={handleFavoriteClick} /></span>
+                                        <span><img src={favorite} width="25" height="25" onClick={handleFavoriteClick} /></span>
                                     </div>
                                 </div>
                             </div>

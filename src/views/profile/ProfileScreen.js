@@ -34,7 +34,6 @@ function ProfileScreen() {
         <>
             <Header />
             <div class="container-xl px-4 mt-4">
-                <hr class="mt-0 mb-4" />
                 <div class="row">
                     <div class="col-xl-4 col-lg-5 col-md-6 col-sm-4">
                         <div class="row">
