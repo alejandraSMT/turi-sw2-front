@@ -1,0 +1,18 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.card-element:hover{
+    opacity: 75%;
+}
+
+.card-title-element:hover{
+    text-decoration: underline;
+}
+
+.card.card-element{
+    border: none;
+}
+
+.card-text-element{
+    font-size: smaller;
+    color: gray;
+}
