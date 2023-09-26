@@ -64,9 +64,9 @@ function Header() {
                                     <img src={img} alt="mdo" width="40" height="40" class="rounded-circle" />
                                 </a>
                                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                                    <li><a class="dropdown-item" onMouseOver={() => setButtonSelection(0)} style={{ backgroundColor: (buttonSelection == 0) ? "#588a4d" : (buttonSelection == 1) ? "white" : "transparent", color: (buttonSelection == 0) ? "white" : (buttonSelection == 1) ? "black" : "black" }} href="#">Mi perfil</a></li>
+                                    <li><a class="dropdown-item" onMouseLeave={() => setButtonSelection(-1)} onMouseOver={() => setButtonSelection(0)} style={{ backgroundColor: (buttonSelection == 0) ? "#588a4d" : (buttonSelection == 1) ? "white" : "white", color: (buttonSelection == 0) ? "white" : (buttonSelection == 1) ? "black" : "black" }} href="#">Mi perfil</a></li>
                                     <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" onMouseOver={() => setButtonSelection(1)} style={{ backgroundColor: (buttonSelection == 0) ? "white" : (buttonSelection == 1) ? "#588a4d" : "transparent", color: (buttonSelection == 0) ? "black" : (buttonSelection == 1) ? "white" : "black" }} href="#">Cerrar sesión</a></li>
+                                    <li><a class="dropdown-item" onMouseLeave={() => setButtonSelection(-1)} onMouseOver={() => setButtonSelection(1)} style={{ backgroundColor: (buttonSelection == 0) ? "white" : (buttonSelection == 1) ? "#588a4d" : "white", color: (buttonSelection == 0) ? "black" : (buttonSelection == 1) ? "white" : "black" }} href="#">Cerrar sesión</a></li>
                                 </ul>
                             </div>
                         </div>
