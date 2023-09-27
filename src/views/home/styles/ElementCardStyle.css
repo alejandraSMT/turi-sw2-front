@@ -2,6 +2,9 @@
 
 .card-element:hover{
     opacity: 75%;
+    border: solid;
+    border-width: 0.5px;
+    box-shadow: 8.5px 2.5px 12px 0.5px gray;
 }
 
 .card-title-element:hover{
@@ -9,7 +12,8 @@
 }
 
 .card.card-element{
-    border: none;
+    margin: 1rem;
+    border-color: lightgrey;
 }
 
 .card-text-element{
