@@ -47,9 +47,9 @@ function Header() {
                         </a>
 
                         <ul class="navbar col-12 col-lg-auto me-lg-5 mb-3 justify-content-center mb-md-0">
-                            <a href="#" class="nav-link item-header px-2 link-light">Restaurantes</a>
-                            <a href="#" class="nav-link item-header px-2 link-light">Lugares turísticos</a>
-                            <a href="#" class="nav-link item-header px-2 link-light">Actividades</a>
+                            <a href="#" class="nav-link item-header px-2 link-light" style={{fontWeight:"bold"}}>Restaurantes</a>
+                            <a href="#" class="nav-link item-header px-2 link-light" style={{fontWeight:"bold"}}>Lugares turísticos</a>
+                            <a href="#" class="nav-link item-header px-2 link-light" style={{fontWeight:"bold"}}>Actividades</a>
                         </ul>
 
                         <form class="search-bar-components col-12 col-lg-5 mb-3 mb-lg-0">
