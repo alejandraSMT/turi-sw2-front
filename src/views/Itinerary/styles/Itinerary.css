@@ -6,8 +6,20 @@
     width: 60px;
     height: 40px;
     margin: 10px;
+    border-radius: 15px;
 }
 
+#selected{
+    width: 100px;
+    height: 40px;
+    
+    border-radius: 10px;
+}
+
+#Tittle{
+    font-size: 50px;
+    color: rgb(12, 150, 21);
+}
 #subtittle{
     text-align: center;
 }
@@ -19,7 +31,47 @@
 }
 
 #header-day{
-    align-items: center;
     display: flex;
-    margin: 20px;
+    flex-direction: row; /* Alinea los elementos horizontalmente en una fila */
+    align-items: center; /* Centra verticalmente los elementos en la fila */
+    gap: 10px; /* Espacio de 10 píxeles entre los elementos */
+}
+
+.LabelBox{
+    font-weight: bold;
+}
+
+#Buttons{
+    background-color:  rgb(12, 150, 21);
+    border: 2px solid rgb(12, 150, 21);
+}
+
+#TimeImage{
+    width: 70px;
+    height: 70px;  
+    margin-left: 30px;  
+}
+
+#TimeTitle{
+    display: flex;
+    align-items: center;
+}
+
+#ContainerDay{
+    border: 4px solid #ccc;
+    border-radius: 23px;
+    margin: 5px;
+    
+}
+#rptFavorite{
+    margin-left: 400px;
+    
+    font-size: 40px;
+}
+
+#ButtonSave{
+    background-color:  rgb(12, 150, 21);
+    border: 2px solid rgb(12, 150, 21);
+    
+    display: flex;
 }
