@@ -1,0 +1,42 @@
+#informationBox{
+    background-color: white;
+    max-width: 1100px;
+    display: inline-block;
+    border: 3px solid rgb(12, 150, 21); /* Ancho del borde y color */
+    border-radius: 8px; 
+    text-align: justify;
+}
+
+#details{
+    border-bottom: 3px solid rgb(12, 150, 21);
+    /* Elimina el margen inferior */
+  padding-bottom: 10px; 
+}
+
+#ContainerDetailElement{
+    display: flex;
+  justify-content: center;
+}
+
+#HeaderElement{
+    display: flex;
+    align-items: center;
+}
+
+#favorite{
+    height: 40px;
+    width: 40px;
+    margin-left: 10px;  
+}
+
+#categorias {
+    display: inline-block;
+    padding: 10px 20px; /* Ajusta el espaciado según sea necesario */
+    margin: 5px; /* Espaciado entre los botones */
+    border: 3px solid rgb(12, 150, 21); /* Borde ligero */
+    background-color: white; /* Color de fondo */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    outline: none; /* Elimina el borde de enfoque */
+    font-weight: bold;
+  }
