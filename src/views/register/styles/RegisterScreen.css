@@ -1,0 +1,57 @@
+#TitleBox{
+    text-align: center;
+    background-color:  rgb(12, 150, 21);
+    color: white;
+    height: 37px;
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    
+    
+}
+
+.TextBox{
+    width: 350px !important;
+    margin-left: 40px;
+    border: 2px solid gray !important; /* Ancho del borde y color */
+    border-radius: 20px !important;
+}
+
+.LabelBox{
+    margin-left: 40px;
+}
+
+#ContainerRegister{
+    background-color: white;
+    height: 495px;
+    width: 900px;
+    padding: 0; /* Elimina el relleno del Container */
+    border: 2px solid rgb(12, 150, 21); /* Ancho del borde y color */
+    border-radius: 8px; /* Borde redondeado */
+    
+}
+
+#PreviousText{
+    text-align: center;
+    
+    font-weight: bold;
+    color: black; /* Cambia el color del texto a rojo */
+    -webkit-text-stroke: 1.3px white; /* Agrega un borde azul de 2 píxeles al texto */
+  
+}
+
+#error-message{
+    color: red;
+    font-size:smaller;
+}
+
+#ButtonRegister{
+    background-color:  rgb(12, 150, 21);
+    border: 2px solid rgb(12, 150, 21);
+    margin: 0 auto; /* Centrar horizontalmente el botón dentro del contenedor */
+    display: block;
+    border-radius: 20px;
+}
+
+
+
