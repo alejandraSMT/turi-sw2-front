@@ -16,12 +16,16 @@ function Itinerary() {
         const cantDays = numberOfDays;
 
         // Verifica si la entrada es un número válido y mayor que cero
-        if (!isNaN(cantDays) && cantDays > 0) {
+        if (!isNaN(cantDays) && cantDays > 0 && cantDays<8) {
             // Genera un arreglo de números del 1 al número de días ingresados
             const arrayDays = Array.from({ length: cantDays }, (_, index) => index + 1);
 
             // Actualiza el estado con los días generados
             setArrayDays(arrayDays);
+        }else{
+            alert(
+                "EXCESO EN CANTIDAD DE DÍAS!!! \nPor favor, ingrese un numero entre 1 y 7"
+              );
         }
     };
 
