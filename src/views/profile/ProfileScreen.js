@@ -14,7 +14,9 @@ function ProfileScreen() {
         "profile_pic": "https://yt3.googleusercontent.com/VB0_8gPDwcKYd_wVCJdWcwjttoQu1Xle7EUInFxxfMM5kgYdoFJWyPJ6pdcdRy3FU2B6MHYOKw=s900-c-k-c0x00ffffff-no-rj",
         "email": "alejandrasanmartin2911@gmail.com",
         "nro_doc": "1234567",
-        "tipo_documento": "DNI"
+        "tipo_documento": "DNI",
+        "user":"wonwonderful",
+        "celular":"953997647"
     }
 
     const [activeTab, setActiveTab] = useState("tab1");

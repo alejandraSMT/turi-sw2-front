@@ -6,6 +6,8 @@ function TabData({ user }) {
     const [name, setName] = useState(user.name);
     const [lastName, setLastName] = useState(user.last_name)
     const [email, setEmail] = useState(user.email)
+    const [username, setUsername] = useState(user.user)
+    const [phone, setPhone] = useState(user.celular)
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -18,6 +20,15 @@ function TabData({ user }) {
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     };
+
+    const handleUsernameChange = (e) => {
+        setUsername(e.target.value);
+    };
+
+    const handlePhoneChange = (e) => {
+        setPhone(e.target.value);
+    };
+
 
     function handleActivateChangesClick() {
         setChangeValues(false)
@@ -35,6 +46,8 @@ function TabData({ user }) {
         setName(user.name)
         setLastName(user.last_name)
         setEmail(user.email)
+        setUsername(user.user)
+        setPhone(user.celular)
         setChangeValues(true)
         setButtonSelectionProfile(0)
     }
@@ -81,9 +94,15 @@ function TabData({ user }) {
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="small mb-1" for="inputEmailAddress">Correo electrónico</label>
-                        <input class="form-control" id="inputEmailAddress" type="email" placeholder="Ingrese su correo electrónico" value={email} onChange={handleEmailChange} disabled={changeValues} />
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputEmailAddress">Correo electrónico</label>
+                            <input class="form-control" id="inputEmailAddress" type="email" placeholder="Ingrese su correo electrónico" value={email} onChange={handleEmailChange} disabled={changeValues} />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputUsername">Usuario</label>
+                            <input class="form-control" id="inputUsername" type="text" placeholder="Ingrese su usuario" value={username} onChange={handleUsernameChange} disabled={changeValues} />
+                        </div>
                     </div>
                     <div class="row gx-3 mb-3">
                         <div class="col-md-6">
@@ -94,6 +113,10 @@ function TabData({ user }) {
                             <label class="small mb-1" for="inputTypeDoc">Tipo de documento</label>
                             <input class="form-control" id="inputTypeDoc" type="text" placeholder="" value={user.tipo_documento} disabled={true} />
                         </div>
+                    </div>
+                    <div class="col-md-6 pb-3">
+                        <label class="small mb-1" for="inputPhone">Teléfono</label>
+                        <input class="form-control" id="inputPhone" type="text" placeholder="Ingrese su teléfono" value={phone} onChange={handlePhoneChange} disabled={changeValues} />
                     </div>
 
                     {buttonView}
