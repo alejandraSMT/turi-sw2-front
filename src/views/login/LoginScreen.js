@@ -15,7 +15,7 @@ function LoginScreen() {
 
     const navigate = useNavigate();
 
-    const [usuario, setUsuario] = useState([]);
+    const [usuarioId, setUsuarioId] = useState('');
     const [input, setInput] = useState('');
     const [password, setPassword] = useState('');
 
@@ -31,14 +31,29 @@ function LoginScreen() {
         console.log('Ocurrió un error:', error);
     }
 
+    const obtenerUsuarioLogin = (data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(`http://localhost:3000/usuarios/login?usuario=${data.input}&contrasenia=${data.password}`, {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
     const handleButtonClick = async () => {
         const data = {
             input: input,
             password: password,
         };
         try {
-            navigate("/home")
-            /*const response = await obtenerUsuarioLogin(data)
+            const response = await obtenerUsuarioLogin(data)
 
             if (response.status !== 200) {
                 alert("Ha ocurrido un error en el login")
@@ -46,19 +61,22 @@ function LoginScreen() {
             }
 
             const usuarioData = await response.json()
-            setUsuario(usuarioData)
+            setUsuarioId(usuarioData)
+            console.log(usuarioId)
 
-            window.location = "/bienvenida"*/
+            window.location = "/home"
 
         } catch (error) {
             console.log(error)
         }
     };
 
+    window.sessionStorage.setItem('usuarioId', usuarioId);
+
     return (
 
         <>
-            <section class="vh-100" style={{ backgroundClip: "#9A616D"}}>
+            <section class="vh-100" style={{ backgroundClip: "#9A616D" }}>
                 <div class="container py-4 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col col-xl-10">
@@ -66,7 +84,7 @@ function LoginScreen() {
                                 <div class="row g-0">
                                     <div class="col-md-6 col-lg-6 d-flex align-items-center">
                                         <div class="card-body p-4 p-lg-5 text-black">
-                                            <div class="row" style={{justifyContent:"center"}}>
+                                            <div class="row" style={{ justifyContent: "center" }}>
                                                 <img src={logo_black} style={{ width: "45%", height: "30%" }} />
                                             </div>
                                             <Container className="LoginScreen align-items-center container">

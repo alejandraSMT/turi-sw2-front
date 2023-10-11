@@ -120,6 +120,8 @@ function HomeScreen() {
         }
     ]
 
+    console.log("ID_USUARIO home "+window.sessionStorage.getItem("usuarioId"))
+
     return (
         <>
             <div className="w-100">
