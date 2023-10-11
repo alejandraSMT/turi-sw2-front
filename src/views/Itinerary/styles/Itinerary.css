@@ -1,77 +1,74 @@
-#tittle{
+.PreviousText{
     text-align: center;
 }
 
-#days{
+.DaysPicker{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.NumberOfDays{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.DaysBox{
     width: 60px;
     height: 40px;
     margin: 10px;
     border-radius: 15px;
 }
 
-#selected{
+.Button{
+    background-color:  rgb(12, 150, 21);
+    border: 2px solid rgb(12, 150, 21);
+    display: flex;
+}
+
+.DayNumberTitle{
+    font-size: 50px;
+    color: rgb(12, 150, 21);
+}
+
+.SelectedBox{
     width: 100px;
     height: 40px;
     
     border-radius: 10px;
 }
 
-#Tittle{
-    font-size: 50px;
-    color: rgb(12, 150, 21);
-}
-#subtittle{
-    text-align: center;
-}
 
-#cardDaysContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-#header-day{
+.DayNumberHeader{
     display: flex;
     flex-direction: row; /* Alinea los elementos horizontalmente en una fila */
     align-items: center; /* Centra verticalmente los elementos en la fila */
     gap: 10px; /* Espacio de 10 píxeles entre los elementos */
 }
 
-.LabelBox{
-    font-weight: bold;
-}
-
-#Buttons{
-    background-color:  rgb(12, 150, 21);
-    border: 2px solid rgb(12, 150, 21);
-}
-
-#TimeImage{
-    width: 70px;
-    height: 70px;  
-    margin-left: 30px;  
-}
-
-#TimeTitle{
-    display: flex;
-    align-items: center;
-}
-
-#ContainerDay{
+.ContainerDayItinerary{
     border: 4px solid #ccc;
     border-radius: 23px;
     margin: 5px;
     
 }
-#rptFavorite{
-    margin-left: 400px;
+
+
+.TimeImage{
+    width: 70px;
+    height: 70px;  
+    margin-left: 30px;  
+}
+
+.TimeTitle{
+    display: flex;
+    align-items: center;
+}
+
+.rptFavorite{
     
     font-size: 40px;
 }
 
-#ButtonSave{
-    background-color:  rgb(12, 150, 21);
-    border: 2px solid rgb(12, 150, 21);
-    
-    display: flex;
-}
+

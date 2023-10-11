@@ -6,15 +6,59 @@ import { Container, FormGroup, FormLabel, Row, Col, FormControl, Button } from '
 import React, { useState } from 'react';
 
 function RegisterForm(){
+
+  
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [documentType, setDocumentType] = useState('');
   const [document, setDocument] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
-  
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [idDoc, setIdDocument] = useState('');
+  const [photo, setPhoto] = useState('');
+  const [error, setError] = useState('');
+
+const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+};
+const handleNameChange = (e) => {
+  setName(e.target.value);
+};
+const handleLastnameChange = (e) => {
+  setLastname(e.target.value);
+};
+const handlePhotoChange = (e) => {
+  setPhoto(e.target.value);
+};
+const handlePhoneNumberChange = (e) => {
+  setPhoneNumber(e.target.value);
+};
+const handleDocumentTypeChange = (e) => {
+  setDocumentType(e.target.value)
+  if(e.target.value==="DNI"){
+    setIdDocument(1);
+    
+  }else if(e.target.value==="PASAPORTE"){
+    setIdDocument(2);
+    
+  }else if(e.target.value==="CARNET DE EXTRANJERIA"){
+    setIdDocument(3);
+    
+  }else{
+    window.alert("Seleccione un tipo de documento")
+  }
+};
+const handleDocumentChange = (e) => {
+  setDocument(e.target.value);
+};
+
+const handleEmailChange = (e) => {
+  setEmail(e.target.value);
+};
+
 
   // Función para verificar si las contraseñas coinciden
     const handlePasswordChange = (e) => {
@@ -44,56 +88,108 @@ function RegisterForm(){
         }
     };
 
-    const [error, setError] = useState(''); // Estado para el mensaje de error
+    const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+    const [user, setUser] =useState('');
+    const handleButtonClick = () => {
+      const data = {
+        "usuario": username,
+        "correo": email,
+        "contraseña": password,
+        "nombre": name,
+        "apellido": lastname,
+        "idTipDoc": idDoc,
+        "foto": photo,
+        "celular": phonenumber
 
-    
+        
+      };
+  
+      fetch('http://localhost:3000/usuarios/registro', {
+        method: 'post',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setUser(data)
+          window.alert("Usuario creado");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setErrorMessage("Ocurrió un error al registrar el usuario.");
+          window.alert("Error:", error);
+        });
+  };
 
     return(
-            <Container id="ContainerRegister">
+            <Container className="ContainerRegister">
               
               <Form>
-                    <h4 id="TitleBox">Registro</h4>
+                    <h4 className="TitleBox">Registro</h4>
+                    
                     <Row>
+
+                    <Col>
+                    <FormGroup>
+                      <FormLabel className='LabelBox'>Usuario:</FormLabel>
+                      <Form.Control type="text" id="username" className='TextBox' value={username} onChange={handleUsernameChange}/>
+                    </FormGroup>
+                    </Col>
+
+                    <Col>
+                    <FormGroup>
+                      <FormLabel className='LabelBox'>Foto:</FormLabel>
+                      <Form.Control type="text" id="urlphoto" className='TextBox' value={photo} onChange={handlePhotoChange}></Form.Control>
+                    </FormGroup>
+                    </Col>
+
+                    </Row>
+                    
+                    <Row>
+
                     <Col>
                     <FormGroup>
                       <FormLabel className='LabelBox'>Nombre:</FormLabel>
-                      <Form.Control type="text" id="name" className='TextBox' />
+                      <Form.Control type="text" id="name" className='TextBox' value={name} onChange={handleNameChange}/>
                     </FormGroup>
                     </Col>
                     
                     <Col>
                     <FormGroup>
                       <FormLabel className='LabelBox'>Apellido:</FormLabel>
-                      <Form.Control type="text" id="lastname" className='TextBox' />
+                      <Form.Control type="text" id="lastname" className='TextBox' value={lastname} onChange={handleLastnameChange}/>
                     </FormGroup>
                     </Col>
+                    
                     </Row>
-                    <br/>
+                    
                     <Row>
+                    
                     <Col>
                     <FormGroup>
                       <FormLabel className='LabelBox'>Correo:</FormLabel>
-                      <Form.Control type="text" id="email" className='TextBox' />
+                      <Form.Control type="text" id="email" className='TextBox' value={email} onChange={handleEmailChange}/>
                     </FormGroup>
                     </Col>
-
-                    
 
                     <Col>
                     <FormGroup>
                       <FormLabel className='LabelBox'>Telefono:</FormLabel>
-                      <Form.Control type="text" id="phone-number" className='TextBox' />
+                      <Form.Control type="text" id="phone-number" className='TextBox' value={phonenumber} onChange={handlePhoneNumberChange}/>
                     </FormGroup>
                     </Col>
+                    
                     </Row>
 
-                    <br/>
-
                     <Row>
+                    
                     <Col>
                     <FormGroup>
                         <FormLabel className='LabelBox'>Tipo de Documento:</FormLabel>
-                        <FormControl as="select" id="document-type" className='TextBox'>
+                        <FormControl as="select" id="document-type" className='TextBox' value={documentType} onChange={handleDocumentTypeChange}>
                             <option>Escoge tu tipo de documento...</option>
                             <option>DNI</option>
                             <option>PASAPORTE</option>
@@ -101,17 +197,18 @@ function RegisterForm(){
                         </FormControl>
                     </FormGroup>
                     </Col>
-<br/>
+
                     <Col>
                     <FormGroup>
                       <FormLabel className='LabelBox'>Numero de Documento:</FormLabel>
-                      <Form.Control type="text" id="document" className='TextBox'/>
+                      <Form.Control type="text" id="document" className='TextBox' value={document} onChange={handleDocumentChange}/>
                     </FormGroup>
                     </Col>
+                    
                     </Row>
 
-                    <br/>
                     <Row>
+
                     <Col>
                     <FormGroup>
                         <FormLabel className='LabelBox'>Contraseña:</FormLabel>
@@ -137,12 +234,15 @@ function RegisterForm(){
                         />
                     </FormGroup>
                     
-                    <div id="error-message">{error}</div>
+                    <div className="error-message">{error}</div>
                     </Col>
+                    
                     </Row>
+
               </Form>
               <br/>
-              <Button id="ButtonRegister">Aceptar</Button>
+              <Button className="ButtonRegister" onClick = {handleButtonClick}>Aceptar</Button>
+              <br/>
             </Container>
     );
 }

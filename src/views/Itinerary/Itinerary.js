@@ -28,35 +28,37 @@ function Itinerary() {
               );
         }
     };
-
+    
   
     return (
         <Container>
             <br/>
-            <h1 id="tittle">Crea tu itinerario ahora con Turi!</h1>
-            <h3 id="subtittle">Ingrese la cantidad de días para generar:</h3>
-            <FormGroup id="cardDaysContainer">
-                <FormLabel className="LabelBox">Días:</FormLabel>
+            <h1 className="PreviousText">Crea tu itinerario ahora con Turi!</h1>
+            <h3 className="PreviousText">Ingrese la cantidad de días para generar:</h3>
+            
+            <FormGroup className="DaysPicker">
+                <FormLabel className="NumberOfDays">Días:</FormLabel>
                 <FormControl
                     type="number"
-                    id="days"
+                    className="DaysBox"
                     
                     value={numberOfDays}
                     onChange={(e) => setNumberOfDays(e.target.value)}
                 />
-                <Button onClick={handleGenerateClick} id="Buttons">Generar</Button>
+                <Button onClick={handleGenerateClick} className="Button">Generar</Button>
             </FormGroup>
-            <Container>
+
+            <Container className='DayContainer'>
                 {/* Mapea y renderiza los componentes "Day" del array de dias */}
                 {arrayDays.map((day, index) => (
                     <div key={index}>
                     
-                    <Day key={index} dayNumber={day} index={index}/>
+                    <Day key={index} dayNumber={day} index={index} days={arrayDays} />
                     
                     </div>
                 ))}
             </Container>
-            <Button id="ButtonSave">Guardar</Button>
+            <Button className="Button">Guardar</Button>
         </Container>
     );
 }

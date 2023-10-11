@@ -6,14 +6,14 @@ import React, { useState, useEffect } from 'react';
 
 
 function Day(props){
-const { index } = props;
+const { index, days } = props;
 const favorites = ["Tanta","Parque de las Leyendas", "Pizza Raul","Larcomar","Jockey Plaza","Parque de las Aguas"];
 const times = ["Dia","Tarde","Noche"];
 
 const [itinerario, setItinerario] = useState([]);
 const [selectedFavorite, setSelectedFavorite] = useState(favorites[0]);
 const [selectedTime, setSelectedTime] = useState(times[0]);
-const [arrayDia, setArrayDia] = useState(["","",""]);
+const [arrayDia, setArrayDia] = useState([]);
 
 const AddFavorite = () => {
   
@@ -32,11 +32,12 @@ const AddFavorite = () => {
     setArrayDia([arrayDia[0],arrayDia[1],selectedFavorite]);
 
   }
-  itinerario[index] = arrayDia;
-  setItinerario(itinerario);
+  days[index] = arrayDia;
+  
   setSelectedFavorite(selectedFavorite);
   setSelectedTime(selectedTime);
-  console.log(itinerario[index]);
+  console.log(days[index]);
+  console.log(days);
   
 };
 
@@ -44,11 +45,11 @@ const AddFavorite = () => {
     return(
 
        <Container>
-        <div id="header-day">
-        <h1 id="Tittle">Dia {index + 1}</h1>
+        <div className="DayNumberHeader">
+        <h1 className="DayNumberTitle">Dia {index + 1}</h1>
         
         
-        <select id="selected"  onChange={(e) => setSelectedFavorite(e.target.value)}>
+        <select className="SelectedBox"  onChange={(e) => setSelectedFavorite(e.target.value)}>
             
               {favorites.map((favorite, index) => (
                 <option key={index} value={favorite}>
@@ -57,7 +58,7 @@ const AddFavorite = () => {
               ))}   
         </select>
 
-        <select  id="selected" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}> 
+        <select  className="SelectedBox" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}> 
             
               {times.map((time, index) => (
                 <option key={index} value={time}>
@@ -66,30 +67,39 @@ const AddFavorite = () => {
               ))}
         </select>
 
-        <Button onClick={AddFavorite} id="Buttons"> Agregar </Button>
+        <Button onClick={AddFavorite} className="Button"> Agregar </Button>
         </div>
-        <Container id="ContainerDay">
-        <div id="TimeTitle">
+        <Container className="ContainerDayItinerary">
+        <div className="TimeTitle">
+        <Row>
+
         
-        <h2>Dia</h2>
-        <img src="https://www.vippng.com/png/full/164-1649488_minus-sol-y-nubes-rayos-de-sol-dibujos.png" id="TimeImage"/>
-        <div id="rptFavorite">{arrayDia[0]}</div>
+       <Col> <h2>Dia</h2></Col>
+        <Col><img src="https://www.vippng.com/png/full/164-1649488_minus-sol-y-nubes-rayos-de-sol-dibujos.png" className="TimeImage"/></Col>
+        <Col><div className="rptFavorite">{arrayDia[0]}</div></Col>
+        </Row>
         </div>
         
         
         <br/>
-        <div id="TimeTitle">
-        <h3 >Tarde</h3>
-        <img src="https://cdn-icons-png.flaticon.com/512/2972/2972516.png" id="TimeImage"/>
-        <div id="rptFavorite">{arrayDia[1]}</div>
+
+        <div className="TimeTitle">
+        <Row>
+        <Col><h3 >Tarde</h3></Col>
+        <Col><img src="https://cdn-icons-png.flaticon.com/512/2972/2972516.png" className="TimeImage"/></Col>
+        <Col><div className="rptFavorite">{arrayDia[1]}</div></Col>
+        </Row>
         </div>
         
        
         <br/>
-        <div id="TimeTitle">
-        <h3>Noche</h3>
-        <img src="https://cdn-icons-png.flaticon.com/512/3026/3026346.png" id="TimeImage"/>
-        <div id="rptFavorite">{arrayDia[2]}</div>
+
+        <div className="TimeTitle">
+        <Row>
+        <Col><h3>Noche</h3></Col>
+        <Col><img src="https://cdn-icons-png.flaticon.com/512/3026/3026346.png" className="TimeImage"/></Col>
+        <Col><div className="rptFavorite">{arrayDia[2]}</div></Col>
+        </Row>
         </div>
        
         <br/>

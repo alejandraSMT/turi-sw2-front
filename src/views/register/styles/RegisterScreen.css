@@ -1,54 +1,59 @@
-#TitleBox{
+.RegisterScreen{ /*tamaño de la pantalla para que ocupe todo*/
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    
+}
+
+.PreviousText{ /*diseño de titulos*/
     text-align: center;
-    background-color:  rgb(12, 150, 21);
-    color: white;
-    height: 37px;
-    display: flex;
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
-    
-    
+    color: black; 
 }
 
-.TextBox{
-    width: 350px !important;
-    margin-left: 40px;
-    border: 2px solid gray !important; /* Ancho del borde y color */
-    border-radius: 20px !important;
-}
-
-.LabelBox{
-    margin-left: 40px;
-}
-
-#ContainerRegister{
+.ContainerRegister{ /*diseño del borde de todo el container*/
     background-color: white;
-    height: 495px;
     width: 900px;
     padding: 0; /* Elimina el relleno del Container */
     border: 2px solid rgb(12, 150, 21); /* Ancho del borde y color */
     border-radius: 8px; /* Borde redondeado */
-    
 }
 
-#PreviousText{
+
+.TitleBox{ /*Titulo del container*/
     text-align: center;
+    background-color:  rgb(12, 150, 21);
+    color: white;
+    height: 38px;
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
     
-    font-weight: bold;
-    color: black; /* Cambia el color del texto a rojo */
-    -webkit-text-stroke: 1.3px white; /* Agrega un borde azul de 2 píxeles al texto */
-  
 }
 
-#error-message{
+.LabelBox{ /*posicion del titulo de cada cuadro de texto*/
+    margin-left: 40px;
+    font-weight: bold;
+}
+
+.TextBox{ /*posicion y diseño del cuadro de texto donde se ingresan los datos*/
+    width: 350px;
+    margin-left: 40px;
+    border: 2px solid gray; 
+    border-radius: 20px ;
+}
+
+.error-message{ /*diseño del mensaje de error*/
     color: red;
     font-size:smaller;
 }
 
-#ButtonRegister{
+.ButtonRegister{ /*diseño del buton para registrar los datos*/
     background-color:  rgb(12, 150, 21);
     border: 2px solid rgb(12, 150, 21);
-    margin: 0 auto; /* Centrar horizontalmente el botón dentro del contenedor */
+    margin: 0 auto; 
     display: block;
     border-radius: 20px;
 }
