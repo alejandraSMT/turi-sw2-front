@@ -20,3 +20,8 @@
     font-size: smaller;
     color: gray;
 }
+
+.card.card-photo{
+    object-fit: cover !important;
+    -o-object-fit: cover;
+}

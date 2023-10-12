@@ -21,10 +21,10 @@ function ElementsGrid({ elements, type }) {
 
     const setSlidesPerview = () => {
         setSlides(
-            window.innerWidth <= 550 ? 1 :
-                window.innerWidth <= 720 ? 2 :
-                    window.innerWidth <= 900 ? 3 :
-                        window.innerWidth > 720 ? 4
+            window.innerWidth <= 600 ? 1 :
+                window.innerWidth <= 820 ? 2 :
+                    window.innerWidth <= 900 || window.innerWidth < 1080? 3 :
+                        window.innerWidth >= 1080 ? 4
                             : 0
         );
     }
@@ -58,12 +58,12 @@ function ElementsGrid({ elements, type }) {
                                 return (
                                     <>
                                         <SwiperSlide>
-                                            <div key={element.tipo} className="">
+                                            <div key={element.id} className="">
                                                 <ElementCard
                                                     name={element.nombre}
-                                                    description={element.descripcion}
-                                                    url={element.url}
-                                                    price={element.precio}
+                                                    distrito={element.distrito}
+                                                    url={element.foto}
+                                                    costo={element.costo}
                                                 />
                                             </div>
                                         </SwiperSlide>
