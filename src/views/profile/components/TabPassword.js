@@ -3,6 +3,8 @@ import "../styles/ProfileStyles.css"
 
 function TabPassword() {
 
+    const usuarioId = window.sessionStorage.getItem("usuarioId")
+
     const [newPassword, setNewPassword] = useState("")
     const [newPasswordConfirm, setNewPasswordConfirm] = useState("")
 
@@ -16,12 +18,37 @@ function TabPassword() {
         setNewPasswordConfirm(e.target.value)
     }
 
+    async function handleSubmit(data) {
+        try {
+            const response = await fetch(`http://localhost:3000/usuarios/setContrasena`, {
+                method: "POST", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            console.log("Success:", result);
+            alert("Contraseña cambiada exitosamente")
+            window.location.reload();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     function handleChangesClick() {
         if(newPassword!="" && newPasswordConfirm!=""){
             if(newPassword===newPasswordConfirm){
-                alert("Cambios guardados satisfactoriamente")
+                const data = {
+                    id:usuarioId,
+                    contrasena:newPassword
+                }
+                handleSubmit(data)
+                alert("Contraseña cambiada exitosamente")
+                window.location.reload();
             }else{
-                alert("ERROR: Las contraseñas sin diferentes")
+                alert("ERROR: Las contraseñas son diferentes")
             }
         }else{
             alert("Debe ingresar nueva contraseña")

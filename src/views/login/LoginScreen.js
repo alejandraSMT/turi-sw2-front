@@ -91,7 +91,7 @@ function LoginScreen() {
                                                 <br></br>
                                                 <Row>
                                                     <Form.Group>
-                                                        <Form.Label id='correo'>Correo electrónico</Form.Label>
+                                                        <Form.Label id='correo'>Usuario</Form.Label>
                                                         <Form.Control type="text" value={input} onChange={handleInputChange}>
                                                         </Form.Control>
                                                     </Form.Group>

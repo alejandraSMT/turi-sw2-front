@@ -11,6 +11,23 @@ let planner = require("./planner.png")
 
 function Header() {
 
+    useEffect(()=>{
+        getProfilePhoto();
+    })
+
+    const [photo, setPhoto] = useState("");
+    const userId = window.sessionStorage.getItem("usuarioId");
+
+    function getProfilePhoto() {
+        fetch(`http://localhost:3000/usuarios/getFoto?id=${userId}`)
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Verificar los datos obtenidos desde el servidor
+                setPhoto(data);
+            })
+            .catch(error => console.log('Ocurrió un error:', error));
+    }
+
     const navigate = useNavigate();
 
     function handlePlannerClick() {
@@ -73,7 +90,7 @@ function Header() {
 
                             <div class="dropdown text-end ms-3">
                                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src={img} alt="mdo" width="40" height="40" class="rounded-circle" />
+                                    <img src={photo} alt="mdo" width="40" height="40" class="rounded-circle" />
                                 </a>
                                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                     <li><a class="dropdown-item" onClick={handleProfileClick} onMouseLeave={() => setButtonSelection(-1)} onMouseOver={() => setButtonSelection(0)} style={{ backgroundColor: (buttonSelection == 0) ? "#588a4d" : (buttonSelection == 1) ? "white" : "white", color: (buttonSelection == 0) ? "white" : (buttonSelection == 1) ? "black" : "black" }} href="#">Mi perfil</a></li>

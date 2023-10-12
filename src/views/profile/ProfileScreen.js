@@ -8,16 +8,34 @@ import Header from '../header/Header';
 
 function ProfileScreen() {
 
-    var user = {
-        "name": "Alejandra",
-        "last_name": "San Martin",
-        "profile_pic": "https://yt3.googleusercontent.com/VB0_8gPDwcKYd_wVCJdWcwjttoQu1Xle7EUInFxxfMM5kgYdoFJWyPJ6pdcdRy3FU2B6MHYOKw=s900-c-k-c0x00ffffff-no-rj",
-        "email": "alejandrasanmartin2911@gmail.com",
-        "nro_doc": "1234567",
-        "tipo_documento": "DNI",
-        "user":"wonwonderful",
-        "celular":"953997647"
-    }
+    const userId = window.sessionStorage.getItem("usuarioId");
+
+    const [activeUser, setActiveUser] = useState([]);
+    const [tipoDoc, setTipoDoc] = useState("");
+
+    useEffect(() => {
+        async function getProfileInfo() {
+            fetch(`http://localhost:3000/usuarios/getDatosUsuario?id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Verificar los datos obtenidos desde el servidor
+                    setActiveUser(data);
+                })
+                .catch(error => console.log('Ocurrió un error:', error));
+        }
+        /*async function getTipoDoc() {
+            fetch(`http://localhost:3000/usuarios/getTipoDoc?id=${userId}`)
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // Verificar los datos obtenidos desde el servidor
+                    setTipoDoc(data);
+                })
+                .catch(error => console.log('Ocurrió un error:', error));
+        }*/
+
+        getProfileInfo();
+        //getTipoDoc();
+    }, []);
 
     const [activeTab, setActiveTab] = useState("tab1");
 
@@ -28,6 +46,46 @@ function ProfileScreen() {
     const handleTab2 = () => {
         setActiveTab("tab2");
     };
+
+    /*async function getProfileInfo() {
+        await fetch(`http://localhost:3000/usuarios/getDatosUsuario?id=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Verificar los datos obtenidos desde el servidor
+                setActiveUser(data);
+            })
+            .catch(error => console.log('Ocurrió un error:', error));
+    }*/
+
+    async function getTipoDoc() {
+        await fetch(`http://localhost:3000/usuarios/getTipoDoc?id=${userId}`)
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Verificar los datos obtenidos desde el servidor
+                setTipoDoc(data);
+            })
+            .catch(error => console.log('Ocurrió un error:', error));
+    }
+
+    async function handleSubmit(data) {
+        try {
+            const response = await fetch(`http://localhost:3000/usuarios/actualizarDatosUsuario`, {
+                method: "POST", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            console.log("Success:", result);
+            alert("Datos cambiados exitosamente")
+            window.location.reload();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
 
 
 
@@ -50,7 +108,11 @@ function ProfileScreen() {
                     <div class="col-xl-8 col-lg-7 col-md-6 col-sm-8">
                         <div class="card mb-4">
                             {activeTab === "tab1" && (
-                                <TabData user={user} />
+                                <TabData
+                                    onSubmit={handleSubmit}
+                                    activeUser={activeUser}
+                                    tipoDoc={tipoDoc}
+                                />
                             )}
                             {activeTab === "tab2" && (
                                 <TabPassword />
