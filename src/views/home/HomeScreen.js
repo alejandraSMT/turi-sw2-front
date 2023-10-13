@@ -13,125 +13,8 @@ function HomeScreen() {
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
-        handleGetRestaurants();
-        handleGetTuristic();
-        handleGetActivities();
+       getHomeData()
     }, [])
-
-
-    var elements = [
-        {
-            "id": "1",
-            "nombre": "Tanta",
-            "descripcion": "Descripcion sobre Tanta",
-            "direccion": "Direccion 1",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "2",
-            "nombre": "La Rosa Náutica",
-            "descripcion": "Descripcion sobre La Rosa Náutica",
-            "direccion": "Direccion 2",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "3",
-            "nombre": "Sarcletti",
-            "descripcion": "Descripcion sobre Sarcletti",
-            "direccion": "Direccion 3",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-
-        {
-            "id": "4",
-            "nombre": "Sarcletti",
-            "descripcion": "Descripcion sobre Sarcletti",
-            "direccion": "Direccion 3",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "5",
-            "nombre": "Sarcletti",
-            "descripcion": "Descripcion sobre Sarcletti",
-            "direccion": "Direccion 3",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "6",
-            "nombre": "Sarcletti",
-            "descripcion": "Descripcion sobre Sarcletti",
-            "direccion": "Direccion 3",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "7",
-            "nombre": "Sarcletti",
-            "descripcion": "Descripcion sobre Sarcletti",
-            "direccion": "Direccion 3",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "8",
-            "nombre": "Sarcletti",
-            "descripcion": "Descripcion sobre Sarcletti",
-            "direccion": "Direccion 3",
-            "horario": "L-V: 7am - 9pm",
-            "precio": "s/20",
-            "idTipo": "1",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "9",
-            "nombre": "Lugar 1",
-            "descripcion": "Descripcion sobre Lugar 1",
-            "direccion": "Direccion 1",
-            "horario": "L-V: 7am - 1pm",
-            "precio": "s/20",
-            "idTipo": "2",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "10",
-            "nombre": "Lugar 2",
-            "descripcion": "Descripcion sobre Lugar 2",
-            "direccion": "Direccion 2",
-            "horario": "L-V: 7am - 1pm",
-            "precio": "s/20",
-            "idTipo": "2",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        },
-        {
-            "id": "11",
-            "nombre": "Actividad 1",
-            "descripcion": "Descripcion sobre Actividad 1",
-            "direccion": "Direccion 1",
-            "horario": "L-V: 7am - 1pm",
-            "precio": "s/20",
-            "idTipo": "3",
-            "url": "https://www.horeca.pe/sites/default/files/tanta-lima-peru.jpg"
-        }
-    ]
 
     console.log("ID_USUARIO home " + usuarioId)
 
@@ -153,14 +36,6 @@ function HomeScreen() {
         })
     }
 
-    async function handleGetRestaurants() {
-        await getRestaurantes()
-            .then(data => {
-                setRestaurants(data)
-                console.log("RESTAURANTES: " + restaurants)
-            }).catch(error => console.log('Ocurrió un error:', error))
-    }
-
     async function getTuristic() {
         return new Promise(async (resolve, reject) => {
             try {
@@ -177,14 +52,6 @@ function HomeScreen() {
                 reject(error)
             }
         })
-    }
-
-    async function handleGetTuristic() {
-        await getTuristic()
-            .then(data => {
-                setTuristics(data)
-                console.log("LUGARES TURI: " + turistics)
-            }).catch(error => console.log('Ocurrió un error:', error))
     }
 
     async function getActivities() {
@@ -205,32 +72,20 @@ function HomeScreen() {
         })
     }
 
-    const activitiesAndy = async()=>{
-        const resp = await fetch('http://localhost:3000/lugares/top5Actividad', {
-            method: "GET"
-        })
-        const data = await resp.json()
-        console.log("andy")
-        console.log(data)
+    async function getHomeData()  {
 
-    }
+        try {
+            var restaurantes = await getRestaurantes()
+            var turistics = await getTuristic()
+            var activities = await getActivities()
 
-    const activitiesAndy2 = async()=>{
-        const resp = await fetch('http://localhost:3000/lugares/top5LugarTuristico', {
-            method: "GET"
-        })
-        const data = await resp.json()
-        console.log("andy2")
-        console.log(data)
-
-    }
-
-    async function handleGetActivities() {
-        await getActivities()
-            .then(data => {
-                setActivities(data)
-                console.log("LUGARES TURI: " + activities)
-            }).catch(error => console.log('Ocurrió un error:', error))
+            setRestaurants(restaurantes)
+            setTuristics(turistics)
+            setActivities(activities)
+            console.log("TODO OK")
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -245,7 +100,6 @@ function HomeScreen() {
                         restaurants={restaurants}
                         turistics={turistics}
                         activities={activities}
-                        elements={elements}
                     />
                 </div>
             </div>

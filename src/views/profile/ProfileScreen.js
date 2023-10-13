@@ -14,27 +14,7 @@ function ProfileScreen() {
     const [tipoDoc, setTipoDoc] = useState("");
 
     useEffect(() => {
-        async function getProfileInfo() {
-            fetch(`http://localhost:3000/usuarios/getDatosUsuario?id=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); // Verificar los datos obtenidos desde el servidor
-                    setActiveUser(data);
-                })
-                .catch(error => console.log('Ocurrió un error:', error));
-        }
-        /*async function getTipoDoc() {
-            fetch(`http://localhost:3000/usuarios/getTipoDoc?id=${userId}`)
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data); // Verificar los datos obtenidos desde el servidor
-                    setTipoDoc(data);
-                })
-                .catch(error => console.log('Ocurrió un error:', error));
-        }*/
-
-        getProfileInfo();
-        //getTipoDoc();
+        fetchProfile();
     }, []);
 
     const [activeTab, setActiveTab] = useState("tab1");
@@ -47,7 +27,7 @@ function ProfileScreen() {
         setActiveTab("tab2");
     };
 
-    /*async function getProfileInfo() {
+    async function getProfileInfo() {
         await fetch(`http://localhost:3000/usuarios/getDatosUsuario?id=${userId}`)
             .then(response => response.json())
             .then(data => {
@@ -55,7 +35,7 @@ function ProfileScreen() {
                 setActiveUser(data);
             })
             .catch(error => console.log('Ocurrió un error:', error));
-    }*/
+    }
 
     async function getTipoDoc() {
         await fetch(`http://localhost:3000/usuarios/getTipoDoc?id=${userId}`)
@@ -65,6 +45,16 @@ function ProfileScreen() {
                 setTipoDoc(data);
             })
             .catch(error => console.log('Ocurrió un error:', error));
+    }
+
+    async function fetchProfile(){
+        try{
+            await getProfileInfo();
+            await getTipoDoc();
+            console.log("TODO OK")
+        }catch(error){
+            console.log(error)
+        }
     }
 
     async function handleSubmit(data) {
