@@ -55,3 +55,8 @@ justify-content: center;
 .TitleCategories{
   font-weight: bold;
 }
+
+.PhotoPlace{
+  height: 250px;
+  width: 350px;
+}

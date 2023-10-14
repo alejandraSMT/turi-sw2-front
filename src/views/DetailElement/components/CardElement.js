@@ -13,90 +13,166 @@ import estrella4 from '../images/estrellas/4_estrellas.png';
 import estrella45 from '../images/estrellas/4.5_estrellas.png';
 import estrella5 from '../images/estrellas/5_estrellas.png';
 function CardElement(){
-  const lugar = { 
-  id: '1', 
-  nombre: 'Tanta', 
-  foto: 'https://tanta.com.ar/img/logo-color.png', 
-  favorite : 0,
-  direccion: 'Malecón de la Reserva 610, Miraflores',
-  descripcion:'No hay nada que nos haga más felices que acompañarte día a día en el desayuno, almuerzo y comida, por eso ahora podrás disfrutar de todo el cariño de nuestra cocina por nuestra nueva plataforma pensada y diseñada especialmente para ti',
-  precioPromedio:  'S/40',
-  categorias: ['Comida Marina', 'Comida Criolla'],
-  horario : '9 a.m. a 11 p.m.',
-  horaInicio: '9',
-  horaFin: '23',
-  contacto: '(511) 446-9357',
-  siteweb: 'https://tantaperu.com/',
-  puntuacion: '4.5',
+  const idUsuario = 19;
+  const idLugar = 3;
+  
+  const [lugarData, setLugarData] = useState('');
+  const [isFavorite, setIsFavorite] = useState(''); // Estado para controlar la imagen favorita
+  const [starFavorite, setStarFavorite] = useState('');
+  const [Categories, setCategories] = useState([]);
+  useEffect(() => {
+  
+    getAllInfoPlace()
+    
+  },[]);
+
+
+
+async function getInfoPlace(){
+  return new Promise(async (resolve, reject) =>{
+    try{
+      const response = await fetch(`http://localhost:3001/lugar/getLugarById?id=${idLugar}`,{
+        method: "GET"
+      })
+      const data = await response.json()
+      resolve(data)
+    }catch (error){
+      reject(error)
+    }
+  })
+}
+
+async function VerifyFavorite(){
+  return new Promise(async (resolve, reject) =>{
+    try{
+      const response = await fetch(`http://localhost:3001/verificarFavorito?idUsuario=${idUsuario}&idLugar=${idLugar}`,{
+        method: "GET"
+      })
+      const data = await response.json()
+      resolve(data)
+      console.log(data)
+    }catch(error){
+      reject(error)
+    }
+  })
+}
+
+async function GetCategories(){
+  return new Promise(async (resolve, reject)=>{
+    try{
+      const response = await fetch(`http://localhost:3001/lugares/categorias?idLugar=${idLugar}`,{
+        method: "GET"
+    })
+    const data = await response.json()
+    resolve(data)
+    console.log(data)
+    }catch(error){
+      reject(error)
+    }
+  })
+}
+
+const cambiarImagen = () => {
+  
+  if (isFavorite === 0) {
+    // Agregar el lugar a favoritos
+    fetch(`http://localhost:3001/favorito/agregarFavorito`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idUsuario,
+        idLugar,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          
+          console.log("Favorito agregado")
+        }
+      })
+      .catch((error) => {
+        console.error('Error al agregar favorito:', error);
+      });
+      window.location.reload();
+  } else {
+    // Eliminar el lugar de favoritos
+    fetch(`http://localhost:3001/favoritos/eliminar?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          
+          console.log("Favorito eliminado")
+        }
+      })
+      .catch((error) => {
+        console.error('Error al eliminar favorito:', error);
+      });
+      window.location.reload();
+  }
 };
 
- 
-  const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar la imagen favorita
+  async function getAllInfoPlace(){
 
- 
-// Inicializa los estados con los valores de lugar
-useEffect(() => {
-  
-  setIsFavorite(lugar.favorite);
-}, []);
+    try{
+      var InfoLugar = await getInfoPlace()
+      var InfoFavorite = await VerifyFavorite()
+      var Categories = await GetCategories()
+      //var photo = await verificarImagen()
+      setLugarData(InfoLugar)
+      setIsFavorite(InfoFavorite.resultado)
+      console.log("Info Favorite:" + InfoFavorite.resultado)
+      console.log(InfoFavorite.resultado)
+      setCategories(Categories)
+      //console.log("isFavorite:" + isFavorite)
 
-const verificarImagen = () =>{
-  
-    if(isFavorite==0){
-      return 'https://cdn-icons-png.flaticon.com/512/13/13595.png';
-    }else{
-      return 'https://static.vecteezy.com/system/resources/thumbnails/009/342/149/small/golden-stars-clipart-design-illustration-free-png.png';
+      if(InfoFavorite.resultado === 0){
+        setStarFavorite('https://cdn-icons-png.flaticon.com/512/13/13595.png');
+        setIsFavorite(0);
+      }else {
+        setStarFavorite('https://static.vecteezy.com/system/resources/thumbnails/009/342/149/small/golden-stars-clipart-design-illustration-free-png.png');
+        setIsFavorite(1);
+      }
+      //setStarFavorite(photo)
+      //console.log(photo)
+      console.log(starFavorite)
+      
+    }catch(error){
+      console.log(error)
     }
-}
+    
+  }
+  console.log("isFavorite:" + isFavorite)
 
 const verificarPuntuacion = () =>{
   
-  if(lugar.puntuacion==0.5){
+  if(lugarData.puntaje==0.5){
     return estrella05;
-  }else if(lugar.puntuacion==1){
+  }else if(lugarData.puntaje==1){
     return estrella1;
-  }else if(lugar.puntuacion==1.5){
+  }else if(lugarData.puntaje==1.5){
     return estrella15;
-  }else if(lugar.puntuacion==2){
+  }else if(lugarData.puntaje==2){
     return estrella2;
-  }else if(lugar.puntuacion==2.5){
+  }else if(lugarData.puntaje==2.5){
     return estrella25
-  }else if(lugar.puntuacion==3){
+  }else if(lugarData.puntaje==3){
     return estrella3
-  }else if(lugar.puntuacion==3.5){
+  }else if(lugarData.puntaje==3.5){
     return estrella35
-  }else if(lugar.puntuacion==4){
+  }else if(lugarData.puntaje==4){
     return estrella4
-  }else if(lugar.puntuacion==4.5){
+  }else if(lugarData.puntaje==4.5){
     return estrella45
   }else{
     return estrella5
   }
     
 }
-
-const cambiarImagen = () => {
-  if(isFavorite==0){
-    setIsFavorite(1);
-  
-  localStorage.setItem('isFavorite',1);
-  
-  }
-  else{
-  setIsFavorite(0);
-  
-  localStorage.setItem('isFavorite',0);
-
-}
-}
-
-
-useEffect(() => {
-  const storedIsFavorite = localStorage.getItem('isFavorite');
-  if (storedIsFavorite == 1) {
-    setIsFavorite(1);
-  }
-}, []);
 
     return(
             
@@ -105,12 +181,12 @@ useEffect(() => {
               <Container className="MainInfoElement">
 
                   <Container className="HeaderElement">
-                    <h1>{lugar.nombre}</h1> {/* Nombre del lugar*/}
+                    <h1>{lugarData.nombre}</h1> {/* Nombre del lugar*/}
                     
                     <br/>
                     
                     <img
-                        src={verificarImagen()}
+                        src={starFavorite}
                         className="favorite-icon"
                         onClick={cambiarImagen}
                         alt="Favorite Icon"
@@ -124,16 +200,16 @@ useEffect(() => {
                   <br/>
                  
                   <Container>
-                  <img src={lugar.foto}/> {/* link de imagen*/}
+                  <img src={lugarData.foto} className="PhotoPlace"/> {/* link de imagen*/}
                   </Container>
                   
                   <br/>
                   <br/>
-                  <br/>
+                 
 
                   <Container>
                     <h3>Puntuacion:</h3>
-                    <div className="TitlePuntacion">{lugar.puntuacion} 
+                    <div className="TitlePuntacion">{lugarData.puntaje} 
                     <img
                         src={verificarPuntuacion()}
                         className="EstrellasPuntuacion"
@@ -146,32 +222,34 @@ useEffect(() => {
               </Container>
               
               <Container className="ElementMoreInfo">
-
+             
                <Container>
-                {/*Categoria*/}
-               <p className='TitleCategories'>Categorias: {lugar.categorias.map((categoria, index) => (
-                    <p className="CategoriasElement" key={index}>{categoria}</p>
-                    ))}</p>
-               </Container>
+                 
+                <p className='TitleCategories'>
+                Categorias: {Categories.map((categoria, index) => ( <p className="CategoriasElement" key={index}>{categoria}
+                </p>  ))}
+                </p>
                
+               </Container>
+              
 
               <Container className="InformationBox">
                     <h3 className="TitleDetails">Detalles:</h3>
-                    <p>Direccion: {lugar.direccion} {/* Direccion*/}</p>
+                    <p>Direccion: {lugarData.direccion} {/* Direccion*/}</p>
 
                     {/* Descripcion*/}
-                    <p>Descripcion: {lugar.descripcion}</p>
+                    <p>Descripcion: {lugarData.descripcion}</p>
 
                     {/* Precio Promedio*/}
-                    <p>Precio Promedio: {lugar.precioPromedio}</p>
+                    <p>Precio Promedio: S/.{lugarData.costo}</p>
                     {/* Horarios*/}
-                    <p>Horario: {lugar.horaInicio} a {lugar.horaFin}</p>
+                    <p>Horario: {lugarData.horaInicio} a {lugarData.horaFin}</p>
                     
                     {/* Contacto*/}
-                    <p>Contacto: {lugar.contacto} </p>
+                    <p>Contacto: {lugarData.celular} </p>
                     
                     {/* Website*/}
-                    <p><a href={lugar.siteweb}>Enlace al sitio web</a></p>
+                    <p><a href={lugarData.linkweb}>Enlace al sitio web</a></p>
                     
                </Container>
 

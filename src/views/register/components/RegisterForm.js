@@ -90,6 +90,7 @@ const handleEmailChange = (e) => {
 
     const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
     const [user, setUser] =useState('');
+    
     const handleButtonClick = () => {
       const data = {
         "usuario": username,
@@ -99,12 +100,12 @@ const handleEmailChange = (e) => {
         "apellido": lastname,
         "idTipDoc": idDoc,
         "foto": photo,
-        "celular": phonenumber
-
+        "celular": phonenumber,
+        "numDoc":document
         
       };
   
-      fetch('http://localhost:3000/usuarios/registro', {
+      fetch('http://localhost:3001/usuarios/registro', {
         method: 'post',
         body: JSON.stringify(data),
         headers: {

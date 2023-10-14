@@ -2,63 +2,131 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Form from 'react-bootstrap/Form';
 import { Container, Col, Row,FormGroup, FormLabel, FormControl, Button} from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useSyncExternalStore } from 'react';
 
 
 function Day(props){
-const { index, days } = props;
-const favorites = ["Tanta","Parque de las Leyendas", "Pizza Raul","Larcomar","Jockey Plaza","Parque de las Aguas"];
+
+
+const idViaje =2;
+const { index, dayNumber, arrayFavorites  } = props;
+
 const times = ["Dia","Tarde","Noche"];
-
-const [itinerario, setItinerario] = useState([]);
-const [selectedFavorite, setSelectedFavorite] = useState(favorites[0]);
+const [idLugarFavorite, setIdLugarFavorite] = useState(arrayFavorites[0].idLugar);
+ 
+const [selectedFavorite, setSelectedFavorite] = useState(arrayFavorites[0].nombre);
 const [selectedTime, setSelectedTime] = useState(times[0]);
-const [arrayDia, setArrayDia] = useState([]);
+const [selectedTimeID, setSelectedTimeID] = useState(0);
+const [arrayDia, setArrayDia] = useState(['', '', '']);
 
-const AddFavorite = () => {
-  
+const handleFavorite = (e) => {
+  const selectedValue = e.target.value;
+  // Encuentra el objeto en arrayFavorites que coincida con el nombre seleccionado
+  const selectedFavorite = arrayFavorites.find((favorite) => favorite.nombre === selectedValue);
 
-  // la posicion 1 debe ser la actividad del dia, la 2 de la tarde y la 3 de la noche
-  
-  
-  if(selectedTime === "Dia"){
-    setArrayDia([selectedFavorite, arrayDia[1], arrayDia[2]]);
-    //arrayDia[0] = selectedFavorite;
-  }else if(selectedTime === "Tarde"){
-    //arrayDia[1] = selectedFavorite;
-    setArrayDia([arrayDia[0],selectedFavorite, arrayDia[2]]);
-  }else if(selectedTime === "Noche"){
-    //arrayDia[2] = selectedFavorite;
-    setArrayDia([arrayDia[0],arrayDia[1],selectedFavorite]);
-
+  if (selectedFavorite) {
+    setSelectedFavorite(selectedValue);
+    setIdLugarFavorite(selectedFavorite.id);
   }
-  days[index] = arrayDia;
-  
-  setSelectedFavorite(selectedFavorite);
-  setSelectedTime(selectedTime);
-  console.log(days[index]);
-  console.log(days);
+};
+
+const handleTime = (e) =>{
+  console.log('Botón AddFavorite clicado');
+  const selectedValue = e.target.value;
+  // Copia el array actual
+  let updatedArrayDia = [...arrayDia];
+
+  // Actualiza el array según el tiempo seleccionado
+  if (selectedValue === 'Dia') {
+    updatedArrayDia[0] = selectedFavorite;
+    
+    setSelectedTimeID(1);
+  } else if (selectedValue === 'Tarde') {
+    updatedArrayDia[1] = selectedFavorite;
+    
+    setSelectedTimeID(2);
+  } else if (selectedValue === 'Noche') {
+    updatedArrayDia[2] = selectedFavorite;
+    
+    setSelectedTimeID(3);
+  }
+  console.log('arrayDia después de la actualización:', updatedArrayDia);
+setSelectedTime(selectedValue);
+
+  // Actualiza el estado con el nuevo arrayDia
+  setArrayDia(updatedArrayDia);
+
+  console.log('selectedFavorite:', selectedFavorite);
+  console.log('selectedTime:', selectedTime);
+  console.log('idSelectFavorite:', idLugarFavorite);
+  console.log('selectedTimeID', selectedTimeID);
+}
+const AddFavorite = () => {
+  /*
+  console.log('Botón AddFavorite clicado');
+
+  // Copia el array actual
+  let updatedArrayDia = [...arrayDia];
+
+  // Actualiza el array según el tiempo seleccionado
+  if (selectedTime === 'Dia') {
+    updatedArrayDia[0] = selectedFavorite;
+    setSelectedTimeID(1);
+  } else if (selectedTime === 'Tarde') {
+    updatedArrayDia[1] = selectedFavorite;
+    setSelectedTimeID(2);
+  } else if (selectedTime === 'Noche') {
+    updatedArrayDia[2] = selectedFavorite;
+    setSelectedTimeID(3);
+  }
+  console.log('arrayDia después de la actualización:', updatedArrayDia);
+
+  // Actualiza el estado con el nuevo arrayDia
+  setArrayDia(updatedArrayDia);
+
+  console.log('selectedFavorite:', selectedFavorite);
+  console.log('selectedTime:', selectedTime);
+  console.log('idSelectFavorite:', idLugarFavorite);
+  console.log('selectedTimeID', selectedTimeID);
+*/
+console.log('idSelectFavorite:', idLugarFavorite);
+  const data = {
+    "idViaje": idViaje,
+      "idLugar": idLugarFavorite,
+      "idTiempoDia": selectedTimeID,
+      "numDia": dayNumber,
+    
+  };
+  try {
+    const response = fetch('http://localhost:3001/viajeLugar/registro', {
+      method: 'post',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('No se pudo completar la solicitud');
+    }
+
+    const responseData = response.json();
+    console.log('Respuesta del servidor:', responseData);
+  } catch (error) {
+    console.error('Error al agregar registro de ViajeLugar:', error);
+  }
+
   
 };
 
-
+console.log(arrayDia)
     return(
 
        <Container>
         <div className="DayNumberHeader">
         <h1 className="DayNumberTitle">Dia {index + 1}</h1>
         
-        
-        <select className="SelectedBox"  onChange={(e) => setSelectedFavorite(e.target.value)}>
-            
-              {favorites.map((favorite, index) => (
-                <option key={index} value={favorite}>
-                  {favorite}
-                </option>
-              ))}   
-        </select>
-
-        <select  className="SelectedBox" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}> 
+        <select  className="SelectedBox" value={selectedTime} onChange={handleTime}> 
             
               {times.map((time, index) => (
                 <option key={index} value={time}>
@@ -66,6 +134,16 @@ const AddFavorite = () => {
                 </option>
               ))}
         </select>
+
+        <select className="SelectedBox" value={selectedFavorite} onChange={handleFavorite}>
+  {arrayFavorites.map((favorite, index) => (
+    <option key={index} value={favorite.nombre}>
+      {favorite.nombre}
+    </option>
+  ))}
+</select>
+      
+        
 
         <Button onClick={AddFavorite} className="Button"> Agregar </Button>
         </div>
@@ -108,4 +186,4 @@ const AddFavorite = () => {
         </Container>
     );
 }
-export default Day;
+export default Day; 
