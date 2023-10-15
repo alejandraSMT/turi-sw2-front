@@ -25,7 +25,6 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         }
     }, [activeUser]);
 
-
     const handleNameChange = (e) => {
         setName(e.target.value);
     };
@@ -47,7 +46,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
     };
 
     const handlePhotoChange = (e) => {
-        setPhone(e.target.value);
+        setPhoto(e.target.value);
     };
 
     function handleActivateChangesClick() {
@@ -81,7 +80,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         const submitValue = {
             id: usuarioId,
             nombre: name,
-            usuario:username,
+            usuario: username,
             apellido: lastName,
             correo: email,
             celular: phone,
@@ -89,6 +88,25 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         };
         console.log(submitValue);
         onSubmit(submitValue);
+    }
+
+    function handlePhotoChangeClick(){
+        setChangeValues(false)
+    }
+
+    let url;
+    if (!changeValues) {
+        url =
+            <>
+                <p id="adjuntar">
+                    <input
+                        type="text"
+                        placeholder="Ingrese la URL de la foto"
+                        id="photoUrl"
+                        onChange={handlePhotoChange}
+                    />
+                </p>
+            </>
     }
 
     let buttonView;
@@ -116,7 +134,8 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
                     <div>
                         <img class="img-account-profile rounded-circle mb-2" width="160" height="70" src={photo} onChange={handlePhotoChange} alt="" />
                         <div>
-                            <p><a class="link-profile" href='#'>Cambiar foto de perfil</a></p>
+                            <p><a class="link-profile" onClick={handlePhotoChangeClick} href='#'>Cambiar foto de perfil</a></p>
+                            {url}
                         </div>
                     </div>
                 </div>

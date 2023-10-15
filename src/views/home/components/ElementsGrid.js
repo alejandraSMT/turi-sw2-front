@@ -60,6 +60,7 @@ function ElementsGrid({ elements, type }) {
                                         <SwiperSlide>
                                             <div key={element.id} className="">
                                                 <ElementCard
+                                                    id={element.id}
                                                     name={element.nombre}
                                                     distrito={element.distrito}
                                                     url={element.foto}

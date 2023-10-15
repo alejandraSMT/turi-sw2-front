@@ -2,10 +2,14 @@ import "../styles/ElementCardStyle.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-function ElementCard({ name, distrito, url, costo }) {
+import { useNavigate } from 'react-router-dom'
+
+function ElementCard({ id, name, distrito, url, costo }) {
+
+    const navigate = useNavigate()
 
     function handleCardClick() {
-        alert("CLICK AL CARD")
+        navigate("/detailElement/"+id)
     }
 
     return (

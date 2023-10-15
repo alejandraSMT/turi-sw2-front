@@ -31,7 +31,7 @@ function Header() {
     const navigate = useNavigate();
 
     function handlePlannerClick() {
-        alert("PLANIFICAR")
+        navigate("/itinerary")
     }
 
     function handleSearchClick() {

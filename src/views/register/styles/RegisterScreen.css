@@ -1,0 +1,62 @@
+#RegisterScreen{ /*tamaño de la pantalla para que ocupe todo*/
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    
+}
+
+#PreviousText{ /*diseño de titulos*/
+    text-align: center;
+    color: black; 
+}
+
+#ContainerRegister{ /*diseño del borde de todo el container*/
+    background-color: white;
+    width: 900px;
+    padding-top: 2rem; /* Elimina el relleno del Container */
+    padding-bottom: 2rem;
+    border-radius: 50px !important;
+    box-shadow: 5px 5px 10px 5px grey;
+    border-radius: 8px; /* Borde redondeado */
+}
+
+
+#TitleBox{ /*Titulo del container*/
+    text-align: center;
+    color: white;
+    height: 38px;
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    
+}
+
+#LabelBox{ /*posicion del titulo de cada cuadro de texto*/
+    margin-left: 40px;
+}
+
+#TextBox{ /*posicion y diseño del cuadro de texto donde se ingresan los datos*/
+    width: 350px;
+    margin-left: 40px;
+    border: 1px solid gray; 
+    border-radius: 50px ;
+}
+
+#error-message{ /*diseño del mensaje de error*/
+    color: red;
+    font-size:smaller;
+}
+
+#ButtonRegister{ /*diseño del buton para registrar los datos*/
+    background-color:  #588a4d;
+    border: 2px solid #588a4d;
+    margin: 0 auto; 
+    display: block;
+    border-radius: 20px;
+}
+
+
+
