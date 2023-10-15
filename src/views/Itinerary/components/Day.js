@@ -8,15 +8,18 @@ import React, { useState, useEffect, useSyncExternalStore } from 'react';
 function Day(props){
 
 
-const idViaje =2;
-const { index, dayNumber, arrayFavorites  } = props;
 
-const times = ["Dia","Tarde","Noche"];
+const { index, dayNumber, arrayFavorites, idViaje  } = props;
+
+const times = ["Escoger momento","Dia","Tarde","Noche"];
 const [idLugarFavorite, setIdLugarFavorite] = useState(arrayFavorites[0].idLugar);
  
 const [selectedFavorite, setSelectedFavorite] = useState(arrayFavorites[0].nombre);
+
 const [selectedTime, setSelectedTime] = useState(times[0]);
-const [selectedTimeID, setSelectedTimeID] = useState(0);
+
+const [selectedTimeID, setSelectedTimeID] = useState('');
+
 const [arrayDia, setArrayDia] = useState(['', '', '']);
 
 const handleFavorite = (e) => {
@@ -24,43 +27,29 @@ const handleFavorite = (e) => {
   // Encuentra el objeto en arrayFavorites que coincida con el nombre seleccionado
   const selectedFavorite = arrayFavorites.find((favorite) => favorite.nombre === selectedValue);
 
+  console.log("ID LUGAR xd: "+selectedFavorite.idLugar)
+
   if (selectedFavorite) {
-    setSelectedFavorite(selectedValue);
-    setIdLugarFavorite(selectedFavorite.id);
+    setSelectedFavorite(selectedFavorite);
+    console.log("FAVORITO SELECCIONADO: "+selectedFavorite.idLugar)
+    setIdLugarFavorite(selectedFavorite.idLugar);
   }
 };
 
 const handleTime = (e) =>{
   console.log('Botón AddFavorite clicado');
   const selectedValue = e.target.value;
+  setSelectedTime(selectedValue);
   // Copia el array actual
-  let updatedArrayDia = [...arrayDia];
-
-  // Actualiza el array según el tiempo seleccionado
-  if (selectedValue === 'Dia') {
-    updatedArrayDia[0] = selectedFavorite;
-    
-    setSelectedTimeID(1);
-  } else if (selectedValue === 'Tarde') {
-    updatedArrayDia[1] = selectedFavorite;
-    
-    setSelectedTimeID(2);
-  } else if (selectedValue === 'Noche') {
-    updatedArrayDia[2] = selectedFavorite;
-    
-    setSelectedTimeID(3);
-  }
-  console.log('arrayDia después de la actualización:', updatedArrayDia);
-setSelectedTime(selectedValue);
-
-  // Actualiza el estado con el nuevo arrayDia
-  setArrayDia(updatedArrayDia);
+  
 
   console.log('selectedFavorite:', selectedFavorite);
-  console.log('selectedTime:', selectedTime);
+  //console.log('selectedTime:', selectedTime);
   console.log('idSelectFavorite:', idLugarFavorite);
-  console.log('selectedTimeID', selectedTimeID);
+  //console.log('selectedTimeID', selectedTimeID);
 }
+console.log('selectedTimeID', selectedTimeID);
+console.log('selectedTime:', selectedTime);
 const AddFavorite = () => {
   /*
   console.log('Botón AddFavorite clicado');
@@ -97,6 +86,7 @@ console.log('idSelectFavorite:', idLugarFavorite);
       "numDia": dayNumber,
     
   };
+  console.log("DATA ENVIADA: ",data)
   try {
     const response = fetch('http://localhost:3001/viajeLugar/registro', {
       method: 'post',
@@ -106,16 +96,43 @@ console.log('idSelectFavorite:', idLugarFavorite);
       },
     });
 
+    let updatedArrayDia = [...arrayDia];
+
+  console.log("LUGAR SELECCIONADO EN TIME: ",selectedFavorite)
+
+  // Actualiza el array según el tiempo seleccionado
+  if (selectedTime === 'Dia') {
+    updatedArrayDia[0] = selectedFavorite.nombre;
+    
+    setSelectedTimeID(1);
+  } else if (selectedTime === 'Tarde') {
+    updatedArrayDia[1] = selectedFavorite.nombre;
+    
+    setSelectedTimeID(2);
+  } else if (selectedTime === 'Noche') {
+    updatedArrayDia[2] = selectedFavorite.nombre;
+    
+    setSelectedTimeID(3);
+  }
+  console.log('arrayDia después de la actualización:', updatedArrayDia);
+
+
+  // Actualiza el estado con el nuevo arrayDia
+  setArrayDia(updatedArrayDia);
+    console.log(response)
+
+
     if (!response.ok) {
       throw new Error('No se pudo completar la solicitud');
     }
-
-    const responseData = response.json();
-    console.log('Respuesta del servidor:', responseData);
+  
+    //const responseData = response.json();
+    //console.log("RESPUESTA SERVIDOR: "+responseData)
+    //console.log('Respuesta del servidor:', responseData);
   } catch (error) {
     console.error('Error al agregar registro de ViajeLugar:', error);
   }
-
+  
   
 };
 
@@ -135,7 +152,7 @@ console.log(arrayDia)
               ))}
         </select>
 
-        <select className="SelectedBox" value={selectedFavorite} onChange={handleFavorite}>
+        <select className="SelectedBox" value={selectedFavorite.nombre} onChange={handleFavorite}>
   {arrayFavorites.map((favorite, index) => (
     <option key={index} value={favorite.nombre}>
       {favorite.nombre}

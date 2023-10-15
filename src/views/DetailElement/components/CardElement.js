@@ -14,7 +14,7 @@ import estrella45 from '../images/estrellas/4.5_estrellas.png';
 import estrella5 from '../images/estrellas/5_estrellas.png';
 function CardElement(){
   const idUsuario = 19;
-  const idLugar = 3;
+  const idLugar = 6;
   
   const [lugarData, setLugarData] = useState('');
   const [isFavorite, setIsFavorite] = useState(''); // Estado para controlar la imagen favorita

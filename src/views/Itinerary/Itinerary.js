@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import Day from './components/Day.js';
 
 function Itinerary() {
+    const [idViaje, setIdViaje] =useState('');
     const idUsuario =19;
     const [numberOfDays, setNumberOfDays] = useState(''); // Estado para la cantidad de días
     const [arrayDays, setArrayDays] = useState([]); // Estado para el array de dias
@@ -44,7 +45,7 @@ function Itinerary() {
         }
       }
 
-    console.log(arrayFavorites)
+    console.log("FAVORITOS LISTA: "+arrayFavorites)
 
     const MensajeGuardar = () => {
         window.alert("Itinerario Guardado")
@@ -76,6 +77,9 @@ function Itinerary() {
             })
                 .then((response) => response.json())
                 .then((data) => {
+                 
+                    setIdViaje(data.nuevoIdViaje);
+                    console.log('Nuevo ID del viaje:', idViaje);
                 console.log(data);
                 // Aquí puedes manejar la respuesta del servidor, como redirigir a una página de éxito o mostrar un mensaje.
                 })
@@ -115,7 +119,7 @@ function Itinerary() {
                 {arrayDays.map((day, index) => (
                     <div key={index}>
                     
-                    <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} />
+                    <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />
                     
                     </div>
                 ))}
