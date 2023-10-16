@@ -20,7 +20,7 @@ function TabPassword() {
 
     async function handleSubmit(data) {
         try {
-            const response = await fetch(`http://localhost:3000/usuarios/setContrasena`, {
+            const response = await fetch(`http://localhost:3001/usuarios/setContrasena`, {
                 method: "POST", // or 'PUT'
                 headers: {
                     "Content-Type": "application/json",

@@ -21,7 +21,7 @@ function HomeScreen() {
     async function getRestaurantes() {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/lugares/top5restaurantes?id=${usuarioId}`, {
+                const response = await fetch(`http://localhost:3001/lugares/top5restaurantes?id=${usuarioId}`, {
                     method: "GET"
                 })
                 const data = await response.json()
@@ -39,7 +39,7 @@ function HomeScreen() {
     async function getTuristic() {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/lugares/top5LugarTuristico?id=${usuarioId}`, {
+                const response = await fetch(`http://localhost:3001/lugares/top5LugarTuristico?id=${usuarioId}`, {
                     method: "GET"
                 })
                 const data = await response.json()
@@ -57,7 +57,7 @@ function HomeScreen() {
     async function getActivities() {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/lugares/top5Actividad?id=${usuarioId}`, {
+                const response = await fetch(`http://localhost:3001/lugares/top5Actividad?id=${usuarioId}`, {
                     method: "GET"
                 })
                 const data = await response.json()

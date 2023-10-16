@@ -14,10 +14,10 @@ export default function App() {
     <div>
       <BrowserRouter>
         <Routes>
-
+          
           <Route path="/" element={<LoginScreen />} />
           <Route path="/home" element={<HomeScreen />} />
-          <Route path="/profile" element={<ProfileScreen />} />
+  <Route path="/profile" element={<ProfileScreen />} />
           <Route path="/registro" element={<RegisterScreen />} />
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/detailElement/:idLugar" element={<DetailElement />} />

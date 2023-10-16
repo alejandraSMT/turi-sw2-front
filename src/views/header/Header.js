@@ -19,7 +19,7 @@ function Header() {
     const userId = window.sessionStorage.getItem("usuarioId");
 
     function getProfilePhoto() {
-        fetch(`http://localhost:3000/usuarios/getFoto?id=${userId}`)
+        fetch(`http://localhost:3001/usuarios/getFoto?id=${userId}`)
             .then(response => response.text())
             .then(data => {
                 console.log(data); // Verificar los datos obtenidos desde el servidor

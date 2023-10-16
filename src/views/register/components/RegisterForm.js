@@ -103,13 +103,13 @@ function RegisterForm() {
       "nombre": name,
       "apellido": lastname,
       "idTipDoc": idDoc,
-      "foto": photo,
+      "foto": "",
       "celular": phonenumber,
       "numDoc": document
 
     };
 
-    fetch('http://localhost:3000/usuarios/registro', {
+    fetch('http://localhost:3001/usuarios/registro', {
       method: 'post',
       body: JSON.stringify(data),
       headers: {

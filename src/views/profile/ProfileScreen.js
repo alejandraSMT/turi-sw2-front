@@ -28,7 +28,7 @@ function ProfileScreen() {
     };
 
     async function getProfileInfo() {
-        await fetch(`http://localhost:3000/usuarios/getDatosUsuario?id=${userId}`)
+        await fetch(`http://localhost:3001/usuarios/getDatosUsuario?id=${userId}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data); // Verificar los datos obtenidos desde el servidor
@@ -38,7 +38,7 @@ function ProfileScreen() {
     }
 
     async function getTipoDoc() {
-        await fetch(`http://localhost:3000/usuarios/getTipoDoc?id=${userId}`)
+        await fetch(`http://localhost:3001/usuarios/getTipoDoc?id=${userId}`)
             .then(response => response.text())
             .then(data => {
                 console.log(data); // Verificar los datos obtenidos desde el servidor
@@ -59,7 +59,7 @@ function ProfileScreen() {
 
     async function handleSubmit(data) {
         try {
-            const response = await fetch(`http://localhost:3000/usuarios/actualizarDatosUsuario`, {
+            const response = await fetch(`http://localhost:3001/usuarios/actualizarDatosUsuario`, {
                 method: "POST", // or 'PUT'
                 headers: {
                     "Content-Type": "application/json",
