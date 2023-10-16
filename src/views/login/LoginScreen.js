@@ -34,7 +34,7 @@ function LoginScreen() {
     const obtenerUsuarioLogin = (data) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3001/usuarios/login?usuario=${data.input}&contraseña=${data.password}`, {
+                const response = await fetch(`http://localhost:3000/usuarios/login?usuario=${data.input}&contraseña=${data.password}`, {
                     method: 'get',
                     headers: {
                         'Content-Type': 'application/json',
@@ -53,6 +53,7 @@ function LoginScreen() {
             password: password,
         };
         try {
+            console.log("DATA: ",data)
             const response = await obtenerUsuarioLogin(data)
 
             if (response.status !== 200) {

@@ -8,24 +8,29 @@ let logo = require("./logo-turi.png")
 let imgSearch = require("./search.png")
 let favorite = require("./favorite.png")
 let planner = require("./planner.png")
+let profileIcon = require("./profile_icon.png")
 
 function Header() {
 
-    useEffect(()=>{
-        getProfilePhoto();
+    useEffect(() => {
+        getData()
     })
 
     const [photo, setPhoto] = useState("");
     const userId = window.sessionStorage.getItem("usuarioId");
 
-    function getProfilePhoto() {
-        fetch(`http://localhost:3001/usuarios/getFoto?id=${userId}`)
+    async function getProfilePhoto() {
+        await fetch(`http://localhost:3000/usuarios/getFoto?id=${userId}`)
             .then(response => response.text())
             .then(data => {
-                console.log(data); // Verificar los datos obtenidos desde el servidor
+                console.log("Profile pic: "+data); // Verificar los datos obtenidos desde el servidor
                 setPhoto(data);
             })
             .catch(error => console.log('Ocurrió un error:', error));
+    }
+
+    async function getData(){
+        await getProfilePhoto();
     }
 
     const navigate = useNavigate();
@@ -42,15 +47,28 @@ function Header() {
         alert("FAVORITOS")
     }
 
-    function handleProfileClick(){
+    function handleProfileClick() {
         navigate("/profile")
     }
 
-    function handleLogoutClick(){
+    function handleLogoutClick() {
         navigate("/")
     }
 
     const [buttonSelection, setButtonSelection] = useState(-1)
+
+    let photoHeader;
+    if (photo == "usuario pipi") {
+        photoHeader =
+            <>
+                <img src={profileIcon} alt="mdo" width="40" height="40" class="rounded-circle" />
+            </>
+    } else {
+        photoHeader =
+            <>
+                <img src={photo} alt="mdo" width="40" height="40" class="rounded-circle" />
+            </>
+    }
 
     return (
         <>
@@ -64,9 +82,9 @@ function Header() {
                         </a>
 
                         <ul class="navbar col-12 col-lg-auto me-lg-5 mb-3 justify-content-center mb-md-0">
-                            <a href="#" class="nav-link item-header px-2 link-light" style={{fontWeight:"bold"}}>Restaurantes</a>
-                            <a href="#" class="nav-link item-header px-2 link-light" style={{fontWeight:"bold"}}>Lugares turísticos</a>
-                            <a href="#" class="nav-link item-header px-2 link-light" style={{fontWeight:"bold"}}>Actividades</a>
+                            <a href="#" class="nav-link item-header px-2 link-light" style={{ fontWeight: "bold" }}>Restaurantes</a>
+                            <a href="#" class="nav-link item-header px-2 link-light" style={{ fontWeight: "bold" }}>Lugares turísticos</a>
+                            <a href="#" class="nav-link item-header px-2 link-light" style={{ fontWeight: "bold" }}>Actividades</a>
                         </ul>
 
                         <form class="search-bar-components col-12 col-lg-5 mb-3 mb-lg-0">
@@ -90,7 +108,7 @@ function Header() {
 
                             <div class="dropdown text-end ms-3">
                                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src={photo} alt="mdo" width="40" height="40" class="rounded-circle" />
+                                    {photoHeader}
                                 </a>
                                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                     <li><a class="dropdown-item" onClick={handleProfileClick} onMouseLeave={() => setButtonSelection(-1)} onMouseOver={() => setButtonSelection(0)} style={{ backgroundColor: (buttonSelection == 0) ? "#588a4d" : (buttonSelection == 1) ? "white" : "white", color: (buttonSelection == 0) ? "white" : (buttonSelection == 1) ? "black" : "black" }} href="#">Mi perfil</a></li>

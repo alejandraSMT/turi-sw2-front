@@ -36,7 +36,7 @@ function CardElement() {
   async function getInfoPlace() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`http://localhost:3001/lugar/getLugarById?id=${idLugar}`, {
+        const response = await fetch(`http://localhost:3000/lugar/getLugarById?id=${idLugar}`, {
           method: "GET"
         })
         const data = await response.json()
@@ -51,7 +51,7 @@ function CardElement() {
   async function VerifyFavorite() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`http://localhost:3001/verificarFavorito?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
+        const response = await fetch(`http://localhost:3000/verificarFavorito?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
           method: "GET"
         })
         const data = await response.json()
@@ -66,7 +66,7 @@ function CardElement() {
   async function GetCategories() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`http://localhost:3001/lugares/categorias?idLugar=${idLugar}`, {
+        const response = await fetch(`http://localhost:3000/lugares/categorias?idLugar=${idLugar}`, {
           method: "GET"
         })
         const data = await response.json()
@@ -82,7 +82,7 @@ function CardElement() {
 
     if (isFavorite === 0) {
       // Agregar el lugar a favoritos
-      fetch(`http://localhost:3001/favorito/agregarFavorito`, {
+      fetch(`http://localhost:3000/favorito/agregarFavorito`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ function CardElement() {
       window.location.reload();
     } else {
       // Eliminar el lugar de favoritos
-      fetch(`http://localhost:3001/favoritos/eliminar?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
+      fetch(`http://localhost:3000/favoritos/eliminar?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())

@@ -21,7 +21,7 @@ function Itinerary() {
   async function getAllFavorites() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`http://localhost:3001/favoritos/TraerTodosFav?id=${idUsuario}`, {
+        const response = await fetch(`http://localhost:3000/favoritos/TraerTodosFav?id=${idUsuario}`, {
           method: "GET"
         })
         const data = await response.json()
@@ -69,7 +69,7 @@ function Itinerary() {
       // Actualiza el estado con los días generados
       setArrayDays(arrayDays);
       // Realizar una solicitud POST al servidor
-      fetch('http://localhost:3001/viaje/registrar', {
+      fetch('http://localhost:3000/viaje/registrar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

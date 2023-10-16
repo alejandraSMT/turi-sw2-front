@@ -109,7 +109,7 @@ function RegisterForm() {
 
     };
 
-    fetch('http://localhost:3001/usuarios/registro', {
+    fetch('http://localhost:3000/usuarios/registro', {
       method: 'post',
       body: JSON.stringify(data),
       headers: {

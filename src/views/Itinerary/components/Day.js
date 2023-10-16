@@ -62,7 +62,7 @@ function Day(props) {
     };
     console.log("DATA ENVIADA: ", data)
     try {
-      const response = fetch('http://localhost:3001/viajeLugar/registro', {
+      const response = fetch('http://localhost:3000/viajeLugar/registro', {
         method: 'post',
         body: JSON.stringify(data),
         headers: {
