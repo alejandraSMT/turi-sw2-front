@@ -11,18 +11,18 @@ function Day(props) {
 
   const { index, dayNumber, arrayFavorites, idViaje } = props;
 
-  const times = ["Escoger momento", "Dia", "Tarde", "Noche"];
-  const [idLugarFavorite, setIdLugarFavorite] = useState(arrayFavorites[0].idLugar);
+  const times = ["Dia", "Tarde", "Noche"];
+  const [idSelectedFavorite, setIdSelectedFavorite] = useState("");
 
-  const [selectedFavorite, setSelectedFavorite] = useState(arrayFavorites[0].nombre);
+  const [selectedFavorite, setSelectedFavorite] = useState("");
 
-  const [selectedTime, setSelectedTime] = useState(times[0]);
+  const [selectedTime, setSelectedTime] = useState("");
 
   const [selectedTimeID, setSelectedTimeID] = useState('');
 
   const [arrayDia, setArrayDia] = useState(['', '', '']);
 
-  const handleFavorite = (e) => {
+  /*const handleFavorite = (e) => {
     const selectedValue = e.target.value;
     // Encuentra el objeto en arrayFavorites que coincida con el nombre seleccionado
     const selectedFavorite = arrayFavorites.find((favorite) => favorite.nombre === selectedValue);
@@ -110,15 +110,103 @@ function Day(props) {
 
   };
 
-  console.log(arrayDia)
+  console.log(arrayDia)*/
+
+  const handleTime = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedTime(selectedValue)
+    if (selectedValue === "Dia") {
+      setSelectedTimeID(1)
+    } else if (selectedValue === "Tarde") {
+      setSelectedTimeID(2)
+    } else if (selectedValue === "Noche") {
+      setSelectedTimeID(3)
+    } else {
+      setSelectedTimeID("")
+    }
+  }
+
+  const handleFavorite = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "") {
+      setSelectedFavorite("")
+      setIdSelectedFavorite("")
+    } else {
+      const selectedFavorite = arrayFavorites.find((favorite) => favorite.nombre === selectedValue);
+      if (selectedFavorite) {
+        setSelectedFavorite(selectedFavorite.nombre)
+        console.log("_________ID LUGAR SELECCIONADO: ",selectedFavorite.idLugar)
+        setIdSelectedFavorite(selectedFavorite.idLugar)
+      }
+    }
+  }
+
+  console.log("TIEMPO SELECCIONADO: ", selectedTime)
+  console.log("TIEMPO ID SELECCIONADO: ", selectedTimeID)
+  console.log("FAVORITO SELECCIONADO: ", selectedFavorite)
+  console.log("FAVORITO ID SELECCIONADO: ", idSelectedFavorite)
+
+  async function AddFavorite() {
+
+    if (selectedTimeID !== "" && idSelectedFavorite !== "") {
+      const data = {
+        "idViaje": idViaje,
+        "idLugar": idSelectedFavorite,
+        "idTiempoDia": selectedTimeID,
+        "numDia": dayNumber,
+
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/viajeLugar/registro', {
+          method: 'post',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        let updatedArrayDia = [...arrayDia];
+
+        // Actualiza el array según el tiempo seleccionado
+        if (selectedTime === 'Dia') {
+          updatedArrayDia[0] = selectedFavorite;
+        } else if (selectedTime === 'Tarde') {
+          updatedArrayDia[1] = selectedFavorite;
+        } else if (selectedTime === 'Noche') {
+          updatedArrayDia[2] = selectedFavorite;
+        }
+        console.log('arrayDia después de la actualización:', updatedArrayDia);
+
+
+        // Actualiza el estado con el nuevo arrayDia
+        setArrayDia(updatedArrayDia);
+
+        if (!response.ok) {
+          throw new Error('No se pudo completar la solicitud');
+        }
+
+      } catch (error) {
+        console.error('Error al agregar registro de ViajeLugar:', error);
+      }
+
+
+    }else{
+      alert("Debe seleccionar un tiempo del día y lugar válido")
+    }
+
+  }
+
   return (
 
     <Container>
       <div className="DayNumberHeader">
-        <h1 id="DayNumberTitle">Dia {index + 1}</h1>
+        <h1 id="DayNumberTitle">Día {index + 1}</h1>
 
         <select id="SelectedBox" value={selectedTime} onChange={handleTime}>
-
+          <option key={-1} value={""}>
+            Escoger opción
+          </option>
           {times.map((time, index) => (
             <option key={index} value={time}>
               {time}
@@ -126,7 +214,10 @@ function Day(props) {
           ))}
         </select>
 
-        <select id="SelectedBox" value={selectedFavorite.nombre} onChange={handleFavorite}>
+        <select id="SelectedBox" value={selectedFavorite.nombre || selectedFavorite} onChange={handleFavorite}>
+          <option key={-1} value={""}>
+            Escoger opción
+          </option>
           {arrayFavorites.map((favorite, index) => (
             <option key={index} value={favorite.nombre}>
               {favorite.nombre}
@@ -136,7 +227,7 @@ function Day(props) {
 
 
 
-        <Button onClick={AddFavorite} id="Button"> Agregar </Button>
+        <Button onClick={AddFavorite} disabled={selectedTimeID==="" || idSelectedFavorite===""} id="Button"> Agregar </Button>
       </div>
       <Container className="ContainerDayItinerary">
         <div className="TimeTitle">

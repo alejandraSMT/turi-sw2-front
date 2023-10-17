@@ -5,6 +5,7 @@ import { Container, FormGroup, FormLabel, FormControl, Button } from 'react-boot
 import React, { useState, useEffect } from 'react';
 import Day from './components/Day.js';
 import Header from '../header/Header';
+import { useNavigate } from 'react-router-dom';
 
 function Itinerary() {
   const [idViaje, setIdViaje] = useState('');
@@ -12,6 +13,8 @@ function Itinerary() {
   const [numberOfDays, setNumberOfDays] = useState(''); // Estado para la cantidad de días
   const [arrayDays, setArrayDays] = useState([]); // Estado para el array de dias
   const [arrayFavorites, setArrayFavorites] = useState([]);
+  const [appearSaveButton, setAppearSaveButton] = useState(false)
+  const navigate = useNavigate()
   useEffect(() => {
 
     getAllInfoPlace()
@@ -88,6 +91,9 @@ function Itinerary() {
           console.error('Error al registrar el viaje:', error);
           // Maneja los errores, como mostrar un mensaje de error al usuario.
         });
+
+      setAppearSaveButton(true)
+
     } else {
       alert(
         "EXCESO EN CANTIDAD DE DÍAS!!! \nPor favor, ingrese un numero entre 1 y 7"
@@ -96,42 +102,72 @@ function Itinerary() {
 
   };
 
+  function goHome() {
+    navigate("/home")
+  }
+
+  let save;
+  if (appearSaveButton) {
+    save =
+      <div class="container d-flex justify-content-center mt-5 mb-10">
+        <Button id="Button" onClick={MensajeGuardar}>Guardar</Button>
+      </div>
+  }
+
+  let view;
+  if (arrayFavorites.length > 0) {
+    view =
+      <>
+        <Container style={{ marginBottom: "4rem" }}>
+          <br />
+          <h2 className="PreviousText">¡Crea tu itinerario ahora con Turi!</h2>
+          <h3 className="PreviousText">Ingrese la cantidad de días para generar:</h3>
+
+          <FormGroup id="DaysPicker">
+            <FormLabel id="NumberOfDays">Días:</FormLabel>
+            <FormControl
+              type="number"
+              id="DaysBox"
+              min="1"
+              max="7"
+              value={numberOfDays}
+              onChange={(e) => setNumberOfDays(e.target.value)}
+            />
+            <Button onClick={handleGenerateClick} id="Button">Generar</Button>
+          </FormGroup>
+
+          <Container className='DayContainer'>
+            {/* Mapea y renderiza los componentes "Day" del array de dias */}
+            {arrayDays.map((day, index) => (
+              <div key={index}>
+
+                <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />
+
+              </div>
+            ))}
+          </Container>
+          {save}
+        </Container>
+      </>
+  } else {
+    view =
+      <>
+        <Container style={{ marginBottom: "4rem" }}>
+          <br />
+          <h2 className="PreviousText">Actualmente no tiene favoritos agregados para generar un itinerario</h2>
+          <h3 className="PreviousText">Por favor, regrese a la pantalla principal y agregue las opciones de su agrado</h3>
+          <div class="container d-flex justify-content-center mt-5 mb-10">
+            <Button id="Button" onClick={goHome}>Ir a la pantalla principal</Button>
+          </div>
+        </Container>
+      </>
+  }
+
 
   return (
     <>
       <Header />
-      <Container style={{marginBottom:"4rem"}}>
-        <br />
-        <h2 className="PreviousText">¡Crea tu itinerario ahora con Turi!</h2>
-        <h3 className="PreviousText">Ingrese la cantidad de días para generar:</h3>
-
-        <FormGroup id="DaysPicker">
-          <FormLabel id="NumberOfDays">Días:</FormLabel>
-          <FormControl
-            type="number"
-            id="DaysBox"
-
-            value={numberOfDays}
-            onChange={(e) => setNumberOfDays(e.target.value)}
-          />
-          <Button onClick={handleGenerateClick} id="Button">Generar</Button>
-        </FormGroup>
-
-        <Container className='DayContainer'>
-          {/* Mapea y renderiza los componentes "Day" del array de dias */}
-          {arrayDays.map((day, index) => (
-            <div key={index}>
-
-              <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />
-
-            </div>
-          ))}
-        </Container>
-
-        <div class="container d-flex justify-content-center mt-5 mb-10">
-          <Button id="Button"onClick={MensajeGuardar}>Guardar</Button>
-        </div>
-      </Container>
+      {view}
     </>
   );
 }
