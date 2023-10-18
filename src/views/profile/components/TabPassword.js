@@ -10,12 +10,33 @@ function TabPassword() {
 
     const [buttonSelection, setButtonSelection] = useState(0)
 
+    const [showError, setShowError] = useState(false)
+    const [error, setError] = useState('')
+
     const handleNewPassChange = (e) => {
-        setNewPassword(e.target.value)
+        const newPassword = e.target.value;
+        const newPassword2 = newPasswordConfirm; // Obtenemos la contraseña repetida
+        setNewPassword(newPassword);
+
+        if (newPassword !== newPassword2) {
+            setError('Las contraseñas no coinciden');
+        } else {
+            setError('');
+        }
+
     }
 
     const handleNewPassConfirmChange = (e) => {
         setNewPasswordConfirm(e.target.value)
+        const newPassword2 = e.target.value;
+        const newPassword1 = newPassword; // Obtenemos la contraseña repetida
+        setNewPasswordConfirm(newPassword2);
+
+        if (newPassword1 !== newPassword2) {
+            setError('Las contraseñas no coinciden');
+        } else {
+            setError('');
+        }
     }
 
     async function handleSubmit(data) {
@@ -37,41 +58,71 @@ function TabPassword() {
         }
     }
 
+    const hasUpperCase = str => /[A-Z]/.test(str);
+    const [showWarning, setShowWarning] = useState(false)
+
     function handleChangesClick() {
-        if(newPassword!="" && newPasswordConfirm!=""){
-            if(newPassword===newPasswordConfirm){
-                const data = {
-                    id:usuarioId,
-                    contrasena:newPassword
+        if (newPassword != "" && newPasswordConfirm != "") {
+            if (newPassword === newPasswordConfirm) {
+                if (newPassword.length >= 7) {
+                    if (hasUpperCase(newPassword) === true) {
+                        setError('')
+
+                        const data = {
+                            id: usuarioId,
+                            contrasena: newPassword
+                        }
+                        handleSubmit(data)
+                        alert("Contraseña cambiada exitosamente")
+
+                        window.location.reload();
+
+                    } else {
+                        setError('')
+                        setShowWarning(true)
+                        alert("ERROR: : La contraseña no contiene mayúscula")
+                    }
+                } else {
+                    setShowWarning(true)
+                    alert("ERROR: Contraseña menor a 7 caracteres")
                 }
-                handleSubmit(data)
-                alert("Contraseña cambiada exitosamente")
-                window.location.reload();
-            }else{
-                alert("ERROR: Las contraseñas son diferentes")
+            } else {
+                setShowWarning(false)
+                alert("ERROR: Las contraseñas son diferentes.")
             }
-        }else{
+        } else {
+            setShowWarning(false)
             alert("Debe ingresar nueva contraseña")
         }
     }
 
-    function handleCancelClick(){
+    function handleCancelClick() {
         setNewPassword("")
         setNewPasswordConfirm("")
         setButtonSelection(0)
+        setShowWarning(false)
+        setError('')
     }
 
     const [changePassword, setChangePassword] = useState(false)
 
     let cancelBtn;
-    if(newPassword!="" || newPasswordConfirm!=""){
+    if (newPassword != "" || newPasswordConfirm != "") {
         cancelBtn = <button class="btn-profile btn" style={{ backgroundColor: (buttonSelection == 0) ? "white" : "#588a4d", color: (buttonSelection == 0) ? "black" : "white" }} type="button" onClick={handleCancelClick} onMouseOver={() => setButtonSelection(1)}>Cancelar</button>
     }
 
     let messageError;
-    if (newPassword != newPasswordConfirm) {
+    if (showWarning && error === '' && newPassword.length < 7) {
         messageError =
-            <span class="messageError">Las contraseñas no son iguales</span>
+            <>
+                <div class="messageError">
+                    La contraseña debe contener:
+                    <br />
+                    - Mínimo 7 caracteres
+                    <br />
+                    - Mínimo una letra mayúscula
+                </div>
+            </>
     }
 
     return (
@@ -88,7 +139,9 @@ function TabPassword() {
                         <input class="form-control" id="inputNewPassConfirm" type="password" name="newPassConfirm" placeholder="Ingrese de nuevo su nueva contraseña" value={newPasswordConfirm} onChange={handleNewPassConfirmChange} />
                     </div>
                 </div>
+                <div class="messageError">{error}</div>
                 {messageError}
+
             </div>
             <div class="profile-password">
                 <button class="btn-profile btn" style={{ backgroundColor: (buttonSelection == 0) ? "#588a4d" : "white", color: (buttonSelection == 0) ? "white" : "black" }} type="button" onClick={handleChangesClick} onMouseOver={() => setButtonSelection(0)}>Guardar cambios</button>

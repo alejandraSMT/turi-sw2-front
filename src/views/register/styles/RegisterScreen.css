@@ -48,6 +48,7 @@
 #error-message{ /*diseño del mensaje de error*/
     color: red;
     font-size:smaller;
+    padding-left: 50px;
 }
 
 #ButtonRegister{ /*diseño del buton para registrar los datos*/

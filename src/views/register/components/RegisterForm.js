@@ -38,7 +38,7 @@ function RegisterForm() {
   //constantes para comparar que la contraseña ingresada sea igual a la que se pide para confirmar
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
-  
+
   //constante para manejar un posible error
   const [error, setError] = useState('');
 
@@ -46,36 +46,36 @@ function RegisterForm() {
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
-   //funcion para cuando el usuario escriba otro nombre se actualice el valor
+  //funcion para cuando el usuario escriba otro nombre se actualice el valor
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
-   //funcion para cuando el usuario escriba otro apellido se actualice el valor
+  //funcion para cuando el usuario escriba otro apellido se actualice el valor
   const handleLastnameChange = (e) => {
     setLastname(e.target.value);
   };
-   //funcion para cuando el usuario ingrese otra foto se actualice el valor
+  //funcion para cuando el usuario ingrese otra foto se actualice el valor
   const handlePhotoChange = (e) => {
     setPhoto(e.target.value);
   };
-   //funcion para cuando el usuario escriba otro numero de celular se actualice el valor
+  //funcion para cuando el usuario escriba otro numero de celular se actualice el valor
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(e.target.value);
   };
-   //funcion para cuando el usuario seleccione otro tipo de documento se actualice el valor
-   //Tambien setea el IdDocument con el ID del que se selecciono
+  //funcion para cuando el usuario seleccione otro tipo de documento se actualice el valor
+  //Tambien setea el IdDocument con el ID del que se selecciono
   const handleDocumentTypeChange = (e) => {
     setDocumentType(e.target.value)
     //si lo seleccionado es DNI el ID sera 1
     if (e.target.value === "DNI") {
       setIdDocument(1);
-    //si lo seleccionado es PASAPORTE el ID sera 2
+      //si lo seleccionado es PASAPORTE el ID sera 2
     } else if (e.target.value === "PASAPORTE") {
       setIdDocument(2);
-    //si es CARNET DE EXTRANJERIA el ID sera 3
+      //si es CARNET DE EXTRANJERIA el ID sera 3
     } else if (e.target.value === "CARNET DE EXTRANJERIA") {
       setIdDocument(3);
-    //si no es ninguno de los anteriores se mostrara un alert para que seleccione un tipo
+      //si no es ninguno de los anteriores se mostrara un alert para que seleccione un tipo
     } else {
       window.alert("Seleccione un tipo de documento")
     }
@@ -90,9 +90,10 @@ function RegisterForm() {
     setEmail(e.target.value);
   };
 
-  
+
+  const [showWarning, setShowWarning] = useState(false)
+
   //funcion para cuando el usuario ingrese otra contraseña para se actualice el valor
-  
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     const newPassword2 = password2; // Obtenemos la contraseña repetida
@@ -126,7 +127,7 @@ function RegisterForm() {
 
   //funcion para al dar click al boton se complete el registro y se inserte en la base de datos la informacion
   //del nuevo usuario creado usando la conexion con el endpoint "usuarios/registro"
-  const handleButtonClick = () => {
+  const handleSubmitData = () => {
     //la variable data es el body JSON que se enviara al endpoint y se definen las variables declaradas arriba
     //con los atributos de la clase Usuario
     const data = {
@@ -166,11 +167,50 @@ function RegisterForm() {
       });
   };
 
+  // función para verificar si la contraseña contiene una mayúscula
+  const hasUpperCase = str => /[A-Z]/.test(str);
+
+  function handleButtonClick() {
+
+    if (password === password2) {
+      if (password.length >= 7) {
+        if (hasUpperCase(password) === true) {
+          handleSubmitData();
+          setShowWarning(false)
+          setError('')
+        } else {
+          alert("Error: La contraseña no contiene mayúscula.")
+          setShowWarning(true);
+        }
+      } else {
+        alert("Error: Contraseña menor a 7 caracteres.")
+        setShowWarning(true);
+      }
+    } else {
+      alert("Error: Las contraseñas no son iguales.")
+      setShowWarning(false)
+    }
+  }
+
+  let msg;
+  if (showWarning && error === '' && password.length < 7) {
+    msg =
+      <>
+        <div id="error-message">
+          La contraseña debe contener:
+          <br />
+          - Mínimo 7 caracteres
+          <br />
+          - Mínimo una letra mayúscula
+        </div>
+      </>
+  }
+
   return (
     <Container id="ContainerRegister">
 
       <Form>
-        <div class="container d-flex" style={{alignItems:"center", justifyContent:"center"}}>
+        <div class="container d-flex" style={{ alignItems: "center", justifyContent: "center" }}>
           {/*Mensaje para registro */}
           <h1 className="PreviousText">¡Registrese en </h1>
           <img src={logo_black} style={{ width: "20%", height: "15%" }} />
@@ -196,7 +236,7 @@ function RegisterForm() {
         </Row>
 
         <Row>
-        {/*cuadro de texto para escribir el apellido del usuario */}
+          {/*cuadro de texto para escribir el apellido del usuario */}
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Apellido:</FormLabel>
@@ -204,7 +244,7 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
-        {/*cuadro de texto para escribir el correo del usuario */}
+          {/*cuadro de texto para escribir el correo del usuario */}
 
           <Col>
             <FormGroup>
@@ -216,7 +256,7 @@ function RegisterForm() {
         </Row>
 
         <Row>
-        {/*cuadro de texto para escribir el telefono del usuario */}
+          {/*cuadro de texto para escribir el telefono del usuario */}
 
           <Col>
             <FormGroup>
@@ -228,7 +268,7 @@ function RegisterForm() {
         </Row>
 
         <Row>
-        {/*cuadro de texto para seleccionar en opciones el tipo de documento del usuario */}
+          {/*cuadro de texto para seleccionar en opciones el tipo de documento del usuario */}
 
           <Col>
             <FormGroup>
@@ -242,7 +282,7 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
-        {/*cuadro de texto para escribir el numero del documento del usuario */}
+          {/*cuadro de texto para escribir el numero del documento del usuario */}
 
           <Col>
             <FormGroup>
@@ -255,7 +295,7 @@ function RegisterForm() {
 
         <Row>
 
-        {/*cuadro de texto para escribir la contraseña del usuario */}
+          {/*cuadro de texto para escribir la contraseña del usuario */}
 
           <Col>
             <FormGroup>
@@ -269,7 +309,7 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
-        {/*cuadro de texto para escribir la confirmacion de la contraseña del usuario */}
+          {/*cuadro de texto para escribir la confirmacion de la contraseña del usuario */}
 
           <Col>
             <FormGroup>
@@ -282,15 +322,16 @@ function RegisterForm() {
               />
             </FormGroup>
 
-        {/*mensaje de error si no son iguales */}
+            {/*mensaje de error si no son iguales */}
             <div id="error-message">{error}</div>
+            {msg}
           </Col>
 
         </Row>
 
       </Form>
       <br />
-        {/*Boton para aceptar el registro del nuevo usuario y esta conectado al endpoint*/}
+      {/*Boton para aceptar el registro del nuevo usuario y esta conectado al endpoint*/}
 
       <Button id="ButtonRegister" onClick={handleButtonClick}>Aceptar</Button>
       <br />
