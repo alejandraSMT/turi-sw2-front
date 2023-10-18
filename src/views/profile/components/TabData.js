@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import "../styles/ProfileStyles.css"
 
+// tab 1 -----> Datos personales
 function TabData({ activeUser, tipoDoc, onSubmit }) {
 
     const usuarioId = window.sessionStorage.getItem("usuarioId")
 
+    // variables de estado de los datos del usuario en sesión
     const [name, setName] = useState(activeUser.nombre);
     const [lastName, setLastName] = useState(activeUser.apellido)
     const [email, setEmail] = useState(activeUser.correo)
@@ -13,6 +15,8 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
     const [photo, setPhoto] = useState(activeUser.foto)
     const [loading, setLoading] = useState(true);
 
+    // se ejecuta en la primera carga
+    // si hay un usuario en sesión, se setean los datos traidos de la base de datos desde la vista de ProfileScreen
     useEffect(() => {
         if (activeUser) {
             setName(activeUser.nombre);
@@ -25,6 +29,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         }
     }, [activeUser]);
 
+    // funciones handle para manejar el cambio de los textfields
     const handleNameChange = (e) => {
         setName(e.target.value);
     };
@@ -61,6 +66,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         handleSubmit()
     }
 
+    // si le da click al botón de cancelar, los datos regresan a como estaban antes -> los datos de la base de datos
     function handleDeactivateChangesClick() {
         setName(activeUser.nombre)
         setLastName(activeUser.apellido)
@@ -72,10 +78,12 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         setButtonSelectionProfile(0)
     }
 
+    // variables para cambios en botones del tab
     const [buttonSelectionProfile, setButtonSelectionProfile] = useState(0)
 
     const [changeValues, setChangeValues] = useState(true)
 
+    // función para armar el JSON que se enviará a la función en ProfileScreen que actualiza los datos del usuario
     function handleSubmit() {
         const submitValue = {
             id: usuarioId,
@@ -94,6 +102,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
         setChangeValues(false)
     }
 
+    // en caso se quiera cambiar la foto de perfil, aparece un textfield para introducir el url de la nueva foto
     let url;
     if (!changeValues) {
         url =
@@ -109,6 +118,8 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
             </>
     }
 
+
+    // cambios en los botones 1) Actualizar datos (si desea realizar cambios) 2) Guardar y Cancelar
     let buttonView;
     if (changeValues) {
         buttonView =
@@ -123,6 +134,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
             </div>
     }
 
+    // vista general
     let view;
     if (loading) {
         view =

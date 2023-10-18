@@ -8,16 +8,19 @@ import { useEffect, useState } from "react";
 function HomeScreen() {
 
     const usuarioId = window.sessionStorage.getItem("usuarioId");
+
+    // variables de estado tipo array que almacenan los restaurantes, lugares turísticos y actividades
     const [restaurants, setRestaurants] = useState([]);
     const [turistics, setTuristics] = useState([]);
     const [activities, setActivities] = useState([]);
 
+    // en la carga de la página llama a la función getHomeData que es de tipo async
     useEffect(() => {
        getHomeData()
     }, [])
 
-    console.log("ID_USUARIO home " + usuarioId)
 
+    // función fetch para traer la lista del top5 de restaurantes de la base de datos
     async function getRestaurantes() {
         return new Promise(async (resolve, reject) => {
             try {
@@ -36,6 +39,7 @@ function HomeScreen() {
         })
     }
 
+    // función fetch para traer la lista del top5 de lugares turísticos de la base de datos
     async function getTuristic() {
         return new Promise(async (resolve, reject) => {
             try {
@@ -54,6 +58,7 @@ function HomeScreen() {
         })
     }
 
+    // función fetch para traer la lista del top5 de actividades de la base de datos
     async function getActivities() {
         return new Promise(async (resolve, reject) => {
             try {
@@ -72,9 +77,13 @@ function HomeScreen() {
         })
     }
 
+    // la función getHomeData que se llama en el useEffect
+    // se encarga de la carga y llenado de las listas de restaurantes, lugares turísticos y actividades
     async function getHomeData()  {
 
         try {
+            // cada función de get es una promesa para asegurarse de que termina de traer todos los datos
+            // además, son await dentro de una función async para hacer la carga de forma secuencial
             var restaurantes = await getRestaurantes()
             var turistics = await getTuristic()
             var activities = await getActivities()
@@ -96,6 +105,7 @@ function HomeScreen() {
                     <Header />
                 </div>
                 <div class="row" style={{ padding: "0rem 5rem 5rem 5rem" }}>
+                    {/*GroupView es el bloque del HomeScreen que muestra la lista de restaurantes, lugares y actividades*/}
                     <ElementsGroupView
                         restaurants={restaurants}
                         turistics={turistics}

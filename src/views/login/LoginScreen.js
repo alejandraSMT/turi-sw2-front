@@ -10,11 +10,12 @@ import { useNavigate } from 'react-router-dom'
 let img = require('./miraflores_login.jpeg')
 let logo_black = require("./logo-turi-black.png")
 
-
+// clase vista Login
 function LoginScreen() {
 
     const navigate = useNavigate();
 
+    // variables de estado
     const [usuarioId, setUsuarioId] = useState('');
     const [input, setInput] = useState('');
     const [password, setPassword] = useState('');
@@ -31,6 +32,8 @@ function LoginScreen() {
         console.log('Ocurrió un error:', error);
     }
 
+    // fetch del endpoint para el login
+    // se utiliza una promesa para asegurar que terminen de llegar los datos de la base de datos
     const obtenerUsuarioLogin = (data) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -47,13 +50,16 @@ function LoginScreen() {
         })
     }
 
+    // función del botón para iniciar sesión
     const handleButtonClick = async () => {
+        // arma un JSON con el usuario y la contraseña para ser pasado al backend y verificar si los datos coinciden con algún usuario
         const data = {
             input: input,
             password: password,
         };
         try {
-            console.log("DATA: ",data)
+            // se llama a la función fetch
+            // utilizamos el await para esperar que termine de ejecutarse de función para continuar
             const response = await obtenerUsuarioLogin(data)
 
             if (response.status !== 200) {
@@ -63,7 +69,6 @@ function LoginScreen() {
 
             const usuarioData = await response.json()
             setUsuarioId(usuarioData)
-            console.log(usuarioId)
 
             window.location = "/home"
 
@@ -72,6 +77,7 @@ function LoginScreen() {
         }
     };
 
+    // se crea una variable global al momento que inicia sesión
     window.sessionStorage.setItem('usuarioId', usuarioId);
 
     return (

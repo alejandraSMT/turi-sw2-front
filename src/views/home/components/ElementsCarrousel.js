@@ -15,10 +15,12 @@ import { useState, useEffect } from "react";
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-element-bundle.min.js"></script>
 
-function ElementsGrid({ elements, type }) {
+// carrousel de cards por cada tipo de lugar (restaurante, lugar turístico o actividad)
+function ElementsCarrousel({ elements, type }) {
 
     const [slides, setSlides] = useState(0)
 
+    // el número de cards en el carrousel disminuye conforme disminuye el tamaño de la pantalla
     const setSlidesPerview = () => {
         setSlides(
             window.innerWidth <= 600 ? 1 :
@@ -29,6 +31,7 @@ function ElementsGrid({ elements, type }) {
         );
     }
 
+    // en la carga del carrousel
     useEffect(() => {
         console.log("WINDOW SIZE: " + window.innerWidth)
         // Initially set the amount of slides on page load
@@ -41,6 +44,7 @@ function ElementsGrid({ elements, type }) {
         };
     }, []);
 
+    // vista carrousel
     return (
         <>
             <h1 style={{ padding: "1rem 0 1rem 0" }}>{type}</h1>
@@ -80,4 +84,4 @@ function ElementsGrid({ elements, type }) {
     );
 }
 
-export default ElementsGrid;
+export default ElementsCarrousel;

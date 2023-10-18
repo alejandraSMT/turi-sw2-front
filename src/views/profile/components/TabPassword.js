@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import "../styles/ProfileStyles.css"
 
+// tab 2 -----> Cambio de contraseña
 function TabPassword() {
 
     const usuarioId = window.sessionStorage.getItem("usuarioId")
 
+    // variables de estado, la nueva contraseña
     const [newPassword, setNewPassword] = useState("")
-    const [newPasswordConfirm, setNewPasswordConfirm] = useState("")
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState("") 
 
-    const [buttonSelection, setButtonSelection] = useState(0)
+    const [buttonSelection, setButtonSelection] = useState(0) // variable para los cambios de botones
 
-    const [showError, setShowError] = useState(false)
+    // error en caso de que las contraseñas no sean iguales
     const [error, setError] = useState('')
 
+    // funciones handle para el cambio en los textfields de contraseña
     const handleNewPassChange = (e) => {
         const newPassword = e.target.value;
         const newPassword2 = newPasswordConfirm; // Obtenemos la contraseña repetida
         setNewPassword(newPassword);
 
+        // se verifica que las contraseñas sean iguales mientras se digitan
         if (newPassword !== newPassword2) {
             setError('Las contraseñas no coinciden');
         } else {
@@ -26,6 +30,7 @@ function TabPassword() {
 
     }
 
+    // lo mismo que arriba pero para el textfield de confirmación de contraseña
     const handleNewPassConfirmChange = (e) => {
         setNewPasswordConfirm(e.target.value)
         const newPassword2 = e.target.value;
@@ -39,6 +44,7 @@ function TabPassword() {
         }
     }
 
+    // función fetch tipo POST para enviar el JSON para el endpoint de cambio de contraseña
     async function handleSubmit(data) {
         try {
             const response = await fetch(`http://localhost:3000/usuarios/setContrasena`, {
@@ -58,13 +64,22 @@ function TabPassword() {
         }
     }
 
+    // para verificar que hay al menos una mayúscula en la contraseña
     const hasUpperCase = str => /[A-Z]/.test(str);
+
+    // warning si la contraseña es menor a 7 o no contiene al menos una mayúscula
     const [showWarning, setShowWarning] = useState(false)
 
+    // función que hace las verificaciones necesarias de la contraseña
+    // si pasa todos los filtros, se envía el data JSON a la función handleSubmit (definida arriba) para enviar los cambios al backend
     function handleChangesClick() {
+        // verificar que los campos no estén vacíos
         if (newPassword != "" && newPasswordConfirm != "") {
+            // verificar que las contraseñas sean iguales
             if (newPassword === newPasswordConfirm) {
+                // verificar que la contraseña es mayor o igual a 7 caracteres
                 if (newPassword.length >= 7) {
+                    // verificar si la contraseña contiene al menos 1 caracter en mayúscula
                     if (hasUpperCase(newPassword) === true) {
                         setError('')
 
@@ -96,6 +111,7 @@ function TabPassword() {
         }
     }
 
+    // si cancela los cambios, todo regresa por default a como estaba
     function handleCancelClick() {
         setNewPassword("")
         setNewPasswordConfirm("")
@@ -111,6 +127,7 @@ function TabPassword() {
         cancelBtn = <button class="btn-profile btn" style={{ backgroundColor: (buttonSelection == 0) ? "white" : "#588a4d", color: (buttonSelection == 0) ? "black" : "white" }} type="button" onClick={handleCancelClick} onMouseOver={() => setButtonSelection(1)}>Cancelar</button>
     }
 
+    // mensaje de error si al contraseña es menor a 7 o no contiene al menos una mayúscula
     let messageError;
     if (showWarning && error === '' && newPassword.length < 7) {
         messageError =

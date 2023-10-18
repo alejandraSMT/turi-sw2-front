@@ -10,15 +10,19 @@ let favorite = require("./favorite.png")
 let planner = require("./planner.png")
 let profileIcon = require("./profile_icon.png")
 
+// clase vista Header
 function Header() {
 
+    // useEffect se ejecuta en la primera carga de la vista
     useEffect(() => {
         getData()
     })
 
+    // variable de estado de la foto del usuario
     const [photo, setPhoto] = useState("");
     const userId = window.sessionStorage.getItem("usuarioId");
 
+    // función fecth para traer la foto del usuario
     async function getProfilePhoto() {
         await fetch(`http://localhost:3000/usuarios/getFoto?id=${userId}`)
             .then(response => response.text())
@@ -29,10 +33,12 @@ function Header() {
             .catch(error => console.log('Ocurrió un error:', error));
     }
 
+    // función async que indica await a getProfilePhoto en la espera de que se traiga la foto para mostrar la vista
     async function getData(){
         await getProfilePhoto();
     }
 
+    // para la navegación entre pantallas
     const navigate = useNavigate();
 
     function handlePlannerClick() {
@@ -51,12 +57,16 @@ function Header() {
         navigate("/profile")
     }
 
+    // en caso de logout
     function handleLogoutClick() {
         navigate("/")
+        // elimina el id del usuario en sesión
+        window.sessionStorage.removeItem("usuarioId")
     }
 
     const [buttonSelection, setButtonSelection] = useState(-1)
 
+    // muestra placeholder o la foto del usuario
     let photoHeader;
     if (photo == "usuario pipi") {
         photoHeader =

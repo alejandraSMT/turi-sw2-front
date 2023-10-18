@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import ElementsGrid from "./ElementsGrid";
+import ElementsCarrousel from "./ElementsCarrousel";
 
 function ElementsGroupView({ restaurants, turistics, activities }) {
 
+    // por cada tipo de lugar se arma un carrousel
     let rest;
     if (restaurants.length > 0) {
         rest =
-            <ElementsGrid
+            <ElementsCarrousel
                 elements={restaurants}
                 type="Restaurantes"
             />
@@ -16,7 +17,7 @@ function ElementsGroupView({ restaurants, turistics, activities }) {
     let turist;
     if (turistics.length > 0) {
         turist =
-            <ElementsGrid
+            <ElementsCarrousel
                 elements={turistics}
                 type="Lugares turísticos"
             />
@@ -25,7 +26,7 @@ function ElementsGroupView({ restaurants, turistics, activities }) {
     let act;
     if (activities.length > 0) {
         act =
-            <ElementsGrid
+            <ElementsCarrousel
                 elements={activities}
                 type="Actividades"
             />
