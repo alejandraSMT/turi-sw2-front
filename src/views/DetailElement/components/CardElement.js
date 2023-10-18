@@ -1,7 +1,17 @@
+//se llama a la libreria bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+//se llama al CSS que le da diseño a esta pantalla
 import '../styles/DetailElement.css'
+
+//importa elementos de react-bootstrap
 import { Container, Col, Row } from 'react-bootstrap';
+
+
+//importa elementos de react
 import React, { useState, useEffect } from 'react';
+
+//importa las imagenes de estrellas para las diferentes puntuaciones
 import estrella05 from '../images/estrellas/0.5_estrellas.png';
 import estrella1 from '../images/estrellas/1_estrellas.png';
 import estrella15 from '../images/estrellas/1.5_estrellas.png';
@@ -14,17 +24,35 @@ import estrella45 from '../images/estrellas/4.5_estrellas.png';
 import estrella5 from '../images/estrellas/5_estrellas.png';
 
 import { useParams } from "react-router-dom"
+
 function CardElement() {
 
+  //se obtiene el id del usuario de la sesion actual
   const idUsuario = window.sessionStorage.getItem("usuarioId");
+  //muestra el id en la consola para comprobar
   console.log("USUARIO ID: " + idUsuario)
+
+   //captura el id del lugar como parametro
   const { idLugar } = useParams();
   //const idLugar = 6;
 
+  //se definen la variable donde se guardara la informacion del lugar y su setter para cuando se cambie el valor
   const [lugarData, setLugarData] = useState('');
-  const [isFavorite, setIsFavorite] = useState(''); // Estado para controlar la imagen favorita
+
+  //se definen la variable donde se guardara si el lugar es favorito y su setter para cuando se cambie el valor
+  const [isFavorite, setIsFavorite] = useState(''); 
+
+  //se definen la variable donde se guardara la url de la estrella (pintada si es favorito / vacio si no es) 
+  //y su setter para cuando se cambie el valor
+
   const [starFavorite, setStarFavorite] = useState('');
+
+  //se definen la variable donde se guardaran las categorias del lugar y su setter para cuandos se cambie el valor
+
   const [Categories, setCategories] = useState([]);
+  
+  //se llama a la funcion getAllInfoPlace donde estan en orden las llamadas a los endpoints que se ejecutan
+  // en simultaneo al cargar la pagina
   useEffect(() => {
 
     getAllInfoPlace()
@@ -32,61 +60,89 @@ function CardElement() {
   }, []);
 
 
-
+//getInfoPlace: funcion donde se hace el llamado al endpoint "getLugarById" enviando como parametro el idLugar 
+//y poder buscar toda la informacion de ese lugar para ser mostrada en pantalla
   async function getInfoPlace() {
+    //se retorna un Promise para que se traiga la informacion sin esperar que otra parte del codigo funcione
     return new Promise(async (resolve, reject) => {
       try {
+        //llamada al endpoint "getLugarById"
         const response = await fetch(`http://localhost:3000/lugar/getLugarById?id=${idLugar}`, {
-          method: "GET"
+          method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
+        //se muestra la data del lugar en la consola
         console.log(data)
+        //la promesa se ejecuto con exito (resolve)
         resolve(data)
       } catch (error) {
+        //la promesa NO se ejecuto con exito (reject)
         reject(error)
       }
     })
   }
 
+//VerifyFavorite: funcion donde se verifica si el lugar es favorito para el usuario enviando como parametros
+// el idUsuario y el idLugar al endpoint "verificarFavorito"
   async function VerifyFavorite() {
+    //se retorna un Promise para que se traiga la informacion sin esperar que otra parte del codigo funcione
+
     return new Promise(async (resolve, reject) => {
       try {
+        //llamada al endpoint "verificarFavorito"
         const response = await fetch(`http://localhost:3000/verificarFavorito?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
-          method: "GET"
+          method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
+        //la promesa se ejecuto con exito (resolve)
         resolve(data)
+        //se muestra la data del lugar en la consola
         console.log(data)
       } catch (error) {
+          //la promesa NO se ejecuto con exito (reject)
         reject(error)
       }
     })
   }
 
+  //GetCategories: funcion donde se traen las categorias del lugar enviando como parametro
+  //el idLugar al endpoint "lugares/categorias"
   async function GetCategories() {
+    //se retorna un Promise para que se traiga la informacion sin esperar que otra parte del codigo funcione
+
     return new Promise(async (resolve, reject) => {
       try {
+        //llamada al endpoint "lugares/categorias"
+
         const response = await fetch(`http://localhost:3000/lugares/categorias?idLugar=${idLugar}`, {
-          method: "GET"
+          method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
+        //la promesa se ejecuto con exito (resolve)
         resolve(data)
+        //se muestra la data del lugar en la consola
         console.log(data)
       } catch (error) {
+        //la promesa NO se ejecuto con exito (reject)
         reject(error)
       }
     })
   }
 
+  //funcion para realizar el cambio de imagen al darle click a la imagen de estrella de favorito
+  //se llama declarandola en onClick
   const cambiarImagen = () => {
-
+    //si el resultado del endpoint "VerificarFavorito" es 0 se cambiara a 1 y se pintaria la estrella
+    //de amarillo al darle click representando que se marco el lugar como favorito para el usuario
     if (isFavorite === 0) {
-      // Agregar el lugar a favoritos
+      // Agregar el lugar a favoritos llamando al endpoint "favorito/agregarFavorito"
       fetch(`http://localhost:3000/favorito/agregarFavorito`, {
-        method: 'POST',
+        method: 'POST', //metodo post porque se va a insertar data nueva
         headers: {
           'Content-Type': 'application/json',
         },
+        //se crea el objeto JSON con el idLugar del lugar que sera agregado como favorito para un usuario enviando
+        //su id (idUsuario)
         body: JSON.stringify({
           idUsuario,
           idLugar,
@@ -94,53 +150,79 @@ function CardElement() {
       })
         .then((response) => response.json())
         .then((data) => {
+          //si se hace bien la conexion se mostrara en pantalla un mensaje de que se agrego como favorito
           if (data.status === 'success') {
 
             console.log("Favorito agregado")
           }
         })
         .catch((error) => {
+        //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
+
           console.error('Error al agregar favorito:', error);
         });
       window.location.reload();
+//se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se agrego (estrella amarilla)
     } else {
-      // Eliminar el lugar de favoritos
+       //si el resultado del endpoint "VerificarFavorito" es 1 se cambiara a 0 y se pondra la estrella
+      //vacio al darle click representando que se elimino el lugar como favorito para el usuario
+      // Se llama al endpoint "favoritos/eliminar" enviando como parametros el idUsuario y el idLugar
+
       fetch(`http://localhost:3000/favoritos/eliminar?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
-        method: 'DELETE',
+        method: 'DELETE', //metodo DELETE porque se va a eliminar data 
       })
         .then((response) => response.json())
         .then((data) => {
+          //si se hace bien la conexion se mostrara en pantalla un mensaje de que se agrego como favorito
+
           if (data.status === 'success') {
 
             console.log("Favorito eliminado")
           }
         })
         .catch((error) => {
+        //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
+
           console.error('Error al eliminar favorito:', error);
         });
+//se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se elimino (estrella vacia)
       window.location.reload();
     }
   };
 
+  //getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
+  //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
   async function getAllInfoPlace() {
 
     try {
+      //llama primero a la funcion "getInfoPlace" para traer la informacion del lugar
       var InfoLugar = await getInfoPlace()
+      //llama segundo a la funcion "VerifyFavorite" para verificar si el lugar es favorito
       var InfoFavorite = await VerifyFavorite()
+     //llama tercero a la funcion "GetCategories" para traer las categorias de un lugar
       var Categories = await GetCategories()
+
       //var photo = await verificarImagen()
+      //se setea la inforamcion del lugar en la variable LugarData para ser mostrada luego en pantalla
       setLugarData(InfoLugar)
+      //se setea el resultado (1 o 0) del lugar si es favorito en la variable IsFavorite 
       setIsFavorite(InfoFavorite.resultado)
+      //se muestra el resultado (1 o 0) del lugar si es favorito en la consola
       console.log("Info Favorite:" + InfoFavorite.resultado)
       console.log(InfoFavorite.resultado)
+      //se setean las categorias en la variable Categories
       setCategories(Categories)
       //console.log("isFavorite:" + isFavorite)
-
+      
+      //si el resultado de InfoFavorite es 0 se mostrara la estrella vacia (no es favorito)
       if (InfoFavorite.resultado === 0) {
         setStarFavorite('https://cdn-icons-png.flaticon.com/512/13/13595.png');
+        //se setea IsFavorite como 0 al NO ser favorito
         setIsFavorite(0);
       } else {
+      //si el resultado de InfoFavorite es 1 se mostrara la estrella amarilla (es favorito)
         setStarFavorite('https://static.vecteezy.com/system/resources/thumbnails/009/342/149/small/golden-stars-clipart-design-illustration-free-png.png');
+        //se setea IsFavorite como 1 al ser favorito
         setIsFavorite(1);
       }
       //setStarFavorite(photo)
@@ -148,6 +230,7 @@ function CardElement() {
       console.log(starFavorite)
 
     } catch (error) {
+      //se meustra un error en caso ocurra
       console.log(error)
     }
 
@@ -156,6 +239,8 @@ function CardElement() {
   console.log("LUGAR INFO: " + lugarData.foto)
   console.log("isFavorite:" + isFavorite)
 
+  //verificarPuntuacion: funcion para mostrar la imagen de puntuacion en estrellas dependiendo del
+  //puntaje que tenga el lugar
   const verificarPuntuacion = () => {
 
     if (lugarData.puntaje == 0.5) {
@@ -189,10 +274,12 @@ function CardElement() {
       <Container className="MainInfoElement">
 
         <Container className="HeaderElement">
-          <h1>{lugarData.nombre}</h1> {/* Nombre del lugar*/}
+          <h1>{lugarData.nombre}</h1> {/* Nombre del lugar de lugarData (lo que se devuelve al traer 
+            la informacion del lugar del endpoint) */}
 
           <br />
 
+          {/*icono de favorito */}
           <img
             src={starFavorite}
             className="favorite-icon"
@@ -206,7 +293,7 @@ function CardElement() {
         </Container>
 
         <br />
-
+            {/*muestra la foto del lugar */}
         <Container>
           <img src={lugarData.foto} className="PhotoPlace" /> {/* link de imagen*/}
         </Container>
@@ -217,6 +304,7 @@ function CardElement() {
 
         <Container>
           <h3>Puntuacion:</h3>
+          {/*muestra el puntaje del lugar mostrando la imagen que devuelve la funcion "verificarPuntuacion"*/}
           <div className="TitlePuntacion">{lugarData.puntaje}
             <img
               src={verificarPuntuacion()}
@@ -230,27 +318,28 @@ function CardElement() {
       </Container>
 
       <Container className="ElementMoreInfo" class="container">
-
+     
         <Container className="InformationBox">
-          <p>Direccion: {lugarData.direccion} {/* Direccion*/}</p>
+          <p>Direccion: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
 
-          {/* Descripcion*/}
+          {/*muestra la descripcion del lugar*/}
           <p>Descripción: {lugarData.descripcion}</p>
 
-          {/* Precio Promedio*/}
+          {/*muestra el precio Promedio del lugar*/}
           <p>Precio promedio: s/.{lugarData.costo}</p>
-          {/* Horarios*/}
+          {/*muestra el horario del lugar desde su hora de inicio a hora de fin*/}
           <p>Horario: {lugarData.horaInicio} a {lugarData.horaFin}</p>
 
-          {/* Contacto*/}
+          {/* muestra el celular de contacto del lugar*/}
           <p>Contacto: {lugarData.celular} </p>
 
-          {/* Website*/}
+          {/* muestra el link del Website del lugar*/}
           <p>Para consultar más detalles visite <a target="_blank" id="link_detail" href={lugarData.linkweb}> el siguiente enlace</a></p>
 
         </Container>
 
         <Container>
+          {/* muestra las categorias del lugar recorriendo con un map el array Categoria donde estan guardados*/}
 
           <p className='TitleCategories'>
             Categorias: {Categories.map((categoria, index) => (<p className="CategoriasElement" key={index}>{categoria}

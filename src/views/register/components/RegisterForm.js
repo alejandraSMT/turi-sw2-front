@@ -1,9 +1,15 @@
-import Form from 'react-bootstrap/Form';
+//se llama al CSS que le da diseño a esta pantalla
 import '../styles/RegisterScreen.css';
+//se llama al CSS de la libreria bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+//importa elementos de react
 import { useNavigate } from 'react-router-dom'
-import { Container, FormGroup, FormLabel, Row, Col, FormControl, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
+
+//importa elementos de react-bootstrap
+import { Container, FormGroup, FormLabel, Row, Col, FormControl, Button } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
 let logo_black = require("./logo-turi-black.png")
 
@@ -11,60 +17,82 @@ function RegisterForm() {
 
   const navigate = useNavigate();
 
-
+  //se definen la variable del dato nombre y su setter para cuando se cambie el valor
   const [name, setName] = useState('');
+  //se definen la variable del dato apellido y su setter para cuando se cambie el valor
   const [lastname, setLastname] = useState('');
+  //se definen la variable del dato email y su setter para cuando se cambie el valor
   const [email, setEmail] = useState('');
+  //se definen la variable del dato tipo de documento y su setter para cuando se cambie el valor
   const [documentType, setDocumentType] = useState('');
+  //se definen la variable del dato numero de documento y su setter para cuando se cambie el valor
   const [document, setDocument] = useState('');
+  //se definen la variable del dato celular y su setter para cuando se cambie el valor
   const [phonenumber, setPhoneNumber] = useState('');
+  //se definen la variable del dato nombre de usuario y su setter para cuando se cambie el valor
   const [username, setUsername] = useState('');
+  //se definen la variable del dato del id del tipo de documento y su setter para cuando se cambie el valor
+  const [idDoc, setIdDocument] = useState('');
+  //se definen la variable del dato foto y su setter para cuando se cambie el valor
+  const [photo, setPhoto] = useState('');
+  //constantes para comparar que la contraseña ingresada sea igual a la que se pide para confirmar
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
-  const [idDoc, setIdDocument] = useState('');
-  const [photo, setPhoto] = useState('');
+  
+  //constante para manejar un posible error
   const [error, setError] = useState('');
 
+  //funcion para cuando el usuario escriba otro nombre de usuario se actualice el valor
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
+   //funcion para cuando el usuario escriba otro nombre se actualice el valor
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
+   //funcion para cuando el usuario escriba otro apellido se actualice el valor
   const handleLastnameChange = (e) => {
     setLastname(e.target.value);
   };
+   //funcion para cuando el usuario ingrese otra foto se actualice el valor
   const handlePhotoChange = (e) => {
     setPhoto(e.target.value);
   };
+   //funcion para cuando el usuario escriba otro numero de celular se actualice el valor
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(e.target.value);
   };
+   //funcion para cuando el usuario seleccione otro tipo de documento se actualice el valor
+   //Tambien setea el IdDocument con el ID del que se selecciono
   const handleDocumentTypeChange = (e) => {
     setDocumentType(e.target.value)
+    //si lo seleccionado es DNI el ID sera 1
     if (e.target.value === "DNI") {
       setIdDocument(1);
-
+    //si lo seleccionado es PASAPORTE el ID sera 2
     } else if (e.target.value === "PASAPORTE") {
       setIdDocument(2);
-
+    //si es CARNET DE EXTRANJERIA el ID sera 3
     } else if (e.target.value === "CARNET DE EXTRANJERIA") {
       setIdDocument(3);
-
+    //si no es ninguno de los anteriores se mostrara un alert para que seleccione un tipo
     } else {
       window.alert("Seleccione un tipo de documento")
     }
   };
+  //funcion para cuando el usuario ingrese otro numero de documento se actualice el valor
   const handleDocumentChange = (e) => {
     setDocument(e.target.value);
   };
+  //funcion para cuando el usuario ingrese otro email se actualice el valor
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-
-  // Función para verificar si las contraseñas coinciden
+  
+  //funcion para cuando el usuario ingrese otra contraseña para se actualice el valor
+  
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     const newPassword2 = password2; // Obtenemos la contraseña repetida
@@ -91,11 +119,16 @@ function RegisterForm() {
       setError('');
     }
   };
-
+  //variable para el mensaje de error de la conexion con el endpoint
   const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  //variable donde se guardara el body JSON
   const [user, setUser] = useState('');
 
+  //funcion para al dar click al boton se complete el registro y se inserte en la base de datos la informacion
+  //del nuevo usuario creado usando la conexion con el endpoint "usuarios/registro"
   const handleButtonClick = () => {
+    //la variable data es el body JSON que se enviara al endpoint y se definen las variables declaradas arriba
+    //con los atributos de la clase Usuario
     const data = {
       "usuario": username,
       "correo": email,
@@ -108,9 +141,10 @@ function RegisterForm() {
       "numDoc": document
 
     };
-
+    //conexion con endpoint "usuarios/registro" para el registro de usuarios
     fetch('http://localhost:3000/usuarios/registro', {
-      method: 'post',
+      method: 'post', //metodo post porque se va a insertar data nueva
+      //se conviere a objeto JSON lo declaro en data
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
@@ -119,12 +153,14 @@ function RegisterForm() {
     })
       .then((response) => response.json())
       .then((data) => {
+        //si se hay buena conexion y se logra crear el nuevo usuario
         setUser(data)
         window.alert("Usuario creado");
         navigate("/")
       })
       .catch((error) => {
         console.error("Error:", error);
+        //mensaje de error al no darse bien la conexion
         setErrorMessage("Ocurrió un error al registrar el usuario.");
         window.alert("Error:", error);
       });
@@ -135,12 +171,13 @@ function RegisterForm() {
 
       <Form>
         <div class="container d-flex" style={{alignItems:"center", justifyContent:"center"}}>
+          {/*Mensaje para registro */}
           <h1 className="PreviousText">¡Registrese en </h1>
           <img src={logo_black} style={{ width: "20%", height: "15%" }} />
           <h1 className="PreviousText">!</h1>
         </div>
         <Row>
-
+          {/*cuadro de texto para escribir el username del usuario */}
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Usuario:</FormLabel>
@@ -148,6 +185,7 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
+          {/*cuadro de texto para escribir el nombre del usuario*/}
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Nombre:</FormLabel>
@@ -158,7 +196,7 @@ function RegisterForm() {
         </Row>
 
         <Row>
-
+        {/*cuadro de texto para escribir el apellido del usuario */}
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Apellido:</FormLabel>
@@ -166,6 +204,7 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
+        {/*cuadro de texto para escribir el correo del usuario */}
 
           <Col>
             <FormGroup>
@@ -177,6 +216,7 @@ function RegisterForm() {
         </Row>
 
         <Row>
+        {/*cuadro de texto para escribir el telefono del usuario */}
 
           <Col>
             <FormGroup>
@@ -188,6 +228,7 @@ function RegisterForm() {
         </Row>
 
         <Row>
+        {/*cuadro de texto para seleccionar en opciones el tipo de documento del usuario */}
 
           <Col>
             <FormGroup>
@@ -201,6 +242,8 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
+        {/*cuadro de texto para escribir el numero del documento del usuario */}
+
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Numero de Documento:</FormLabel>
@@ -211,6 +254,8 @@ function RegisterForm() {
         </Row>
 
         <Row>
+
+        {/*cuadro de texto para escribir la contraseña del usuario */}
 
           <Col>
             <FormGroup>
@@ -224,6 +269,8 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
+        {/*cuadro de texto para escribir la confirmacion de la contraseña del usuario */}
+
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Repetir contraseña:</FormLabel>
@@ -235,6 +282,7 @@ function RegisterForm() {
               />
             </FormGroup>
 
+        {/*mensaje de error si no son iguales */}
             <div id="error-message">{error}</div>
           </Col>
 
@@ -242,6 +290,8 @@ function RegisterForm() {
 
       </Form>
       <br />
+        {/*Boton para aceptar el registro del nuevo usuario y esta conectado al endpoint*/}
+
       <Button id="ButtonRegister" onClick={handleButtonClick}>Aceptar</Button>
       <br />
     </Container>
