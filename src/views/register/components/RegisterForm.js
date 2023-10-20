@@ -172,23 +172,27 @@ function RegisterForm() {
 
   function handleButtonClick() {
 
-    if (password === password2) {
-      if (password.length >= 7) {
-        if (hasUpperCase(password) === true) {
-          handleSubmitData();
-          setShowWarning(false)
-          setError('')
+    if (username !== '') {
+      if (password === password2) {
+        if (password.length >= 7) {
+          if (hasUpperCase(password) === true) {
+            handleSubmitData();
+            setShowWarning(false)
+            setError('')
+          } else {
+            alert("Error: La contraseña no contiene mayúscula.")
+            setShowWarning(true);
+          }
         } else {
-          alert("Error: La contraseña no contiene mayúscula.")
+          alert("Error: Contraseña menor a 7 caracteres.")
           setShowWarning(true);
         }
       } else {
-        alert("Error: Contraseña menor a 7 caracteres.")
-        setShowWarning(true);
+        alert("Error: Las contraseñas no son iguales.")
+        setShowWarning(false)
       }
-    } else {
-      alert("Error: Las contraseñas no son iguales.")
-      setShowWarning(false)
+    }else{
+      alert("Debe ingresar un nombre de usuario")
     }
   }
 
