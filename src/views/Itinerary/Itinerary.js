@@ -8,19 +8,37 @@ import Header from '../header/Header';
 import { useNavigate } from 'react-router-dom';
 
 function Itinerary() {
+  //se definen la variable del id del viaje y su setter para cuando se cambie el valor
   const [idViaje, setIdViaje] = useState('');
+  
+  //se obtiene el idUsuario 
   const idUsuario = window.sessionStorage.getItem("usuarioId");
-  const [numberOfDays, setNumberOfDays] = useState(''); // Estado para la cantidad de días
-  const [arrayDays, setArrayDays] = useState([]); // Estado para el array de dias
+
+  //se definen la variable para el numero de dias y su setter para cuando se cambie el valor
+  const [numberOfDays, setNumberOfDays] = useState(''); 
+
+  //se definen la variable para el array de la cantidad de dias y su setter para cuando se cambie el valor
+  const [arrayDays, setArrayDays] = useState([]);
+
+  //se definen la variable para el array de favoritos y su setter para cuando se cambie el valor
   const [arrayFavorites, setArrayFavorites] = useState([]);
+
+  //variable para el boton guardar y que aparezca
   const [appearSaveButton, setAppearSaveButton] = useState(false)
   const navigate = useNavigate()
+  
+  
+  //se llama a la funcion getAllInfoPlace donde estan en orden las llamadas a los endpoints que se ejecutan
+  // en simultaneo al cargar la pagina
   useEffect(() => {
 
     getAllInfoPlace()
 
   }, []);
 
+
+//getAllFavorites: funcion donde se hace el llamado al endpoint "TraerTodosFav" enviando como parametro el idUsuario 
+//y poder buscar todos los favoritos que tenga agregados el usuario
   async function getAllFavorites() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -37,11 +55,19 @@ function Itinerary() {
     })
   }
 
+
+//getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
+  //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
   async function getAllInfoPlace() {
 
     try {
+      //llama primero a la funcion "getAllFavorites" para traer todos los favoritos
+
       var AllFavorites = await getAllFavorites()
       console.log(AllFavorites)
+
+      //se setea el array de favoritos con la lista de favoritos para ser mostrada luego en pantalla
+
       setArrayFavorites(AllFavorites)
 
     } catch (error) {
@@ -51,37 +77,43 @@ function Itinerary() {
 
   console.log("FAVORITOS LISTA: " + arrayFavorites)
 
+  //se muestra el mensaje al darle click al boton Guardar
   const MensajeGuardar = () => {
     window.alert("Itinerario Guardado")
   }
+
   // Función para generar los días
   const handleGenerateClick = () => {
     // Parsea la cantidad de días a un número
     const cantDays = numberOfDays;
 
+    //se crea el objeto JSON que sera enviado al endpoint
     const viajeData = {
       cantDias: cantDays,
-      idUsuario: idUsuario, // Reemplaza con el ID del usuario
+      idUsuario: idUsuario, 
     };
 
     // Verifica si la entrada es un número válido y mayor que cero
+    //el maximon de dias son 7 (1 semana)
     if (!isNaN(cantDays) && cantDays > 0 && cantDays < 8) {
       // Genera un arreglo de números del 1 al número de días ingresados
       const arrayDays = Array.from({ length: cantDays }, (_, index) => index + 1);
 
       // Actualiza el estado con los días generados
       setArrayDays(arrayDays);
+
       // Realizar una solicitud POST al servidor
       fetch('http://localhost:3000/viaje/registrar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        //se envia el objeto JSON
         body: JSON.stringify(viajeData),
       })
         .then((response) => response.json())
         .then((data) => {
-
+          //se setea el IdViaje con el que se genero al hacer la solicitud POST
           setIdViaje(data.nuevoIdViaje);
           console.log('Nuevo ID del viaje:', idViaje);
           console.log(data);
@@ -91,21 +123,24 @@ function Itinerary() {
           console.error('Error al registrar el viaje:', error);
           // Maneja los errores, como mostrar un mensaje de error al usuario.
         });
-
+    // se setea el boton Guardar para que se muestre
       setAppearSaveButton(true)
 
     } else {
       alert(
+        //mensaje cuando se pone una cantidad de dias no permitida
         "EXCESO EN CANTIDAD DE DÍAS!!! \nPor favor, ingrese un numero entre 1 y 7"
       );
     }
 
   };
 
+  //funcion para volver al home
   function goHome() {
     navigate("/home")
   }
 
+  //variable para ver si se muestra el boton de Guardar o no
   let save;
   if (appearSaveButton) {
     save =
@@ -114,6 +149,8 @@ function Itinerary() {
       </div>
   }
 
+  //variabe para manejar si se permite crear el itinerario, ya que debe tener favoritos agregados para
+  //poder generarlo, de lo contrario no tendra nada para ser agregado.
   let view;
   if (arrayFavorites.length > 0) {
     view =
@@ -122,7 +159,7 @@ function Itinerary() {
           <br />
           <h2 className="PreviousText">¡Crea tu itinerario ahora con Turi!</h2>
           <h3 className="PreviousText">Ingrese la cantidad de días para generar:</h3>
-
+      {/*cuadro  para ingresar la cantidad de dia */}
           <FormGroup id="DaysPicker">
             <FormLabel id="NumberOfDays">Días:</FormLabel>
             <FormControl
@@ -133,11 +170,13 @@ function Itinerary() {
               value={numberOfDays}
               onChange={(e) => setNumberOfDays(e.target.value)}
             />
+            {/*Boton para Generar el itinerario */}
             <Button onClick={handleGenerateClick} id="Button">Generar</Button>
           </FormGroup>
 
           <Container className='DayContainer'>
-            {/* Mapea y renderiza los componentes "Day" del array de dias */}
+            {/* Mapea y renderiza los componentes "Day" del array de dias para ir creando los dias con el 
+            componente Day */}
             {arrayDays.map((day, index) => (
               <div key={index}>
 
@@ -150,6 +189,7 @@ function Itinerary() {
         </Container>
       </>
   } else {
+    //variable con mensaje si no tiene favoritos
     view =
       <>
         <Container style={{ marginBottom: "4rem" }}>
