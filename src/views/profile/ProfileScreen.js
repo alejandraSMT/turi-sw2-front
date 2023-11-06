@@ -9,7 +9,7 @@ import Header from '../header/Header';
 // clase Profile vista
 function ProfileScreen() {
 
-    const userId = window.sessionStorage.getItem("usuarioId");
+    const userToken = window.sessionStorage.getItem("userToken");
 
     const [activeUser, setActiveUser] = useState([]);
     const [tipoDoc, setTipoDoc] = useState("");
@@ -35,7 +35,7 @@ function ProfileScreen() {
 
     // función fetch para obtener los datos del usuario
     async function getProfileInfo() {
-        await fetch(`http://localhost:3000/usuarios/getDatosUsuario?id=${userId}`)
+        await fetch(`http://localhost:3000/api/v1/UsuarioRouters/getDatosUsuario?token=${userToken}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data); // Verificar los datos obtenidos desde el servidor
@@ -46,11 +46,11 @@ function ProfileScreen() {
 
     // función fetch para obtener el tipo de documento que tiene el usuario
     async function getTipoDoc() {
-        await fetch(`http://localhost:3000/usuarios/getTipoDoc?id=${userId}`)
-            .then(response => response.text())
+        await fetch(`http://localhost:3000/api/v1/UsuarioRouters/getTipoDoc?token=${userToken}`)
+            .then(response => response.json())
             .then(data => {
                 console.log(data); // Verificar los datos obtenidos desde el servidor
-                setTipoDoc(data);
+                setTipoDoc(data.tipoDocumento);
             })
             .catch(error => console.log('Ocurrió un error:', error));
     }
@@ -71,7 +71,7 @@ function ProfileScreen() {
     // función fetch de tipo POST para actualizar los datos del usuario en caso desee hacerlo
     async function handleSubmit(data) {
         try {
-            const response = await fetch(`http://localhost:3000/usuarios/actualizarDatosUsuario`, {
+            const response = await fetch(`http://localhost:3000/api/v1/UsuarioRouters/actualizarDatosUsuario`, {
                 method: "POST", // or 'PUT'
                 headers: {
                     "Content-Type": "application/json",

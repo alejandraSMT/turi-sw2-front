@@ -16,7 +16,8 @@ function LoginScreen() {
     const navigate = useNavigate();
 
     // variables de estado
-    const [usuarioId, setUsuarioId] = useState('');
+    const [userToken, setUserToken] = useState('');
+    const [userId, setUserId] = useState('');
     const [input, setInput] = useState('');
     const [password, setPassword] = useState('');
 
@@ -37,7 +38,7 @@ function LoginScreen() {
     const obtenerUsuarioLogin = (data) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/usuarios/login?usuario=${data.input}&contraseña=${data.password}`, {
+                const response = await fetch(`http://localhost:3000/api/v1/UsuarioRouters/login?usuario=${data.input}&contraseña=${data.password}`, {
                     method: 'get',
                     headers: {
                         'Content-Type': 'application/json',
@@ -68,7 +69,8 @@ function LoginScreen() {
             }
 
             const usuarioData = await response.json()
-            setUsuarioId(usuarioData)
+            setUserToken(usuarioData.token)
+            setUserId(usuarioData.id)
 
             window.location = "/home"
 
@@ -78,7 +80,8 @@ function LoginScreen() {
     };
 
     // se crea una variable global al momento que inicia sesión
-    window.sessionStorage.setItem('usuarioId', usuarioId);
+    window.sessionStorage.setItem('userToken', userToken);
+    window.sessionStorage.setItem('userId', userId);
 
     return (
 

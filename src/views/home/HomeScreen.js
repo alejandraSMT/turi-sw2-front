@@ -7,7 +7,10 @@ import { useEffect, useState } from "react";
 
 function HomeScreen() {
 
-    const usuarioId = window.sessionStorage.getItem("usuarioId");
+    const userToken = window.sessionStorage.getItem("userToken");
+    const userId = window.sessionStorage.getItem("userId");
+    console.log("USER TOKEN: ",userToken)
+    console.log("USER ID: ",userId)
 
     // variables de estado tipo array que almacenan los restaurantes, lugares turísticos y actividades
     const [restaurants, setRestaurants] = useState([]);
@@ -24,7 +27,7 @@ function HomeScreen() {
     async function getRestaurantes() {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/lugares/top5restaurantes?id=${usuarioId}`, {
+                const response = await fetch(`http://localhost:3000/api/v1/LugarRouter/top5restaurantes`, {
                     method: "GET"
                 })
                 const data = await response.json()
@@ -43,7 +46,7 @@ function HomeScreen() {
     async function getTuristic() {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/lugares/top5LugarTuristico?id=${usuarioId}`, {
+                const response = await fetch(`http://localhost:3000/api/v1/LugarRouter/top5LugarTuristico`, {
                     method: "GET"
                 })
                 const data = await response.json()
@@ -62,7 +65,7 @@ function HomeScreen() {
     async function getActivities() {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(`http://localhost:3000/lugares/top5Actividad?id=${usuarioId}`, {
+                const response = await fetch(`http://localhost:3000/api/v1/LugarRouter/top5Actividad`, {
                     method: "GET"
                 })
                 const data = await response.json()

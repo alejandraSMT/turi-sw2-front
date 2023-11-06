@@ -4,7 +4,7 @@ import "../styles/ProfileStyles.css"
 // tab 2 -----> Cambio de contraseña
 function TabPassword() {
 
-    const usuarioId = window.sessionStorage.getItem("usuarioId")
+    const userToken = window.sessionStorage.getItem("userToken")
 
     // variables de estado, la nueva contraseña
     const [newPassword, setNewPassword] = useState("")
@@ -47,7 +47,7 @@ function TabPassword() {
     // función fetch tipo POST para enviar el JSON para el endpoint de cambio de contraseña
     async function handleSubmit(data) {
         try {
-            const response = await fetch(`http://localhost:3000/usuarios/setContrasena`, {
+            const response = await fetch(`http://localhost:3000/api/v1/UsuarioRouters/setContrasena`, {
                 method: "POST", // or 'PUT'
                 headers: {
                     "Content-Type": "application/json",
@@ -84,7 +84,7 @@ function TabPassword() {
                         setError('')
 
                         const data = {
-                            id: usuarioId,
+                            token: userToken,
                             contrasena: newPassword
                         }
                         handleSubmit(data)

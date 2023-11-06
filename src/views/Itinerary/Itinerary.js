@@ -12,7 +12,8 @@ function Itinerary() {
   const [idViaje, setIdViaje] = useState('');
   
   //se obtiene el idUsuario 
-  const idUsuario = window.sessionStorage.getItem("usuarioId");
+  const userToken = window.sessionStorage.getItem("userToken");
+  const userId = window.sessionStorage.getItem("userId");
 
   //se definen la variable para el numero de dias y su setter para cuando se cambie el valor
   const [numberOfDays, setNumberOfDays] = useState(''); 
@@ -42,7 +43,7 @@ function Itinerary() {
   async function getAllFavorites() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`http://localhost:3000/favoritos/TraerTodosFav?id=${idUsuario}`, {
+        const response = await fetch(`http://localhost:3000/api/v1/FavoritoRouter/TraerTodosFav?token=${userToken}`, {
           method: "GET"
         })
         const data = await response.json()
@@ -89,8 +90,8 @@ function Itinerary() {
 
     //se crea el objeto JSON que sera enviado al endpoint
     const viajeData = {
+      token: userToken,
       cantDias: cantDays,
-      idUsuario: idUsuario, 
     };
 
     // Verifica si la entrada es un número válido y mayor que cero
@@ -103,7 +104,7 @@ function Itinerary() {
       setArrayDays(arrayDays);
 
       // Realizar una solicitud POST al servidor
-      fetch('http://localhost:3000/viaje/registrar', {
+      fetch('http://localhost:3000/api/v1/ViajeRouter/registro', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ function Itinerary() {
         .then((response) => response.json())
         .then((data) => {
           //se setea el IdViaje con el que se genero al hacer la solicitud POST
-          setIdViaje(data.nuevoIdViaje);
+          setIdViaje(data.idViaje);
           console.log('Nuevo ID del viaje:', idViaje);
           console.log(data);
           // Aquí puedes manejar la respuesta del servidor, como redirigir a una página de éxito o mostrar un mensaje.
@@ -134,6 +135,8 @@ function Itinerary() {
     }
 
   };
+
+  console.log("ID VIAJE: ",idViaje)
 
   //funcion para volver al home
   function goHome() {

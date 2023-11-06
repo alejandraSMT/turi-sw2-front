@@ -28,9 +28,9 @@ import { useParams } from "react-router-dom"
 function CardElement() {
 
   //se obtiene el id del usuario de la sesion actual
-  const idUsuario = window.sessionStorage.getItem("usuarioId");
+  const userToken = window.sessionStorage.getItem("userToken");
   //muestra el id en la consola para comprobar
-  console.log("USUARIO ID: " + idUsuario)
+  console.log("USUARIO TOKEN: " + userToken)
 
    //captura el id del lugar como parametro
   const { idLugar } = useParams();
@@ -67,7 +67,7 @@ function CardElement() {
     return new Promise(async (resolve, reject) => {
       try {
         //llamada al endpoint "getLugarById"
-        const response = await fetch(`http://localhost:3000/lugar/getLugarById?id=${idLugar}`, {
+        const response = await fetch(`http://localhost:3000/api/v1/LugarRouter/getLugarById?id=${idLugar}`, {
           method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
@@ -90,7 +90,7 @@ function CardElement() {
     return new Promise(async (resolve, reject) => {
       try {
         //llamada al endpoint "verificarFavorito"
-        const response = await fetch(`http://localhost:3000/verificarFavorito?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
+        const response = await fetch(`http://localhost:3000/api/v1/FavoritoRouter/verificarFavorito?token=${userToken}&idLugar=${idLugar}`, {
           method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
@@ -114,7 +114,7 @@ function CardElement() {
       try {
         //llamada al endpoint "lugares/categorias"
 
-        const response = await fetch(`http://localhost:3000/lugares/categorias?idLugar=${idLugar}`, {
+        const response = await fetch(`http://localhost:3000/api/v1/CategoriaLugarRouters/categorias?idLugar=${idLugar}`, {
           method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
@@ -136,7 +136,7 @@ function CardElement() {
     //de amarillo al darle click representando que se marco el lugar como favorito para el usuario
     if (isFavorite === 0) {
       // Agregar el lugar a favoritos llamando al endpoint "favorito/agregarFavorito"
-      fetch(`http://localhost:3000/favorito/agregarFavorito`, {
+      fetch(`http://localhost:3000/api/v1/FavoritoRouter/agregarFavorito`, {
         method: 'POST', //metodo post porque se va a insertar data nueva
         headers: {
           'Content-Type': 'application/json',
@@ -144,8 +144,8 @@ function CardElement() {
         //se crea el objeto JSON con el idLugar del lugar que sera agregado como favorito para un usuario enviando
         //su id (idUsuario)
         body: JSON.stringify({
-          idUsuario,
-          idLugar,
+          "token": userToken,
+          "idLugar": idLugar,
         }),
       })
         .then((response) => response.json())
@@ -168,7 +168,7 @@ function CardElement() {
       //vacio al darle click representando que se elimino el lugar como favorito para el usuario
       // Se llama al endpoint "favoritos/eliminar" enviando como parametros el idUsuario y el idLugar
 
-      fetch(`http://localhost:3000/favoritos/eliminar?idUsuario=${idUsuario}&idLugar=${idLugar}`, {
+      fetch(`http://localhost:3000/api/v1/FavoritoRouter/eliminar?token=${userToken}&idLugar=${idLugar}`, {
         method: 'DELETE', //metodo DELETE porque se va a eliminar data 
       })
         .then((response) => response.json())

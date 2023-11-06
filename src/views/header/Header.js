@@ -20,15 +20,15 @@ function Header() {
 
     // variable de estado de la foto del usuario
     const [photo, setPhoto] = useState("");
-    const userId = window.sessionStorage.getItem("usuarioId");
+    const userToken = window.sessionStorage.getItem("userToken");
 
     // función fecth para traer la foto del usuario
     async function getProfilePhoto() {
-        await fetch(`http://localhost:3000/usuarios/getFoto?id=${userId}`)
-            .then(response => response.text())
+        await fetch(`http://localhost:3000/api/v1/UsuarioRouters/getFoto?token=${userToken}`)
+            .then(response => response.json())
             .then(data => {
-                console.log("Profile pic: "+data); // Verificar los datos obtenidos desde el servidor
-                setPhoto(data);
+                console.log("Profile pic: "+data.foto); // Verificar los datos obtenidos desde el servidor
+                setPhoto(data.foto);
             })
             .catch(error => console.log('Ocurrió un error:', error));
     }
@@ -61,7 +61,8 @@ function Header() {
     function handleLogoutClick() {
         navigate("/")
         // elimina el id del usuario en sesión
-        window.sessionStorage.removeItem("usuarioId")
+        window.sessionStorage.removeItem("userToken")
+        window.sessionStorage.removeItem("userId")
     }
 
     const [buttonSelection, setButtonSelection] = useState(-1)

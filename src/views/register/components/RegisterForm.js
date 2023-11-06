@@ -125,9 +125,26 @@ function RegisterForm() {
   //variable donde se guardara el body JSON
   const [user, setUser] = useState('');
 
+  const registerUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch('http://localhost:3000/api/v1/UsuarioRouters/registro', {
+          method: 'post',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        resolve(response)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
   //funcion para al dar click al boton se complete el registro y se inserte en la base de datos la informacion
   //del nuevo usuario creado usando la conexion con el endpoint "usuarios/registro"
-  const handleSubmitData = () => {
+  const handleSubmitData = async () => {
     //la variable data es el body JSON que se enviara al endpoint y se definen las variables declaradas arriba
     //con los atributos de la clase Usuario
     const data = {
@@ -142,29 +159,23 @@ function RegisterForm() {
       "numDoc": document
 
     };
-    //conexion con endpoint "usuarios/registro" para el registro de usuarios
-    fetch('http://localhost:3000/usuarios/registro', {
-      method: 'post', //metodo post porque se va a insertar data nueva
-      //se conviere a objeto JSON lo declaro en data
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
+    try {
 
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //si se hay buena conexion y se logra crear el nuevo usuario
-        setUser(data)
-        window.alert("Usuario creado");
-        navigate("/")
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        //mensaje de error al no darse bien la conexion
-        setErrorMessage("Ocurrió un error al registrar el usuario.");
-        window.alert("Error:", error);
-      });
+      const response = await registerUser(data)
+
+      if (response.status !== 200) {
+        alert("Ocurrió un error al registrar el usuario")
+        return
+      }
+
+      setUser(data)
+      window.alert("Usuario creado");
+      navigate("/")
+
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   // función para verificar si la contraseña contiene una mayúscula
@@ -191,7 +202,7 @@ function RegisterForm() {
         alert("Error: Las contraseñas no son iguales.")
         setShowWarning(false)
       }
-    }else{
+    } else {
       alert("Debe ingresar un nombre de usuario")
     }
   }

@@ -79,13 +79,13 @@ function Day(props) {
         "idViaje": idViaje,
         "idLugar": idSelectedFavorite,
         "idTiempoDia": selectedTimeID,
-        "numDia": dayNumber,
+        "numDia": dayNumber
 
       };
 
       try {
     // se llama al endpoint viajeLugar/registro para enviar el objeto JSON por el metodo POST
-        const response = await fetch('http://localhost:3000/viajeLugar/registro', {
+        const response = await fetch('http://localhost:3000/api/v1/ViajeLugarRouter/registro', {
           method: 'post',
           body: JSON.stringify(data),
           headers: {

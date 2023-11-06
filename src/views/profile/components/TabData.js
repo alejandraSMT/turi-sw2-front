@@ -4,7 +4,7 @@ import "../styles/ProfileStyles.css"
 // tab 1 -----> Datos personales
 function TabData({ activeUser, tipoDoc, onSubmit }) {
 
-    const usuarioId = window.sessionStorage.getItem("usuarioId")
+    const userToken = window.sessionStorage.getItem("userToken")
 
     // variables de estado de los datos del usuario en sesión
     const [name, setName] = useState(activeUser.nombre);
@@ -86,7 +86,7 @@ function TabData({ activeUser, tipoDoc, onSubmit }) {
     // función para armar el JSON que se enviará a la función en ProfileScreen que actualiza los datos del usuario
     function handleSubmit() {
         const submitValue = {
-            id: usuarioId,
+            token: userToken,
             nombre: name,
             usuario: username,
             apellido: lastName,
