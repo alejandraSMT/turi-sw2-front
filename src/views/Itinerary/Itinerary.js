@@ -12,7 +12,7 @@ function Itinerary() {
   const [idViaje, setIdViaje] = useState('');
   
   //se obtiene el idUsuario 
-  const userToken = window.sessionStorage.getItem("userToken");
+  const userToken = window.sessionStorage.getItem('userToken');
   const userId = window.sessionStorage.getItem("userId");
 
   //se definen la variable para el numero de dias y su setter para cuando se cambie el valor

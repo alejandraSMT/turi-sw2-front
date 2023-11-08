@@ -17,7 +17,6 @@ function LoginScreen() {
 
     // variables de estado
     const [userToken, setUserToken] = useState('');
-    const [userId, setUserId] = useState('');
     const [input, setInput] = useState('');
     const [password, setPassword] = useState('');
 
@@ -69,8 +68,7 @@ function LoginScreen() {
             }
 
             const usuarioData = await response.json()
-            setUserToken(usuarioData.token)
-            setUserId(usuarioData.id)
+            setUserToken(usuarioData.tokenJWT)
 
             window.location = "/home"
 
@@ -81,7 +79,6 @@ function LoginScreen() {
 
     // se crea una variable global al momento que inicia sesión
     window.sessionStorage.setItem('userToken', userToken);
-    window.sessionStorage.setItem('userId', userId);
 
     return (
 
