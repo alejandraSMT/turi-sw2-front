@@ -1,9 +1,9 @@
 //se llama a la libreria bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import '../styles/Review.css';
 //se llama al CSS que le da diseño a esta pantalla
 import '../styles/DetailElement.css'
-
+import Review from './Review.js'
 //importa elementos de react-bootstrap
 import { Container, Col, Row } from 'react-bootstrap';
 
@@ -27,6 +27,12 @@ import { useParams } from "react-router-dom"
 
 function CardElement() {
 
+  const reviews = [
+    { nombreUsuario: 'Frank Vicente',  comentario: 'Muy ricooooooooooo', id:1},
+    { nombreUsuario: 'Jaz Nena rik',  comentario: 'Me encantaaaaaaaaaaaaaaaaaa',  id:2},
+      { nombreUsuario: 'Alejandra y Franco Turist Couple',  comentario: 'amo aquiiiiiiiiiii',  id:3},
+    
+  ];
   //se obtiene el id del usuario de la sesion actual
   const userToken = window.sessionStorage.getItem("userToken");
   //muestra el id en la consola para comprobar
@@ -268,7 +274,7 @@ function CardElement() {
   }
 
   return (
-
+    <Container>
     <Container className="ContainerCardElement">
 
       <Container className="MainInfoElement">
@@ -314,6 +320,8 @@ function CardElement() {
           </div>
 
         </Container>
+        
+        
 
       </Container>
 
@@ -349,8 +357,30 @@ function CardElement() {
         </Container>
 
       </Container>
+           
+     
 
 
+    </Container>
+
+    <Container className="Reviews" class="container">
+          <h3>Reviews:</h3>
+      <div>
+        {reviews.map((review) => (
+          <div key={review.id}>
+            <Review
+              nombreUsuario={review.nombreUsuario}
+             
+              comentario={review.comentario}
+            />
+            <br/>
+            <br/>
+          </div>
+        ))}
+      </div>
+        
+        
+      </Container>
     </Container>
 
   );
