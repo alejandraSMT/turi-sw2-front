@@ -1,5 +1,29 @@
 .PreviousText{
-    text-align: center;
+    text-align: start;
+}
+
+.itineraryButton{
+    border-radius: 20px;
+    border: 1px solid #588a4d;
+    width: 50%;
+    padding: 15px 0 15px 0;
+    justify-content: center;
+    background-color: white;
+    color: black;
+}
+
+.itineraryButton:hover{
+    background-color: #588a4d;
+    color: white;
+}
+
+
+#cancelButton{
+    border-radius: 20px;
+    background-color:  white;
+    border: 1px solid rgb(12, 150, 21);
+    display: flex;
+    color: black;
 }
 
 #DaysPicker{
@@ -11,13 +35,6 @@
 #NumberOfDays{
     font-weight: bold;
     font-size: 20px;
-}
-
-#DaysBox{
-    width: 80px;
-    height: 40px;
-    margin: 10px;
-    border-radius: 15px;
 }
 
 #Button{
