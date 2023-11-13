@@ -3,9 +3,12 @@ import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../header/Header';
+import DayCard from './components/DayCard';
 import ModalFavoriteCard from './components/ModalFavoriteCard';
 import "./style/ModifyItinerary.css"
 import { Button, Modal } from 'react-bootstrap';
+
+let imgLima = require("./images/lima.jpg")
 
 function ModifyItinerary() {
 
@@ -15,22 +18,24 @@ function ModifyItinerary() {
     const [arrayFavorites, setArrayFavorites] = useState([]);
     const [stillLoading, setStillLoading] = useState(false);
 
-    const [selectedFavorites, setSelectedFavorites] = useState([]);
-    const [clicks,setClicks] = useState(0)
-    const [reload, setReload] = useState(true)
+    const [itineraryInfo, setItineraryInfo] = useState([])
 
-    const days = ["Dia 1", "Dia 2"]
+    const [selectedFavorites, setSelectedFavorites] = useState([]);
+    const [clicks, setClicks] = useState(0)
+    const [reload, setReload] = useState(true)
+    const [days, setDays] = useState([])
+    const [cantDias, setCantDias] = useState("")
+    const [itineraryName, setItineraryName] = useState("")
+    const [itineraryList, setItineryList] = useState([])
+
+    const [daySelected, setDaySelected] = useState("")
+    const [placeSelected, setPlaceSelected] = useState("")
 
     const navigate = useNavigate()
 
-    /*const arrayDays = Array.from({ length: cantDays }, (_, index) => index + 1);
-
-    // Actualiza el estado con los días generados
-    setArrayDays(arrayDays);*/
-
     useEffect(() => {
         setStillLoading(true)
-        getAllInfoPlace()
+        getAllData()
     }, []);
 
 
@@ -44,8 +49,7 @@ function ModifyItinerary() {
                 })
                 const data = await response.json()
                 resolve(data)
-                console.log(data)
-                console.log(data)
+                console.log("getAllFavorites data recieved: ",data)
             } catch (error) {
                 reject(error)
             }
@@ -53,23 +57,120 @@ function ModifyItinerary() {
     }
 
 
+
+    async function getItinerary() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/v1/ViajeLugarRouter/traerItinerarioPorId?token=${userToken}&idViaje=${idViaje}`, {
+                    method: "GET"
+                })
+                const data = await response.json()
+                resolve(data)
+                console.log(data)
+                var allDays = [];
+                for (var i = 1; i <= itineraryInfo.data.cantDias; i++) {
+                    allDays.push(i);
+                }
+                setCantDias(data.data.cantDias)
+                setItineraryName(data.data.nombreViaje)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
+    async function settingInfo(allInfo) {
+        try {
+            var allDays = [];
+            for (var i = 1; i <= allInfo.data.cantDias; i++) {
+                allDays.push(i);
+            }
+            setDays(allDays)
+            console.log("Array generado: ", allDays)
+
+
+            setCantDias(allInfo.data.cantDias)
+            setItineraryName(allInfo.data.nombreViaje)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
     //getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
     //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
-    async function getAllInfoPlace() {
+    async function getAllData() {
         try {
             setStillLoading(true)
-            //llama primero a la funcion "getAllFavorites" para traer todos los favoritos
+
             var AllFavorites = await getAllFavorites()
             console.log("Favorites list: ", AllFavorites)
             //se setea el array de favoritos con la lista de favoritos para ser mostrada luego en pantalla
             setArrayFavorites(AllFavorites)
+
+            var allInfo = await getItinerary()
+            console.log("Itinerary data: ", allInfo)
+            setItineraryInfo(allInfo)
+
+            await settingInfo(allInfo)
+
+            console.log("DIAS EN DATA: ",allInfo.data.dias[0].lugares.length)
+
             setStillLoading(false)
         } catch (error) {
             console.log(error)
         }
     }
 
-    console.log("FAVORITOS LISTA: " + arrayFavorites)
+    const registrarLugar = (data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/v1/ViajeLugarRouter/registro`, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                resolve(response)
+                console.log(data)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
+    const handleClickSave = async () => {
+        const data = {
+            "data": {
+                "idViaje": idViaje,
+                "numDia": daySelected,
+                "idLugar": placeSelected
+            }
+        }
+        try {
+
+            console.log("DATA ENVIADA: ", data)
+
+            var response = await registrarLugar(data)
+            if (response.status !== 200) {
+                alert("Ha ocurrido un error al registrar el lugar")
+                return
+            }
+            window.location.reload();
+
+            setSelectedFavorites([])
+            setClicks(0)
+            setReload(true)
+            setDaySelected('')
+            setPlaceSelected('')
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     function goHome() {
         navigate("/home")
@@ -98,6 +199,36 @@ function ModifyItinerary() {
     if (!stillLoading) {
         view =
             <>
+                <div class="container mt-5 ps-5" style={{ border: "1px solid lightgray", borderRadius: "20px" }}>
+                    <div class="row d-flex" style={{ alignItems: "center" }}>
+                        <div class="col-lg-4">
+                            <h2> {itineraryName} </h2>
+                            <div class="d-flex" style={{ alignItems: "center", alignContent: "center" }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar" viewBox='0 0 16 16'>
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                                </svg>
+                                <h5 style={{ margin: "1rem", textAlign: "center" }}> {cantDias} dias</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 d-flex p-0">
+                            <img class="w-100" src={imgLima} style={{ width: "80rem", maxHeight: "15rem", objectFit: "cover", borderRadius: "0rem 20px 20px 0rem" }} />
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    {noFavorites}
+                </div>
+                <div class="container mt-3 mb-5">
+                    {days.map((day, index) => (
+                        < DayCard
+                            day={day}
+                            setDaySelected={setDaySelected}
+                            index = {index}
+                            itineraryInfo={itineraryInfo}
+                        />
+                    ))}
+                </div>
+
                 <div class="modal fade" id="addToDay" tabindex="-1" aria-labelledby="addToDayLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -114,10 +245,11 @@ function ModifyItinerary() {
                                                     favorite={favorite}
                                                     selectedFavorites={selectedFavorites}
                                                     setSelectedFavorites={setSelectedFavorites}
-                                                    clicks = {clicks}
-                                                    setClicks = {setClicks}
-                                                    reload = {reload}
-                                                    setReload = {setReload}
+                                                    clicks={clicks}
+                                                    setClicks={setClicks}
+                                                    reload={reload}
+                                                    setReload={setReload}
+                                                    setPlaceSelected={setPlaceSelected}
                                                 />
                                             </div>
                                         </>
@@ -126,7 +258,7 @@ function ModifyItinerary() {
                             </div>
                             <div class="modal-footer">
                                 <Button id="cancelButton" onClick={resetValues} data-bs-dismiss="modal">Cancelar</Button>
-                                <Button id="Button" onClick={resetValues} data-bs-dismiss="modal">Agregar</Button>
+                                <Button id="Button" onClick={handleClickSave} data-bs-dismiss="modal">Agregar</Button>
                             </div>
                         </div>
                     </div>
@@ -137,35 +269,6 @@ function ModifyItinerary() {
     return (
         <>
             <Header />
-            <div class="container mt-5 p-5" style={{ borderColor: "red", border: "1px solid", borderRadius: "20px" }}>
-                <div class="column">
-                    <h2>Nombre del Itinerario</h2>
-                    <div class="d-flex" style={{ alignItems: "center" }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar" viewBox='0 0 16 16'>
-                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                        </svg>
-                        <h5 style={{ padding: "1rem", textAlign: "center" }}> dias</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                {noFavorites}
-            </div>
-            <div class="container mt-3">
-                {days.map((day, index) => (
-                    <div key={index}>
-                        <div class="d-flex" style={{ alignContent: "center", alignItems: "center" }}>
-                            <h2 style={{ padding: "1rem", marginBlock: "1rem", textAlign: "center" }}> {day} </h2>
-                            <svg data-bs-toggle="modal" data-bs-target="#addToDay" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                            </svg>
-                        </div>
-                        {/*<Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />*/}
-                    </div>
-                ))}
-            </div>
-
             {view}
 
         </>

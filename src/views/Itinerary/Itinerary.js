@@ -49,7 +49,8 @@ function Itinerary() {
     //se crea el objeto JSON que sera enviado al endpoint
     const viajeData = {
       token: userToken,
-      cantDias: cantDays,
+      nombre: itineraryName,
+      cantDias: cantDays
     };
 
     // Verifica si la entrada es un número válido y mayor que cero
