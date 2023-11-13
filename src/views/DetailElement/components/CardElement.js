@@ -4,6 +4,7 @@ import '../styles/Review.css';
 //se llama al CSS que le da diseño a esta pantalla
 import '../styles/DetailElement.css'
 import Review from './Review.js'
+import { Form, Modal,FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 //importa elementos de react-bootstrap
 import { Container, Col, Row } from 'react-bootstrap';
 
@@ -27,14 +28,23 @@ import { useParams } from "react-router-dom"
 
 function CardElement() {
 
+  /*
   const reviews = [
     { nombreUsuario: 'Frank Vicente',  comentario: 'Muy ricooooooooooo', id:1},
     { nombreUsuario: 'Jaz Nena rik',  comentario: 'Me encantaaaaaaaaaaaaaaaaaa',  id:2},
       { nombreUsuario: 'Alejandra y Franco Turist Couple',  comentario: 'amo aquiiiiiiiiiii',  id:3},
     
   ];
-  //se obtiene el id del usuario de la sesion actual
-  const userToken = window.sessionStorage.getItem("userToken");
+*/
+const userToken = window.sessionStorage.getItem("userToken");
+  const [showModal, setShowModal] = useState(false);
+  const [comentario, setComentario] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [puntaje, setPuntaje] = useState('');
+  const [arrayReviews, setArrayReviews] = useState([]);
+
+//se obtiene el id del usuario de la sesion actual
+ 
   //muestra el id en la consola para comprobar
   console.log("USUARIO TOKEN: " + userToken)
 
@@ -59,6 +69,46 @@ function CardElement() {
   
   //se llama a la funcion getAllInfoPlace donde estan en orden las llamadas a los endpoints que se ejecutan
   // en simultaneo al cargar la pagina
+
+  const handleGuardarReview = () => {
+    // Aquí puedes realizar la lógica para enviar los datos al endpoint
+    // Puedes utilizar fetch o axios para hacer la solicitud POST
+    // Asegúrate de incluir el código necesario para enviar los datos
+    // Después de enviar, cierra el modal y realiza cualquier acción adicional si es necesario
+
+    // Ejemplo con fetch:
+    fetch('http://localhost:3000/api/v1/ResenaRouter/crearResena', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idUsuario: 3,
+        idLugar: idLugar,
+        comentario: comentario,
+        fechaCreacion: fecha,
+        puntaje: puntaje,
+        // Otros datos que necesites enviar
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Realiza acciones adicionales si es necesario
+        console.log('Datos guardados:', data);
+
+        // Cierra el modal después de guardar los datos
+        setShowModal(false);
+
+        // Puedes recargar la página o hacer otras actualizaciones según tus necesidades
+        // window.location.reload();
+      })
+      .catch((error) => {
+        console.error('Error al guardar los datos:', error);
+      });
+      window.location.reload();
+  };
+
+  
   useEffect(() => {
 
     getAllInfoPlace()
@@ -196,6 +246,27 @@ function CardElement() {
     }
   };
 
+  async function GetReviews() {
+    //se retorna un Promise para que se traiga la informacion sin esperar que otra parte del codigo funcione
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        //llamada al endpoint "verificarFavorito"
+        const response = await fetch(`http://localhost:3000/api/v1/ResenaRouter/obtenerResenasPorLugar?idLugar=${idLugar}`, {
+          method: "GET" //se usa GET porque se va a traer informacion
+        })
+        const data = await response.json()
+        if (Array.isArray(data)) {
+          resolve(data);
+        } else {
+          reject(new Error("La respuesta de la API no es un array"));
+        }
+      } catch (error) {
+        reject(error);
+      }
+    })
+  }
+  
   //getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
   //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
   async function getAllInfoPlace() {
@@ -207,7 +278,8 @@ function CardElement() {
       var InfoFavorite = await VerifyFavorite()
      //llama tercero a la funcion "GetCategories" para traer las categorias de un lugar
       var Categories = await GetCategories()
-
+      
+      var Reviews = await GetReviews()
       //var photo = await verificarImagen()
       //se setea la inforamcion del lugar en la variable LugarData para ser mostrada luego en pantalla
       setLugarData(InfoLugar)
@@ -219,7 +291,7 @@ function CardElement() {
       //se setean las categorias en la variable Categories
       setCategories(Categories)
       //console.log("isFavorite:" + isFavorite)
-      
+      setArrayReviews(Reviews)
       //si el resultado de InfoFavorite es 0 se mostrara la estrella vacia (no es favorito)
       if (InfoFavorite.resultado === 0) {
         setStarFavorite('https://cdn-icons-png.flaticon.com/512/13/13595.png');
@@ -242,6 +314,37 @@ function CardElement() {
 
   }
 
+  const AgregarReseña = () => {
+    
+      fetch(`http://localhost:3000/api/v1/FavoritoRouter/crearResena`, {
+        method: 'POST', //metodo post porque se va a insertar data nueva
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        //se crea el objeto JSON con el idLugar del lugar que sera agregado como favorito para un usuario enviando
+        //su id (idUsuario)
+        body: JSON.stringify({
+          "token": userToken,
+          "idLugar": idLugar,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          //si se hace bien la conexion se mostrara en pantalla un mensaje de que se agrego como favorito
+          if (data.status === 'success') {
+
+            console.log("Favorito agregado")
+          }
+        })
+        .catch((error) => {
+        //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
+
+          console.error('Error al agregar favorito:', error);
+        });
+      window.location.reload();
+
+    }
+  
   console.log("LUGAR INFO: " + lugarData.foto)
   console.log("isFavorite:" + isFavorite)
 
@@ -364,14 +467,75 @@ function CardElement() {
     </Container>
 
     <Container className="Reviews" class="container">
-          <h3>Reviews:</h3>
+          <div className="HeaderReview">
+          <h3 className="AgregarButton" onClick={AgregarReseña}>Reviews:</h3>
+          <Button onClick={() => setShowModal(true)}>Agregar Review</Button>
+
+      {/* Modal para agregar review */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Agregar Review</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {/* Formulario dentro del modal */}
+          <Form>
+            <Form.Group controlId="formComentario">
+              <Form.Label>Comentario</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa tu comentario"
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formFecha">
+              <Form.Label>Fecha</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Ingresa la fecha"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPuntaje">
+              <Form.Label>Puntaje</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa el puntaje"
+                value={puntaje}
+                onChange={(e) => setPuntaje(e.target.value)}
+              />
+            </Form.Group>
+
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cerrar
+          </Button>
+          {/* Botón para guardar los datos */}
+          <Button variant="primary" onClick={handleGuardarReview}>
+            Guardar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+          </div>
+          <br/>
+
       <div>
-        {reviews.map((review) => (
+        {arrayReviews.map((review) => (
           <div key={review.id}>
             <Review
-              nombreUsuario={review.nombreUsuario}
-             
+              nombreUsuario={review.idUsuario}
+              idReseña = {review.id}
               comentario={review.comentario}
+
+              puntaje ={review.puntaje}
+
+              fechaCreacion = {review.fechaCreacion}
             />
             <br/>
             <br/>

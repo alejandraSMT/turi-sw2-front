@@ -3,14 +3,16 @@
     color:  #588a4d;
 }
 
-.ItineraryName{
+.UserName{
     margin-top: 40px;
     color: black;
     font-size: 40px;
 }
 
-
-.ItineraryItem {
+.HeaderReview{
+   align-items: center;
+}
+.ReviewItem {
     text-align: center;
     border: 4px solid green;
     padding: 10px;
@@ -23,6 +25,11 @@
     box-shadow: 5px 5px 10px 5px grey;
     border: none;
    
+  }
+
+  .ImagenEliminar{
+    width: 25px;
+    height: 25px;
   }
 
   
