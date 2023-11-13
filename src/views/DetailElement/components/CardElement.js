@@ -529,7 +529,7 @@ const userToken = window.sessionStorage.getItem("userToken");
         {arrayReviews.map((review) => (
           <div key={review.id}>
             <Review
-              nombreUsuario={review.idUsuario}
+              nombreUsuario={review.nombre}
               idReseña = {review.id}
               comentario={review.comentario}
 
