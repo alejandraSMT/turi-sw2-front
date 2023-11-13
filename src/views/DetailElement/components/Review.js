@@ -9,8 +9,8 @@ function Review(props) {
   console.log(props.id);
   
   const EliminarReview = () => {
-    
-      fetch(`http://localhost:3000/api/v1/ResenaRouter/eliminarPorLugar?idReseña=${props.idReseña}`, {
+      console.log(props.idReseña)
+      fetch(`http://localhost:3000/api/v1/ResenaRouter/eliminarPorLugar?idReseña=${props.id}`, {
         method: 'DELETE', //metodo DELETE porque se va a eliminar data 
       })
         .then((response) => response.json())

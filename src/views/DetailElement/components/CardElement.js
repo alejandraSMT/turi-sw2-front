@@ -83,7 +83,7 @@ const userToken = window.sessionStorage.getItem("userToken");
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        idUsuario: 3,
+        token: userToken,
         idLugar: idLugar,
         comentario: comentario,
         fechaCreacion: fecha,
@@ -530,7 +530,7 @@ const userToken = window.sessionStorage.getItem("userToken");
           <div key={review.id}>
             <Review
               nombreUsuario={review.nombre}
-              idReseña = {review.id}
+              id = {review.id}
               comentario={review.comentario}
 
               puntaje ={review.puntaje}
