@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import "../style/AddedPlaceCard.css"
 
-function AddedPlaceCard({ added, setSelected, selected}) {
+function AddedPlaceCard({ added}) {
     
     const navigate = useNavigate()
 
