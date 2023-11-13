@@ -10,8 +10,8 @@ function ItineraryItem(props) {
   
   const handleItineraryClick = () => {
 
-    console.log(props.id);
-    navigate("/detailElement/"+props.id)
+    
+    
   };
   return (
     <Container className='ItineraryItem' onClick={() => handleItineraryClick()}>
