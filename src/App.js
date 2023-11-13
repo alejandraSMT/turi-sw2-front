@@ -6,9 +6,9 @@ import LoginScreen from './views/login/LoginScreen';
 import RegisterScreen from './views/register/RegisterScreen';
 import Itinerary from './views/Itinerary/Itinerary';
 import DetailElement from './views/DetailElement/DetailElement';
-import FavoritesScreen from './views/FavoritesScreen/FavoritesScreen';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import FavoritesScreen from './views/FavoritesScreen/FavoritesScreen';
 
 export default function App() {
   return (
@@ -22,7 +22,7 @@ export default function App() {
           <Route path="/registro" element={<RegisterScreen />} />
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/detailElement/:idLugar" element={<DetailElement />} />
-          <Route path="/favorites" element={<FavoritesScreen/>}/>
+          <Route path="favorites" element={<FavoritesScreen/>}/>
         </Routes>
       </BrowserRouter>
     </div>

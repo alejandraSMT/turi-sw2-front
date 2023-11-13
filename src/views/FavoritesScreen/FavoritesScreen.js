@@ -1,4 +1,4 @@
-
+import Header from '../header/Header.js';
 import Favorite from './components/Favorite.js';
 import './styles/Favorites.css';
 import React, { useState, useEffect } from 'react';
@@ -27,15 +27,19 @@ function FavoritesScreen() {
   async function getAllFavorites() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v1/FavoritoRouter/TraerTodosFav??token=${userToken}`, {
+        console.log(userToken);
+        const response = await fetch(`http://localhost:3000/api/v1/FavoritoRouter/TraerTodosFav?token=${userToken}`, {
           method: "GET"
         })
         const data = await response.json()
-        resolve(data)
-        console.log(data)
-        console.log(data)
+        if (Array.isArray(data)) {
+          resolve(data);
+        } else {
+          reject(new Error("La respuesta de la API no es un array"));
+        }
       } catch (error) {
-        reject(error)
+        reject(error);
+      
       }
     })
   }
@@ -50,20 +54,23 @@ function FavoritesScreen() {
 
       var AllFavorites = await getAllFavorites()
       console.log(AllFavorites)
-
+      setArrayFavorites(AllFavorites)
+      console.log(arrayFavorites)
       //se setea el array de favoritos con la lista de favoritos para ser mostrada luego en pantalla
 
-      setArrayFavorites(AllFavorites)
+      
       
     } catch (error) {
       console.log(error)
     }
   }
-  
-
+  console.log(arrayFavorites)
 
   return (
     <div>
+      <div>
+          <Header />
+      </div>
       <h1 className='TittleScreen'>Mis Favoritos</h1>
       <br/>
       <div>
