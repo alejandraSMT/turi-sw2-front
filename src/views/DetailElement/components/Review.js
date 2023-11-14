@@ -38,7 +38,7 @@ function Review(props) {
      <Row>
         
         <Col>
-        <h4 className='UserName'>{props.nombreUsuario}</h4>
+        <h5 className='UserName'>{props.nombreUsuario}</h5>
         </Col>
 
         <Col>

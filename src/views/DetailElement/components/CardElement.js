@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Review.css';
 //se llama al CSS que le da diseño a esta pantalla
-import '../styles/DetailElement.css'
+import '../styles/DetailElement.css';
 import Review from './Review.js'
 import { Form, Modal,FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 //importa elementos de react-bootstrap
@@ -468,9 +468,9 @@ const userToken = window.sessionStorage.getItem("userToken");
 
     <Container className="Reviews" class="container">
           <div className="HeaderReview">
-          <h3 className="AgregarButton" onClick={AgregarReseña}>Reviews:</h3>
-          <Button onClick={() => setShowModal(true)}>Agregar Review</Button>
-
+          <h3 onClick={AgregarReseña}>Reviews:</h3>
+          <Button onClick={() => setShowModal(true)} id="ButtonCrear">Agregar Review</Button>
+         
       {/* Modal para agregar review */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
@@ -517,7 +517,7 @@ const userToken = window.sessionStorage.getItem("userToken");
             Cerrar
           </Button>
           {/* Botón para guardar los datos */}
-          <Button variant="primary" onClick={handleGuardarReview}>
+          <Button variant="primary" onClick={handleGuardarReview} id="ButtonGuardarReseña">
             Guardar
           </Button>
         </Modal.Footer>

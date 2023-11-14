@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import HomeScreen from './views/home/HomeScreen';
+import FavoritesScreen from './views/FavoritesScreen/FavoritesScreen';
+import MyItinerariesScreen from './views/MyItineraries/MyItinerariesScreen';
 import ProfileScreen from "./views/profile/ProfileScreen";
 import LoginScreen from './views/login/LoginScreen';
 import RegisterScreen from './views/register/RegisterScreen';
@@ -21,7 +23,8 @@ export default function App() {
           <Route path="/registro" element={<RegisterScreen />} />
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/detailElement/:idLugar" element={<DetailElement />} />
-
+          <Route path="/favorites" element={<FavoritesScreen/>}/>
+          <Route path="/MyItineraries" element ={<MyItinerariesScreen/>}/>
         </Routes>
       </BrowserRouter>
     </div>
