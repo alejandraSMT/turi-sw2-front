@@ -530,7 +530,7 @@ const userToken = window.sessionStorage.getItem("userToken");
           <div key={review.id}>
             <Review
               nombreUsuario={review.nombre}
-              id = {review.id}
+              id = {review.idReseña}
               comentario={review.comentario}
 
               puntaje ={review.puntaje}
