@@ -50,7 +50,7 @@ function Header() {
     }
 
     function handleFavoriteClick() {
-        alert("FAVORITOS")
+        navigate("/favorites")
     }
 
     function handleProfileClick() {
