@@ -10,73 +10,31 @@ import { useNavigate } from 'react-router-dom';
 function Itinerary() {
   //se definen la variable del id del viaje y su setter para cuando se cambie el valor
   const [idViaje, setIdViaje] = useState('');
-  
+
   //se obtiene el idUsuario 
   const userToken = window.sessionStorage.getItem('userToken');
   const userId = window.sessionStorage.getItem("userId");
 
   //se definen la variable para el numero de dias y su setter para cuando se cambie el valor
-  const [numberOfDays, setNumberOfDays] = useState(''); 
+  const [numberOfDays, setNumberOfDays] = useState('');
+  const [itineraryName, setItineraryName] = useState('');
 
   //se definen la variable para el array de la cantidad de dias y su setter para cuando se cambie el valor
   const [arrayDays, setArrayDays] = useState([]);
 
-  //se definen la variable para el array de favoritos y su setter para cuando se cambie el valor
-  const [arrayFavorites, setArrayFavorites] = useState([]);
 
   //variable para el boton guardar y que aparezca
-  const [appearSaveButton, setAppearSaveButton] = useState(false)
+  const [appearSaveButton, setAppearSaveButton] = useState(false);
+
+  const [trips, setTrips] = useState([]);
+
+  const [nextPage, setNextPage] = useState(false)
+
   const navigate = useNavigate()
-  
-  
+
+
   //se llama a la funcion getAllInfoPlace donde estan en orden las llamadas a los endpoints que se ejecutan
   // en simultaneo al cargar la pagina
-  useEffect(() => {
-
-    getAllInfoPlace()
-
-  }, []);
-
-
-//getAllFavorites: funcion donde se hace el llamado al endpoint "TraerTodosFav" enviando como parametro el idUsuario 
-//y poder buscar todos los favoritos que tenga agregados el usuario
-  async function getAllFavorites() {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/v1/FavoritoRouter/TraerTodosFav?token=${userToken}`, {
-          method: "GET"
-        })
-        const data = await response.json()
-        resolve(data)
-        console.log(data)
-        console.log(data)
-      } catch (error) {
-        reject(error)
-      }
-    })
-  }
-
-
-//getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
-  //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
-  async function getAllInfoPlace() {
-
-    try {
-      //llama primero a la funcion "getAllFavorites" para traer todos los favoritos
-
-      var AllFavorites = await getAllFavorites()
-      console.log(AllFavorites)
-
-      //se setea el array de favoritos con la lista de favoritos para ser mostrada luego en pantalla
-
-      setArrayFavorites(AllFavorites)
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  console.log("FAVORITOS LISTA: " + arrayFavorites)
 
   //se muestra el mensaje al darle click al boton Guardar
   const MensajeGuardar = () => {
@@ -91,7 +49,8 @@ function Itinerary() {
     //se crea el objeto JSON que sera enviado al endpoint
     const viajeData = {
       token: userToken,
-      cantDias: cantDays,
+      nombre: itineraryName,
+      cantDias: cantDays
     };
 
     // Verifica si la entrada es un número válido y mayor que cero
@@ -118,15 +77,14 @@ function Itinerary() {
           setIdViaje(data.idViaje);
           console.log('Nuevo ID del viaje:', idViaje);
           console.log(data);
-          // Aquí puedes manejar la respuesta del servidor, como redirigir a una página de éxito o mostrar un mensaje.
+          setNextPage(true)
         })
         .catch((error) => {
           console.error('Error al registrar el viaje:', error);
           // Maneja los errores, como mostrar un mensaje de error al usuario.
         });
-    // se setea el boton Guardar para que se muestre
-      setAppearSaveButton(true)
-
+      // se setea el boton Guardar para que se muestre
+      //setAppearSaveButton(true)
     } else {
       alert(
         //mensaje cuando se pone una cantidad de dias no permitida
@@ -136,11 +94,14 @@ function Itinerary() {
 
   };
 
-  console.log("ID VIAJE: ",idViaje)
+  console.log("ID VIAJE: ", idViaje)
+  if(nextPage){
+    navigate("/modifyItinerary/" + idViaje)
+  }
 
-  //funcion para volver al home
-  function goHome() {
-    navigate("/home")
+  function handleResetValues() {
+    setItineraryName('')
+    setNumberOfDays('')
   }
 
   //variable para ver si se muestra el boton de Guardar o no
@@ -154,7 +115,7 @@ function Itinerary() {
 
   //variabe para manejar si se permite crear el itinerario, ya que debe tener favoritos agregados para
   //poder generarlo, de lo contrario no tendra nada para ser agregado.
-  let view;
+  /*let view;
   if (arrayFavorites.length > 0) {
     view =
       <>
@@ -162,7 +123,6 @@ function Itinerary() {
           <br />
           <h2 className="PreviousText">¡Crea tu itinerario ahora con Turi!</h2>
           <h3 className="PreviousText">Ingrese la cantidad de días para generar:</h3>
-      {/*cuadro  para ingresar la cantidad de dia */}
           <FormGroup id="DaysPicker">
             <FormLabel id="NumberOfDays">Días:</FormLabel>
             <FormControl
@@ -173,13 +133,10 @@ function Itinerary() {
               value={numberOfDays}
               onChange={(e) => setNumberOfDays(e.target.value)}
             />
-            {/*Boton para Generar el itinerario */}
             <Button onClick={handleGenerateClick} id="Button">Generar</Button>
           </FormGroup>
 
           <Container className='DayContainer'>
-            {/* Mapea y renderiza los componentes "Day" del array de dias para ir creando los dias con el 
-            componente Day */}
             {arrayDays.map((day, index) => (
               <div key={index}>
 
@@ -204,13 +161,77 @@ function Itinerary() {
           </div>
         </Container>
       </>
+  }*/
+
+  let view;
+  if (trips.length <= 0) {
+    view =
+      <>
+        <h5 style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente no tiene itinerarios</h5>
+      </>
   }
 
 
   return (
     <>
       <Header />
-      {view}
+      <Container style={{ marginBottom: "4rem" }}>
+        <br />
+        <h1 className="PreviousText">Mis viajes</h1>
+        <div class="pt-3 pb-3 d-flex justify-content-center">
+          <button class="itineraryButton" style={{ alignContent: "center" }} data-bs-toggle="modal" data-bs-target="#createItinerary" >Generar un itinerario</button>
+        </div>
+        <hr class="hr" />
+        {view}
+        {/*<Container className='DayContainer'>
+          {arrayDays.map((day, index) => (
+            <div key={index}>
+
+              <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />
+
+            </div>
+          ))}
+        </Container>
+        {save}*/}
+      </Container>
+
+
+      <div class="modal fade" id="createItinerary" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="createModalLabel">Crear itinerario</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row d-flex align-items-center" style={{ padding: "10px" }}>
+                <FormLabel>Nombre del itinerario: </FormLabel>
+                <FormControl
+                  type="text"
+                  id="nameForm"
+                  style={{ width: "90%" }}
+                  value={itineraryName}
+                  onChange={(e) => setItineraryName(e.target.value)}
+                />
+                <FormLabel style={{ color: "black", paddingTop: "1rem" }}>Ingrese la cantidad de días: </FormLabel>
+                <FormControl
+                  type="number"
+                  id="DaysBox"
+                  style={{ width: "90%" }}
+                  min="1"
+                  max="7"
+                  value={numberOfDays}
+                  onChange={(e) => setNumberOfDays(e.target.value)}
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <Button id="cancelButton" onClick={handleResetValues} data-bs-dismiss="modal">Cancelar</Button>
+              <Button onClick={handleGenerateClick} id="Button" data-bs-dismiss="modal">Generar</Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

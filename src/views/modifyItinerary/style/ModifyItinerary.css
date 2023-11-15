@@ -1,0 +1,14 @@
+.btnHome{
+    border-radius: 20px;
+    border: 1px solid #588a4d;
+    justify-content: center;
+    background-color: #588a4d;
+    color: white;
+}
+
+.btnHome:hover{
+    border: 1px solid #588a4d;
+    background-color: white;
+    color: black;
+    
+}
