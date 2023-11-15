@@ -4,22 +4,24 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Header from "../header/Header";
 import ElementsGroupView from "./components/ElementsGroupView";
 import { useEffect, useState } from "react";
+import Banner from "./components/Banner";
 
 function HomeScreen() {
 
     const userToken = window.sessionStorage.getItem("userToken");
     const userId = window.sessionStorage.getItem("userId");
-    console.log("USER TOKEN: ",userToken)
-    console.log("USER ID: ",userId)
+    console.log("USER TOKEN: ", userToken)
+    console.log("USER ID: ", userId)
 
     // variables de estado tipo array que almacenan los restaurantes, lugares turísticos y actividades
     const [restaurants, setRestaurants] = useState([]);
     const [turistics, setTuristics] = useState([]);
     const [activities, setActivities] = useState([]);
+    const [banner, setBanner] = useState([]);
 
     // en la carga de la página llama a la función getHomeData que es de tipo async
     useEffect(() => {
-       getHomeData()
+        getHomeData()
     }, [])
 
 
@@ -80,9 +82,23 @@ function HomeScreen() {
         })
     }
 
+    async function getBannerInfo() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch("http://localhost:3000/api/v1/LugarRouter/traerBanner", {
+                    method: "GET"
+                })
+                const data = await response.json()
+                resolve(data)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
     // la función getHomeData que se llama en el useEffect
     // se encarga de la carga y llenado de las listas de restaurantes, lugares turísticos y actividades
-    async function getHomeData()  {
+    async function getHomeData() {
 
         try {
             // cada función de get es una promesa para asegurarse de que termina de traer todos los datos
@@ -90,10 +106,12 @@ function HomeScreen() {
             var restaurantes = await getRestaurantes()
             var turistics = await getTuristic()
             var activities = await getActivities()
+            var banner = await getBannerInfo()
 
             setRestaurants(restaurantes)
             setTuristics(turistics)
             setActivities(activities)
+            setBanner(banner)
             console.log("TODO OK")
         } catch (error) {
             console.log(error)
@@ -104,9 +122,10 @@ function HomeScreen() {
     return (
         <>
             <div className="w-100">
-                <div>
-                    <Header />
-                </div>
+                <Header />
+                <Banner
+                    elements={banner}
+                />
                 <div class="row" style={{ padding: "0rem 5rem 5rem 5rem" }}>
                     {/*GroupView es el bloque del HomeScreen que muestra la lista de restaurantes, lugares y actividades*/}
                     <ElementsGroupView
