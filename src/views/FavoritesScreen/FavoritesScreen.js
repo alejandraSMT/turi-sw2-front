@@ -74,7 +74,7 @@ function FavoritesScreen() {
               nombre={place.nombre}
               id={place.idLugar}
               foto={place.foto}
-
+              descripcion={place.descripcion}
             />
             <br />
             <br />

@@ -380,6 +380,7 @@ function CardElement() {
           <div key={review.id}>
             <Review
               nombreUsuario={review.nombre}
+              usuario = {review.usuario}
               id={review.idReseña}
               comentario={review.comentario}
               puntaje={review.puntaje}

@@ -147,7 +147,7 @@ function Itinerary() {
 
 
   let view;
-  if (!arrayItineraries) {
+  if (arrayItineraries.length <= 0) {
     view =
       <>
         <h5 style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente no tiene itinerarios</h5>

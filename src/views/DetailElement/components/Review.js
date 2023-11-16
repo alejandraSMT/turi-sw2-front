@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,13 @@ import estrella5 from '../estrellas/5_estrellas.png';
 
 function Review(props) {
   const navigate = useNavigate();
+
+  const userToken = window.sessionStorage.getItem("userToken")
+  const [userVerify, setUserVerify] = useState('')
+
+  useEffect(() => {
+    getData();
+  }, '')
 
   console.log(props.id);
 
@@ -42,6 +49,29 @@ function Review(props) {
       });
     //se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se elimino (estrella vacia)
     window.location.reload();
+  }
+
+  async function getUsuario() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/v1/UsuarioRouters/getNombreUsuario?token=${userToken}`, {
+          method: "GET"
+        })
+        const data = await response.json()
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  async function getData() {
+    try {
+      const data = await getUsuario()
+      setUserVerify(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const verificarPuntuacion = () => {
@@ -79,6 +109,16 @@ function Review(props) {
     photo = <img class="img-account-profile rounded-circle mb-2" width="160" src={noPhoto} style={{ objectFit: "cover" }} alt="" />
   }
 
+  let deleteIcon;
+  if (props.usuario === userVerify.nombreUsuario) {
+    deleteIcon =
+      <>
+        <div className='col-lg-1 col-md-1 col-sm-1 d-flex' style={{ justifyContent: "end" }}>
+          <img src={ImagenEliminar} className="ImagenEliminar" onClick={EliminarReview}></img>
+        </div>
+      </>
+  }
+
 
 
   return (
@@ -89,6 +129,7 @@ function Review(props) {
             <div className='' style={{ padding: "0 1rem 0 0" }}>
               {photo}
               <h5 style={{ textAlign: "center" }}>{props.nombreUsuario}</h5>
+              <h6 style={{ textAlign: "center", color: "gray", fontWeight: "normal" }} >{props.usuario}</h6>
             </div>
           </div>
           <div class="col-lg-9 col-md-9 col-sm-9">
@@ -105,12 +146,10 @@ function Review(props) {
             </div>
             <div class="col" style={{ alignItems: "center", marginBottom: "1rem" }}>
               <h5>Fecha de visita: </h5>
-              {moment(props.fechaCreacion).utc().format('MM/DD/YYYY')}
+              {moment(props.fechaCreacion).utc().format('DD/MM/YYYY')}
             </div>
           </div>
-          <div className='col-lg-1 col-md-1 col-sm-1 d-flex' style={{ justifyContent: "end" }}>
-            <img src={ImagenEliminar} className="ImagenEliminar" onClick={EliminarReview}></img>
-          </div>
+          {deleteIcon}
         </div>
 
       </div>
