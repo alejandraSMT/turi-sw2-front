@@ -1,9 +1,9 @@
-.TittleScreen{
+.TittleScreen {
     text-align: center;
-    color:  #588a4d;
+    color: #588a4d;
 }
 
-.ItineraryName{
+.ItineraryName {
     margin-top: 40px;
     color: black;
     font-size: 40px;
@@ -16,13 +16,17 @@
     padding: 10px;
     justify-content: center;
     border-radius: 50px;
-    
+
     width: 800px;
     align-items: center;
 
     box-shadow: 5px 5px 10px 5px grey;
     border: none;
-   
-  }
 
-  
+}
+
+.itinerary-container:hover {
+    border: solid;
+    border-width: 1px;
+    box-shadow: 8.5px 2.5px 12px 0.5px gray;
+}

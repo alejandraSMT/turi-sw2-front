@@ -26,6 +26,7 @@ export default function App() {
           <Route path="/detailElement/:idLugar" element={<DetailElement />} />
           <Route path="/favorites" element={<FavoritesScreen/>}/>
           <Route path="/MyItineraries" element ={<MyItinerariesScreen/>}/>
+          <Route path="/modifyItinerary/:idViaje" element={<ModifyItinerary/>}/>
         </Routes>
       </BrowserRouter>
     </div>

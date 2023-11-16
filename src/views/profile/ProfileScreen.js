@@ -95,7 +95,7 @@ function ProfileScreen() {
     return (
         <>
             <Header />
-            <div class="container-xl px-4 mt-4">
+            <div class="container-xl px-4 mt-5">
                 <div class="row">
                     <div class="col-xl-4 col-lg-5 col-md-6 col-sm-4">
                         <div class="row">

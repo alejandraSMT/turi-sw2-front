@@ -49,7 +49,7 @@ function ModifyItinerary() {
                 })
                 const data = await response.json()
                 resolve(data)
-                console.log("getAllFavorites data recieved: ",data)
+                console.log("getAllFavorites data recieved: ", data)
             } catch (error) {
                 reject(error)
             }
@@ -115,7 +115,7 @@ function ModifyItinerary() {
 
             await settingInfo(allInfo)
 
-            console.log("DIAS EN DATA: ",allInfo.data.dias[0].lugares.length)
+            console.log("DIAS EN DATA: ", allInfo.data.dias[0].lugares.length)
 
             setStillLoading(false)
         } catch (error) {
@@ -182,15 +182,48 @@ function ModifyItinerary() {
         setReload(true)
     }
 
-    let noFavorites;
-    if (arrayFavorites.length < 0) {
-        noFavorites =
+    let modalNoFavorites;
+    if (!Array.isArray(arrayFavorites)) {
+        modalNoFavorites =
             <>
-                <div class="column" style={{ justifyContent: "center", marginTop: "2rem" }}>
-                    <h5 style={{ textAlign: "center" }}>Actualmente no tiene favoritos agregados</h5>
-                    <div class="container d-flex justify-content-center">
-                        <button class="btn btnHome" onClick={goHome} style={{ marginTop: "1rem" }} >Ir al inicio</button>
+                <div class="modal-body">
+                    <div class="row d-flex align-items-center" style={{ padding: "10px" }}>
+                        <div class="column" style={{ justifyContent: "center", marginTop: "2rem" }}>
+                            <h6 style={{ textAlign: "center" }}>Actualmente no tiene favoritos agregados</h6>
+
+                        </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <Button id="Button" onClick={goHome} data-bs-dismiss="modal">Ir al inicio</Button>
+                </div>
+            </>
+    } else {
+        modalNoFavorites =
+            <>
+                <div class="modal-body">
+                    <div class="row d-flex align-items-center" style={{ padding: "10px" }}>
+                        {Array.from(arrayFavorites).map((favorite) => (
+                            <>
+                                <div class="d-flex">
+                                    <ModalFavoriteCard
+                                        favorite={favorite}
+                                        selectedFavorites={selectedFavorites}
+                                        setSelectedFavorites={setSelectedFavorites}
+                                        clicks={clicks}
+                                        setClicks={setClicks}
+                                        reload={reload}
+                                        setReload={setReload}
+                                        setPlaceSelected={setPlaceSelected}
+                                    />
+                                </div>
+                            </>
+                        ))}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <Button id="cancelButton" onClick={resetValues} data-bs-dismiss="modal">Cancelar</Button>
+                    <Button id="Button" onClick={handleClickSave} data-bs-dismiss="modal">Agregar</Button>
                 </div>
             </>
     }
@@ -215,19 +248,17 @@ function ModifyItinerary() {
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    {noFavorites}
-                </div>
                 <div class="container mt-3 mb-5">
                     {days.map((day, index) => (
                         < DayCard
                             day={day}
                             setDaySelected={setDaySelected}
-                            index = {index}
+                            index={index}
                             itineraryInfo={itineraryInfo}
                         />
                     ))}
                 </div>
+
 
                 <div class="modal fade" id="addToDay" tabindex="-1" aria-labelledby="addToDayLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -236,30 +267,7 @@ function ModifyItinerary() {
                                 <h5 class="modal-title" id="addToDayLabel">Agregar al día: </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="row d-flex align-items-center" style={{ padding: "10px" }}>
-                                    {Array.from(arrayFavorites).map((favorite) => (
-                                        <>
-                                            <div class="d-flex">
-                                                <ModalFavoriteCard
-                                                    favorite={favorite}
-                                                    selectedFavorites={selectedFavorites}
-                                                    setSelectedFavorites={setSelectedFavorites}
-                                                    clicks={clicks}
-                                                    setClicks={setClicks}
-                                                    reload={reload}
-                                                    setReload={setReload}
-                                                    setPlaceSelected={setPlaceSelected}
-                                                />
-                                            </div>
-                                        </>
-                                    ))}
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <Button id="cancelButton" onClick={resetValues} data-bs-dismiss="modal">Cancelar</Button>
-                                <Button id="Button" onClick={handleClickSave} data-bs-dismiss="modal">Agregar</Button>
-                            </div>
+                            {modalNoFavorites}
                         </div>
                     </div>
                 </div>

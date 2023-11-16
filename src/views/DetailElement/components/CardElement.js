@@ -4,7 +4,7 @@ import '../styles/Review.css';
 //se llama al CSS que le da diseño a esta pantalla
 import '../styles/DetailElement.css';
 import Review from './Review.js'
-import { Form, Modal,FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
+import { Form, Modal, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 //importa elementos de react-bootstrap
 import { Container, Col, Row } from 'react-bootstrap';
 
@@ -36,19 +36,19 @@ function CardElement() {
     
   ];
 */
-const userToken = window.sessionStorage.getItem("userToken");
+  const userToken = window.sessionStorage.getItem("userToken");
   const [showModal, setShowModal] = useState(false);
   const [comentario, setComentario] = useState('');
   const [fecha, setFecha] = useState('');
   const [puntaje, setPuntaje] = useState('');
   const [arrayReviews, setArrayReviews] = useState([]);
 
-//se obtiene el id del usuario de la sesion actual
- 
+  //se obtiene el id del usuario de la sesion actual
+
   //muestra el id en la consola para comprobar
   console.log("USUARIO TOKEN: " + userToken)
 
-   //captura el id del lugar como parametro
+  //captura el id del lugar como parametro
   const { idLugar } = useParams();
   //const idLugar = 6;
 
@@ -56,7 +56,7 @@ const userToken = window.sessionStorage.getItem("userToken");
   const [lugarData, setLugarData] = useState('');
 
   //se definen la variable donde se guardara si el lugar es favorito y su setter para cuando se cambie el valor
-  const [isFavorite, setIsFavorite] = useState(''); 
+  const [isFavorite, setIsFavorite] = useState('');
 
   //se definen la variable donde se guardara la url de la estrella (pintada si es favorito / vacio si no es) 
   //y su setter para cuando se cambie el valor
@@ -66,7 +66,7 @@ const userToken = window.sessionStorage.getItem("userToken");
   //se definen la variable donde se guardaran las categorias del lugar y su setter para cuandos se cambie el valor
 
   const [Categories, setCategories] = useState([]);
-  
+
   //se llama a la funcion getAllInfoPlace donde estan en orden las llamadas a los endpoints que se ejecutan
   // en simultaneo al cargar la pagina
 
@@ -105,10 +105,10 @@ const userToken = window.sessionStorage.getItem("userToken");
       .catch((error) => {
         console.error('Error al guardar los datos:', error);
       });
-      window.location.reload();
+    window.location.reload();
   };
 
-  
+
   useEffect(() => {
 
     getAllInfoPlace()
@@ -116,8 +116,8 @@ const userToken = window.sessionStorage.getItem("userToken");
   }, []);
 
 
-//getInfoPlace: funcion donde se hace el llamado al endpoint "getLugarById" enviando como parametro el idLugar 
-//y poder buscar toda la informacion de ese lugar para ser mostrada en pantalla
+  //getInfoPlace: funcion donde se hace el llamado al endpoint "getLugarById" enviando como parametro el idLugar 
+  //y poder buscar toda la informacion de ese lugar para ser mostrada en pantalla
   async function getInfoPlace() {
     //se retorna un Promise para que se traiga la informacion sin esperar que otra parte del codigo funcione
     return new Promise(async (resolve, reject) => {
@@ -138,8 +138,8 @@ const userToken = window.sessionStorage.getItem("userToken");
     })
   }
 
-//VerifyFavorite: funcion donde se verifica si el lugar es favorito para el usuario enviando como parametros
-// el idUsuario y el idLugar al endpoint "verificarFavorito"
+  //VerifyFavorite: funcion donde se verifica si el lugar es favorito para el usuario enviando como parametros
+  // el idUsuario y el idLugar al endpoint "verificarFavorito"
   async function VerifyFavorite() {
     //se retorna un Promise para que se traiga la informacion sin esperar que otra parte del codigo funcione
 
@@ -155,7 +155,7 @@ const userToken = window.sessionStorage.getItem("userToken");
         //se muestra la data del lugar en la consola
         console.log(data)
       } catch (error) {
-          //la promesa NO se ejecuto con exito (reject)
+        //la promesa NO se ejecuto con exito (reject)
         reject(error)
       }
     })
@@ -213,14 +213,14 @@ const userToken = window.sessionStorage.getItem("userToken");
           }
         })
         .catch((error) => {
-        //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
+          //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
 
           console.error('Error al agregar favorito:', error);
         });
       window.location.reload();
-//se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se agrego (estrella amarilla)
+      //se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se agrego (estrella amarilla)
     } else {
-       //si el resultado del endpoint "VerificarFavorito" es 1 se cambiara a 0 y se pondra la estrella
+      //si el resultado del endpoint "VerificarFavorito" es 1 se cambiara a 0 y se pondra la estrella
       //vacio al darle click representando que se elimino el lugar como favorito para el usuario
       // Se llama al endpoint "favoritos/eliminar" enviando como parametros el idUsuario y el idLugar
 
@@ -237,11 +237,11 @@ const userToken = window.sessionStorage.getItem("userToken");
           }
         })
         .catch((error) => {
-        //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
+          //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
 
           console.error('Error al eliminar favorito:', error);
         });
-//se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se elimino (estrella vacia)
+      //se vuelve a cargar la pagina para mostrar el cambio de la imagen simulando que se elimino (estrella vacia)
       window.location.reload();
     }
   };
@@ -251,22 +251,17 @@ const userToken = window.sessionStorage.getItem("userToken");
 
     return new Promise(async (resolve, reject) => {
       try {
-        //llamada al endpoint "verificarFavorito"
         const response = await fetch(`http://localhost:3000/api/v1/ResenaRouter/obtenerResenasPorLugar?idLugar=${idLugar}`, {
           method: "GET" //se usa GET porque se va a traer informacion
         })
         const data = await response.json()
-        if (Array.isArray(data)) {
-          resolve(data);
-        } else {
-          reject(new Error("La respuesta de la API no es un array"));
-        }
+        resolve(data);
       } catch (error) {
         reject(error);
       }
     })
   }
-  
+
   //getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
   //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
   async function getAllInfoPlace() {
@@ -276,9 +271,9 @@ const userToken = window.sessionStorage.getItem("userToken");
       var InfoLugar = await getInfoPlace()
       //llama segundo a la funcion "VerifyFavorite" para verificar si el lugar es favorito
       var InfoFavorite = await VerifyFavorite()
-     //llama tercero a la funcion "GetCategories" para traer las categorias de un lugar
+      //llama tercero a la funcion "GetCategories" para traer las categorias de un lugar
       var Categories = await GetCategories()
-      
+
       var Reviews = await GetReviews()
       //var photo = await verificarImagen()
       //se setea la inforamcion del lugar en la variable LugarData para ser mostrada luego en pantalla
@@ -291,6 +286,7 @@ const userToken = window.sessionStorage.getItem("userToken");
       //se setean las categorias en la variable Categories
       setCategories(Categories)
       //console.log("isFavorite:" + isFavorite)
+      console.log("REVIEWS RECIBIDOS: ", Reviews)
       setArrayReviews(Reviews)
       //si el resultado de InfoFavorite es 0 se mostrara la estrella vacia (no es favorito)
       if (InfoFavorite.resultado === 0) {
@@ -298,7 +294,7 @@ const userToken = window.sessionStorage.getItem("userToken");
         //se setea IsFavorite como 0 al NO ser favorito
         setIsFavorite(0);
       } else {
-      //si el resultado de InfoFavorite es 1 se mostrara la estrella amarilla (es favorito)
+        //si el resultado de InfoFavorite es 1 se mostrara la estrella amarilla (es favorito)
         setStarFavorite('https://static.vecteezy.com/system/resources/thumbnails/009/342/149/small/golden-stars-clipart-design-illustration-free-png.png');
         //se setea IsFavorite como 1 al ser favorito
         setIsFavorite(1);
@@ -315,36 +311,36 @@ const userToken = window.sessionStorage.getItem("userToken");
   }
 
   const AgregarReseña = () => {
-    
-      fetch(`http://localhost:3000/api/v1/FavoritoRouter/crearResena`, {
-        method: 'POST', //metodo post porque se va a insertar data nueva
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        //se crea el objeto JSON con el idLugar del lugar que sera agregado como favorito para un usuario enviando
-        //su id (idUsuario)
-        body: JSON.stringify({
-          "token": userToken,
-          "idLugar": idLugar,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          //si se hace bien la conexion se mostrara en pantalla un mensaje de que se agrego como favorito
-          if (data.status === 'success') {
 
-            console.log("Favorito agregado")
-          }
-        })
-        .catch((error) => {
+    fetch(`http://localhost:3000/api/v1/FavoritoRouter/crearResena`, {
+      method: 'POST', //metodo post porque se va a insertar data nueva
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      //se crea el objeto JSON con el idLugar del lugar que sera agregado como favorito para un usuario enviando
+      //su id (idUsuario)
+      body: JSON.stringify({
+        "token": userToken,
+        "idLugar": idLugar,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //si se hace bien la conexion se mostrara en pantalla un mensaje de que se agrego como favorito
+        if (data.status === 'success') {
+
+          console.log("Favorito agregado")
+        }
+      })
+      .catch((error) => {
         //si NO se hace bien la conexion se mostrara en pantalla un mensaje de error 
 
-          console.error('Error al agregar favorito:', error);
-        });
-      window.location.reload();
+        console.error('Error al agregar favorito:', error);
+      });
+    window.location.reload();
 
-    }
-  
+  }
+
   console.log("LUGAR INFO: " + lugarData.foto)
   console.log("isFavorite:" + isFavorite)
 
@@ -376,175 +372,186 @@ const userToken = window.sessionStorage.getItem("userToken");
 
   }
 
-  return (
-    <Container>
-    <Container className="ContainerCardElement">
-
-      <Container className="MainInfoElement">
-
-        <Container className="HeaderElement">
-          <h1>{lugarData.nombre}</h1> {/* Nombre del lugar de lugarData (lo que se devuelve al traer 
-            la informacion del lugar del endpoint) */}
-
-          <br />
-
-          {/*icono de favorito */}
-          <img
-            src={starFavorite}
-            className="favorite-icon"
-            onClick={cambiarImagen}
-            alt="Favorite Icon"
-            id="favorite"
-          />
-
-          <br />
-          <br />
-        </Container>
-
-        <br />
-            {/*muestra la foto del lugar */}
-        <Container>
-          <img src={lugarData.foto} className="PhotoPlace" /> {/* link de imagen*/}
-        </Container>
-
-        <br />
-        <br />
-
-
-        <Container>
-          <h3>Puntuacion:</h3>
-          {/*muestra el puntaje del lugar mostrando la imagen que devuelve la funcion "verificarPuntuacion"*/}
-          <div className="TitlePuntacion">{lugarData.puntaje}
-            <img
-              src={verificarPuntuacion()}
-              className="EstrellasPuntuacion"
-              alt="Puntuacion Icon"
-            />
-          </div>
-
-        </Container>
-        
-        
-
-      </Container>
-
-      <Container className="ElementMoreInfo" class="container">
-     
-        <Container className="InformationBox">
-          <p>Direccion: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
-
-          {/*muestra la descripcion del lugar*/}
-          <p>Descripción: {lugarData.descripcion}</p>
-
-          {/*muestra el precio Promedio del lugar*/}
-          <p>Precio promedio: s/.{lugarData.costo}</p>
-          {/*muestra el horario del lugar desde su hora de inicio a hora de fin*/}
-          <p>Horario: {lugarData.horaInicio} a {lugarData.horaFin}</p>
-
-          {/* muestra el celular de contacto del lugar*/}
-          <p>Contacto: {lugarData.celular} </p>
-
-          {/* muestra el link del Website del lugar*/}
-          <p>Para consultar más detalles visite <a target="_blank" id="link_detail" href={lugarData.linkweb}> el siguiente enlace</a></p>
-
-        </Container>
-
-        <Container>
-          {/* muestra las categorias del lugar recorriendo con un map el array Categoria donde estan guardados*/}
-
-          <p className='TitleCategories'>
-            Categorias: {Categories.map((categoria, index) => (<p className="CategoriasElement" key={index}>{categoria}
-            </p>))}
-          </p>
-
-        </Container>
-
-      </Container>
-           
-     
-
-
-    </Container>
-
-    <Container className="Reviews" class="container">
-          <div className="HeaderReview">
-          <h3 onClick={AgregarReseña}>Reviews:</h3>
-          <Button onClick={() => setShowModal(true)} id="ButtonCrear">Agregar Review</Button>
-         
-      {/* Modal para agregar review */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar Review</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          {/* Formulario dentro del modal */}
-          <Form>
-            <Form.Group controlId="formComentario">
-              <Form.Label>Comentario</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingresa tu comentario"
-                value={comentario}
-                onChange={(e) => setComentario(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formFecha">
-              <Form.Label>Fecha</Form.Label>
-              <Form.Control
-                type="date"
-                placeholder="Ingresa la fecha"
-                value={fecha}
-                onChange={(e) => setFecha(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formPuntaje">
-              <Form.Label>Puntaje</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingresa el puntaje"
-                value={puntaje}
-                onChange={(e) => setPuntaje(e.target.value)}
-              />
-            </Form.Group>
-
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cerrar
-          </Button>
-          {/* Botón para guardar los datos */}
-          <Button variant="primary" onClick={handleGuardarReview} id="ButtonGuardarReseña">
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-          </div>
-          <br/>
-
+  let reviewsView;
+  if (Array.isArray(arrayReviews)) {
+    reviewsView =
       <div>
-        {arrayReviews.map((review) => (
+        {Array.from(arrayReviews).map((review) => (
           <div key={review.id}>
             <Review
               nombreUsuario={review.nombre}
-              id = {review.idReseña}
+              id={review.idReseña}
               comentario={review.comentario}
-
-              puntaje ={review.puntaje}
-
-              fechaCreacion = {review.fechaCreacion}
+              puntaje={review.puntaje}
+              fechaCreacion={review.fechaCreacion}
+              foto={review.foto}
             />
-            <br/>
-            <br/>
+            <br />
+            <br />
           </div>
         ))}
       </div>
-        
-        
+  } else {
+    reviewsView =
+      <>
+        <h5 style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente no tiene itinerarios</h5>
+      </>
+  }
+
+  return (
+    <Container>
+      <Container className="ContainerCardElement">
+
+        <Container className="MainInfoElement">
+
+          <Container className="HeaderElement">
+            <h1>{lugarData.nombre}</h1> {/* Nombre del lugar de lugarData (lo que se devuelve al traer 
+            la informacion del lugar del endpoint) */}
+
+            <br />
+
+            {/*icono de favorito */}
+            <img
+              src={starFavorite}
+              className="favorite-icon"
+              onClick={cambiarImagen}
+              alt="Favorite Icon"
+              id="favorite"
+            />
+
+            <br />
+            <br />
+          </Container>
+
+          <br />
+          {/*muestra la foto del lugar */}
+          <Container>
+            <img src={lugarData.foto} className="PhotoPlace" /> {/* link de imagen*/}
+          </Container>
+
+          <br />
+          <br />
+
+
+          <Container>
+            <h3>Puntuacion:</h3>
+            {/*muestra el puntaje del lugar mostrando la imagen que devuelve la funcion "verificarPuntuacion"*/}
+            <div className="TitlePuntacion">{lugarData.puntaje}
+              <img
+                src={verificarPuntuacion()}
+                className="EstrellasPuntuacion"
+                alt="Puntuacion Icon"
+              />
+            </div>
+
+          </Container>
+
+
+
+        </Container>
+
+        <Container className="ElementMoreInfo" class="container">
+
+          <Container className="InformationBox">
+            <p>Direccion: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
+
+            {/*muestra la descripcion del lugar*/}
+            <p>Descripción: {lugarData.descripcion}</p>
+
+            {/*muestra el precio Promedio del lugar*/}
+            <p>Precio promedio: s/.{lugarData.costo}</p>
+            {/*muestra el horario del lugar desde su hora de inicio a hora de fin*/}
+            <p>Horario: {lugarData.horaInicio} a {lugarData.horaFin}</p>
+
+            {/* muestra el celular de contacto del lugar*/}
+            <p>Contacto: {lugarData.celular} </p>
+
+            {/* muestra el link del Website del lugar*/}
+            <p>Para consultar más detalles visite <a target="_blank" id="link_detail" href={lugarData.linkweb}> el siguiente enlace</a></p>
+
+          </Container>
+
+          <Container>
+            {/* muestra las categorias del lugar recorriendo con un map el array Categoria donde estan guardados*/}
+
+            <p className='TitleCategories'>
+              Categorias: {Categories.map((categoria, index) => (<p className="CategoriasElement" key={index}>{categoria}
+              </p>))}
+            </p>
+
+          </Container>
+
+        </Container>
+
+
+
+
       </Container>
+
+      <Container className="Reviews" class="container">
+        <div className="HeaderReview">
+          <div class="d-flex" style={{ alignItems: "center", alignContent: "center" }}>
+            <h3>Reseñas: </h3>
+            <Button style={{ margin: "1rem", textAlign: "center" }} onClick={() => setShowModal(true)} id="ButtonCrear">Agregar reseña</Button>
+          </div>
+
+          {/* Modal para agregar review */}
+          <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Agregue una reseña</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              {/* Formulario dentro del modal */}
+              <Form>
+                <Form.Group controlId="formComentario" style={{marginBottom:"1rem"}}>
+                  <Form.Label>Comentario</Form.Label>
+                  <Form.Control
+                    style={{ borderRadius: "20px" }}
+                    as="textarea"
+                    placeholder="Ingresa su comentario"
+                    value={comentario}
+                    rows={5}
+                    onChange={(e) => setComentario(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="formFecha" style={{marginBottom:"1rem"}}>
+                  <Form.Label>Fecha de visita: </Form.Label>
+                  <Form.Control
+                    type="date"
+                    placeholder="Ingresa la fecha"
+                    value={fecha}
+                    onChange={(e) => setFecha(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="formPuntaje" style={{marginBottom:"1rem"}}>
+                  <Form.Label>Puntaje</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Ingresa el puntaje"
+                    value={puntaje}
+                    onChange={(e) => setPuntaje(e.target.value)}
+                  />
+                </Form.Group>
+
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button id="cancelButton" onClick={() => setShowModal(false)}>
+                Cerrar
+              </Button>
+              {/* Botón para guardar los datos */}
+              <Button id="Button" onClick={handleGuardarReview}>
+                Guardar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+        <br />
+      </Container>
+      {reviewsView}
     </Container>
 
   );

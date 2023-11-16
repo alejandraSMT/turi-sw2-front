@@ -11,7 +11,7 @@ function FavoritesScreen() {
     { nombre: 'Siete Sopas', id: 3, foto: 'https://mir-s3-cdn-cf.behance.net/projects/404/5f7d3e155851719.Y3JvcCwyNDgwLDE5MzksMCww.jpg' },
     
   ];*/
-  
+
   //se definen la variable para el array de favoritos y su setter para cuando se cambie el valor
   const [arrayFavorites, setArrayFavorites] = useState([]);
 
@@ -22,8 +22,8 @@ function FavoritesScreen() {
   }, []);
 
 
-//getAllFavorites: funcion donde se hace el llamado al endpoint "TraerTodosFav" enviando como parametro el idUsuario 
-//y poder buscar todos los favoritos que tenga agregados el usuario
+  //getAllFavorites: funcion donde se hace el llamado al endpoint "TraerTodosFav" enviando como parametro el idUsuario 
+  //y poder buscar todos los favoritos que tenga agregados el usuario
   async function getAllFavorites() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -32,20 +32,16 @@ function FavoritesScreen() {
           method: "GET"
         })
         const data = await response.json()
-        if (Array.isArray(data)) {
-          resolve(data);
-        } else {
-          reject(new Error("La respuesta de la API no es un array"));
-        }
+        resolve(data)
       } catch (error) {
         reject(error);
-      
+
       }
     })
   }
 
 
-//getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
+  //getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
   //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
   async function getAllInfoPlace() {
 
@@ -57,35 +53,46 @@ function FavoritesScreen() {
       setArrayFavorites(AllFavorites)
       console.log(arrayFavorites)
       //se setea el array de favoritos con la lista de favoritos para ser mostrada luego en pantalla
-
-      
-      
     } catch (error) {
       console.log(error)
     }
   }
   console.log(arrayFavorites)
 
-  return (
-    <div>
-      <div>
-          <Header />
-      </div>
-      <h1 className='TittleScreen'>Mis Favoritos</h1>
-      <br/>
-      <div>
+  let viewFavorites;
+  if (!Array.isArray(arrayFavorites) || arrayFavorites.length <= 0) {
+    viewFavorites =
+      <>
+        <h5 style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente no tiene favoritos agregados</h5>
+      </>
+  } else {
+    viewFavorites =
+      <>
         {arrayFavorites.map((place) => (
           <div key={place.id}>
             <Favorite
               nombre={place.nombre}
               id={place.idLugar}
               foto={place.foto}
-              
+
             />
-            <br/>
-            <br/>
+            <br />
+            <br />
           </div>
         ))}
+      </>
+  }
+
+  return (
+    <div>
+      <div>
+        <Header />
+      </div>
+      <div class="container mt-5">
+        <h1 className="PreviousText">Mis favoritos</h1>
+      </div>
+      <div class="container mt-5">
+        {viewFavorites}
       </div>
     </div>
   );

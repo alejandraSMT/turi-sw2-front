@@ -5,6 +5,7 @@ import { Container, FormGroup, FormLabel, FormControl, Button } from 'react-boot
 import React, { useState, useEffect } from 'react';
 import Day from './components/Day.js';
 import Header from '../header/Header';
+import ItineraryItem from '../MyItineraries/components/ItineraryItem.js';
 import { useNavigate } from 'react-router-dom';
 
 function Itinerary() {
@@ -15,9 +16,13 @@ function Itinerary() {
   const userToken = window.sessionStorage.getItem('userToken');
   const userId = window.sessionStorage.getItem("userId");
 
+  const [stillLoading, setStillLoading] = useState(false);
+
   //se definen la variable para el numero de dias y su setter para cuando se cambie el valor
   const [numberOfDays, setNumberOfDays] = useState('');
   const [itineraryName, setItineraryName] = useState('');
+
+  const [arrayItineraries, setArrayItineraries] = useState([]);
 
   //se definen la variable para el array de la cantidad de dias y su setter para cuando se cambie el valor
   const [arrayDays, setArrayDays] = useState([]);
@@ -26,11 +31,14 @@ function Itinerary() {
   //variable para el boton guardar y que aparezca
   const [appearSaveButton, setAppearSaveButton] = useState(false);
 
-  const [trips, setTrips] = useState([]);
-
   const [nextPage, setNextPage] = useState(false)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setStillLoading(true)
+    getAllInfoPlace()
+  }, [])
 
 
   //se llama a la funcion getAllInfoPlace donde estan en orden las llamadas a los endpoints que se ejecutan
@@ -94,8 +102,41 @@ function Itinerary() {
 
   };
 
-  console.log("ID VIAJE: ", idViaje)
-  if(nextPage){
+  async function getAllItineraries() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/v1/ViajeRouter/traerViajes?token=${userToken}`, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        console.log("LISTA DE ITINERARIOS RECIBIDA: ", data); // Verifica la respuesta del servidor
+        resolve(data.viajes);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+
+  //getAllInfoPlace:funcion principal donde se llaman a las otras funciones en un orden especifico, 
+  //ya que se ejecutan en simultaneo al cargar la pagina y para que no halla fallos al llamar los endpoints
+  async function getAllInfoPlace() {
+
+    try {
+      setStillLoading(true)
+      var AllItineraries = await getAllItineraries()
+      console.log("Recibido: ", AllItineraries)
+      setArrayItineraries(AllItineraries)
+      setStillLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  if (nextPage) {
     navigate("/modifyItinerary/" + idViaje)
   }
 
@@ -104,70 +145,25 @@ function Itinerary() {
     setNumberOfDays('')
   }
 
-  //variable para ver si se muestra el boton de Guardar o no
-  let save;
-  if (appearSaveButton) {
-    save =
-      <div class="container d-flex justify-content-center mt-5 mb-10">
-        <Button id="Button" onClick={MensajeGuardar}>Guardar</Button>
-      </div>
-  }
-
-  //variabe para manejar si se permite crear el itinerario, ya que debe tener favoritos agregados para
-  //poder generarlo, de lo contrario no tendra nada para ser agregado.
-  /*let view;
-  if (arrayFavorites.length > 0) {
-    view =
-      <>
-        <Container style={{ marginBottom: "4rem" }}>
-          <br />
-          <h2 className="PreviousText">¡Crea tu itinerario ahora con Turi!</h2>
-          <h3 className="PreviousText">Ingrese la cantidad de días para generar:</h3>
-          <FormGroup id="DaysPicker">
-            <FormLabel id="NumberOfDays">Días:</FormLabel>
-            <FormControl
-              type="number"
-              id="DaysBox"
-              min="1"
-              max="7"
-              value={numberOfDays}
-              onChange={(e) => setNumberOfDays(e.target.value)}
-            />
-            <Button onClick={handleGenerateClick} id="Button">Generar</Button>
-          </FormGroup>
-
-          <Container className='DayContainer'>
-            {arrayDays.map((day, index) => (
-              <div key={index}>
-
-                <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />
-
-              </div>
-            ))}
-          </Container>
-          {save}
-        </Container>
-      </>
-  } else {
-    //variable con mensaje si no tiene favoritos
-    view =
-      <>
-        <Container style={{ marginBottom: "4rem" }}>
-          <br />
-          <h2 className="PreviousText">Actualmente no tiene favoritos agregados para generar un itinerario</h2>
-          <h3 className="PreviousText">Por favor, regrese a la pantalla principal y agregue las opciones de su agrado</h3>
-          <div class="container d-flex justify-content-center mt-5 mb-10">
-            <Button id="Button" onClick={goHome}>Ir a la pantalla principal</Button>
-          </div>
-        </Container>
-      </>
-  }*/
 
   let view;
-  if (trips.length <= 0) {
+  if (!arrayItineraries) {
     view =
       <>
         <h5 style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente no tiene itinerarios</h5>
+      </>
+  } else {
+    view =
+      <>
+        {arrayItineraries.map((itinerary) => (
+            <div key={itinerary.id}>
+              <ItineraryItem
+                nombre={itinerary.nombre}
+                id={itinerary.id}
+                cantDias={itinerary.cantDias}
+              />
+            </div>
+          ))}
       </>
   }
 
@@ -183,16 +179,6 @@ function Itinerary() {
         </div>
         <hr class="hr" />
         {view}
-        {/*<Container className='DayContainer'>
-          {arrayDays.map((day, index) => (
-            <div key={index}>
-
-              <Day key={index} dayNumber={day} index={index} days={arrayDays} arrayFavorites={arrayFavorites} idViaje={idViaje} />
-
-            </div>
-          ))}
-        </Container>
-        {save}*/}
       </Container>
 
 

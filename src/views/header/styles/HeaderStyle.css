@@ -10,6 +10,7 @@
 
 .container-icons {
     max-width: 100%;
+    justify-content: end;
 }
 
 .header-line {
@@ -79,3 +80,14 @@
 .nav-link:hover{
     text-decoration: dashed;
 }
+
+.profile { /*diseño de cuadros por categoria*/
+    display: inline-block;
+    padding: 5px 10px; /* Ajusta el espaciado según sea necesario */
+    margin: 5px; /* Espaciado entre los botones */
+    background-color:#588a4d;
+    border-radius: 50px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    outline: none; /* Elimina el borde de enfoque */
+    color: white;
+  }
