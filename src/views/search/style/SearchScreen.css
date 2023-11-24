@@ -1,0 +1,16 @@
+.btn-filter{
+    width: 100%;
+    background-color: white;
+    color: black;
+    border-color: gray;
+}
+
+.btn-filter:hover{
+    background-color: #588a4d;
+    border-color: gray;
+}
+
+.btn-filter:active{
+    background-color: #588a4d !important;
+    border-color: gray;
+}

@@ -10,6 +10,7 @@ import RegisterScreen from './views/register/RegisterScreen';
 import Itinerary from './views/Itinerary/Itinerary';
 import DetailElement from './views/DetailElement/DetailElement';
 import ModifyItinerary from './views/modifyItinerary/ModifyItinerary';
+import SearchScreen from './views/search/SearchScreen';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/favorites" element={<FavoritesScreen/>}/>
           <Route path="/MyItineraries" element ={<MyItinerariesScreen/>}/>
           <Route path="/modifyItinerary/:idViaje" element={<ModifyItinerary/>}/>
+          <Route path='/searchScreen' element={<SearchScreen/>}/>
         </Routes>
       </BrowserRouter>
     </div>
