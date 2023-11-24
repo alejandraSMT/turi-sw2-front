@@ -178,6 +178,10 @@ function RegisterForm() {
     }
   };
 
+  function handleBack(){
+    window.location = "/"
+  }
+
   // función para verificar si la contraseña contiene una mayúscula
   const hasUpperCase = str => /[A-Z]/.test(str);
 
@@ -240,6 +244,19 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
+          {/*cuadro de texto para escribir el correo del usuario */}
+
+          <Col>
+            <FormGroup>
+              <FormLabel id='LabelBox'>Correo:</FormLabel>
+              <Form.Control type="text" id='TextBox' value={email} onChange={handleEmailChange} />
+            </FormGroup>
+          </Col>
+
+        </Row>
+
+        <Row>
+
           {/*cuadro de texto para escribir el nombre del usuario*/}
           <Col>
             <FormGroup>
@@ -248,23 +265,12 @@ function RegisterForm() {
             </FormGroup>
           </Col>
 
-        </Row>
 
-        <Row>
           {/*cuadro de texto para escribir el apellido del usuario */}
           <Col>
             <FormGroup>
               <FormLabel id='LabelBox'>Apellido:</FormLabel>
               <Form.Control type="text" id='TextBox' value={lastname} onChange={handleLastnameChange} />
-            </FormGroup>
-          </Col>
-
-          {/*cuadro de texto para escribir el correo del usuario */}
-
-          <Col>
-            <FormGroup>
-              <FormLabel id='LabelBox'>Correo:</FormLabel>
-              <Form.Control type="text" id='TextBox' value={email} onChange={handleEmailChange} />
             </FormGroup>
           </Col>
 
@@ -347,8 +353,10 @@ function RegisterForm() {
       </Form>
       <br />
       {/*Boton para aceptar el registro del nuevo usuario y esta conectado al endpoint*/}
-
-      <Button id="ButtonRegister" onClick={handleButtonClick}>Aceptar</Button>
+      <div class="d-flex justify-content-center">
+        <Button id="ButtonBack" onClick={handleBack}>Regresar</Button>
+        <Button id="ButtonRegister" onClick={handleButtonClick}>Aceptar</Button>
+      </div>
       <br />
     </Container>
   );

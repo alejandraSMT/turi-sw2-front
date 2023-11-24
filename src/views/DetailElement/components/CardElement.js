@@ -76,36 +76,41 @@ function CardElement() {
     // Asegúrate de incluir el código necesario para enviar los datos
     // Después de enviar, cierra el modal y realiza cualquier acción adicional si es necesario
 
-    // Ejemplo con fetch:
-    fetch('http://localhost:3000/api/v1/ResenaRouter/crearResena', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: userToken,
-        idLugar: idLugar,
-        comentario: comentario,
-        fechaCreacion: fecha,
-        puntaje: puntaje,
-        // Otros datos que necesites enviar
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Realiza acciones adicionales si es necesario
-        console.log('Datos guardados:', data);
+    if(comentario!=="" && puntaje<=5){
 
-        // Cierra el modal después de guardar los datos
-        setShowModal(false);
-
-        // Puedes recargar la página o hacer otras actualizaciones según tus necesidades
-        // window.location.reload();
+      // Ejemplo con fetch:
+      fetch('http://localhost:3000/api/v1/ResenaRouter/crearResena', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: userToken,
+          idLugar: idLugar,
+          comentario: comentario,
+          fechaCreacion: fecha,
+          puntaje: puntaje,
+          // Otros datos que necesites enviar
+        }),
       })
-      .catch((error) => {
-        console.error('Error al guardar los datos:', error);
-      });
-    window.location.reload();
+        .then((response) => response.json())
+        .then((data) => {
+          // Realiza acciones adicionales si es necesario
+          console.log('Datos guardados:', data);
+  
+          // Cierra el modal después de guardar los datos
+          setShowModal(false);
+  
+          // Puedes recargar la página o hacer otras actualizaciones según tus necesidades
+          // window.location.reload();
+        })
+        .catch((error) => {
+          console.error('Error al guardar los datos:', error);
+        });
+      window.location.reload();
+    }else{
+      alert("Por favor, revise los campos ingresados.")
+    }
   };
 
 
@@ -395,7 +400,7 @@ function CardElement() {
   } else {
     reviewsView =
       <>
-        <h5 style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente no tiene itinerarios</h5>
+        <h5 class="pb-5" style={{ color: "gray", fontWeight: "normal", textAlign: "center", padding: "1rem" }}>Actualmente este elemento no tiene reseñas</h5>
       </>
   }
 
@@ -435,7 +440,7 @@ function CardElement() {
 
 
           <Container>
-            <h3>Puntuacion:</h3>
+            <h3>Puntuación:</h3>
             {/*muestra el puntaje del lugar mostrando la imagen que devuelve la funcion "verificarPuntuacion"*/}
             <div className="TitlePuntacion">{lugarData.puntaje}
               <img
@@ -454,7 +459,7 @@ function CardElement() {
         <Container className="ElementMoreInfo" class="container">
 
           <Container className="InformationBox">
-            <p>Direccion: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
+            <p>Dirección: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
 
             {/*muestra la descripcion del lugar*/}
             <p>Descripción: {lugarData.descripcion}</p>
@@ -468,7 +473,7 @@ function CardElement() {
             <p>Contacto: {lugarData.celular} </p>
 
             {/* muestra el link del Website del lugar*/}
-            <p>Para consultar más detalles visite <a target="_blank" id="link_detail" href={lugarData.linkweb}> el siguiente enlace</a></p>
+            <p>Para consultar más detalles visite el siguiente <a target="_blank" id="link_detail" href={lugarData.linkweb}>  enlace</a></p>
 
           </Container>
 
@@ -530,7 +535,9 @@ function CardElement() {
                 <Form.Group controlId="formPuntaje" style={{marginBottom:"1rem"}}>
                   <Form.Label>Puntaje</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
+                    min={0}
+                    max={5}
                     placeholder="Ingresa el puntaje"
                     value={puntaje}
                     onChange={(e) => setPuntaje(e.target.value)}

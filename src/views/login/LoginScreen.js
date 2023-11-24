@@ -118,7 +118,7 @@ function LoginScreen() {
                                                 </div>
 
                                                 <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Olvidé mi contraseña</a></p>
-                                                <p>¿Aún no tiene cuenta?<a href="/registro" class="link-success">¡Registrese aquí!</a></p>
+                                                <p>¿Aún no tiene cuenta?  <a href="/registro" class="link-success">¡Registrese aquí!</a></p>
                                             </Container>
                                         </div>
                                     </div>
