@@ -16,6 +16,10 @@
     color: black;
 }
 
+.name-favorite:hover{
+    text-decoration:underline;
+}
+
 
 .FavoriteItem {
     text-align: center;

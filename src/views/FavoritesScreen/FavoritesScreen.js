@@ -69,7 +69,7 @@ function FavoritesScreen() {
     viewFavorites =
       <>
         {arrayFavorites.map((place) => (
-          <div key={place.id}>
+          <div key={place.id} className="col-md-6">
             <Favorite
               nombre={place.nombre}
               id={place.idLugar}
@@ -91,8 +91,12 @@ function FavoritesScreen() {
       <div class="container mt-5">
         <h1 className="PreviousText">Mis favoritos</h1>
       </div>
-      <div class="container mt-5">
-        {viewFavorites}
+      <div class="col-lg-12 col-md-10 col-sm-10 d-flex justify-content-center">
+        <div class="container" style={{justifyContent:"center"}}>
+          <div class="row d-flex justify-content-center g-3 mt-2">
+          {viewFavorites}
+          </div>
+        </div>
       </div>
     </div>
   );
