@@ -10,7 +10,7 @@ import Itinerary from './views/Itinerary/Itinerary';
 import DetailElement from './views/DetailElement/DetailElement';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
+import PreguntasFrecuentes from './views/PreguntasFrecuentes/PreguntasFrecuentes'
 export default function App() {
   return (
     <div>
@@ -25,6 +25,7 @@ export default function App() {
           <Route path="/detailElement/:idLugar" element={<DetailElement />} />
           <Route path="/favorites" element={<FavoritesScreen/>}/>
           <Route path="/MyItineraries" element ={<MyItinerariesScreen/>}/>
+          <Route path="/PreguntasFrecuentes" element ={<PreguntasFrecuentes/>}/>
         </Routes>
       </BrowserRouter>
     </div>
