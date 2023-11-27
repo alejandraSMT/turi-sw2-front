@@ -30,7 +30,6 @@ function Header() {
     async function getByName() {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log("SEARCH VALUE: ", search)
                 const response = await fetch(`http://localhost:3000/api/v1/LugarRouter/getBarraBusqueda?nombre=${search}`, {
                     method: "GET"
                 })

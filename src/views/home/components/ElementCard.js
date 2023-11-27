@@ -2,18 +2,14 @@ import "../styles/ElementCardStyle.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-import { useNavigate } from 'react-router-dom'
-
 // card de cada uno de los lugares que van en el carrousel
 // muestra información resumida de los lugares
 function ElementCard({ id, name, distrito, url, costo }) {
 
-    const navigate = useNavigate()
-
     // cuando se le da click a un card, este toma el id del lugar y hace una navegación a la pantalla de Detail Element donde se
     // mostrará más información de ese lugar en específico
     function handleCardClick() {
-        navigate("/detailElement/"+id)
+        window.location = "/detailElement/"+id
     }
 
     return (

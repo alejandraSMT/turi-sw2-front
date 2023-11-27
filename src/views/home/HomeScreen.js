@@ -5,6 +5,7 @@ import Header from "../header/Header";
 import ElementsGroupView from "./components/ElementsGroupView";
 import { useEffect, useState } from "react";
 import Banner from "./components/Banner";
+import Footer from "../footer/Footer";
 
 function HomeScreen() {
 
@@ -18,6 +19,8 @@ function HomeScreen() {
     const [turistics, setTuristics] = useState([]);
     const [activities, setActivities] = useState([]);
     const [banner, setBanner] = useState([]);
+
+    const [loaded, setLoaded] = useState(false)
 
     // en la carga de la página llama a la función getHomeData que es de tipo async
     useEffect(() => {
@@ -103,6 +106,7 @@ function HomeScreen() {
         try {
             // cada función de get es una promesa para asegurarse de que termina de traer todos los datos
             // además, son await dentro de una función async para hacer la carga de forma secuencial
+            setLoaded(false)
             var restaurantes = await getRestaurantes()
             var turistics = await getTuristic()
             var activities = await getActivities()
@@ -113,16 +117,17 @@ function HomeScreen() {
             setActivities(activities)
             setBanner(banner)
             console.log("TODO OK")
+            setLoaded(true)
         } catch (error) {
             console.log(error)
+            setLoaded(true)
         }
     }
 
-
-    return (
-        <>
-            <div className="w-100">
-                <Header />
+    let generalView;
+    if (loaded) {
+        generalView =
+            <>
                 <Banner
                     elements={banner}
                 />
@@ -134,6 +139,25 @@ function HomeScreen() {
                         activities={activities}
                     />
                 </div>
+                <Footer />
+            </>
+    } else {
+        generalView =
+            <>
+                <div class="container vh-100 d-flex justify-content-center align-items-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+            </>
+    }
+
+
+    return (
+        <>
+            <div className="w-100">
+                <Header />
+                {generalView}
             </div>
         </>
     );

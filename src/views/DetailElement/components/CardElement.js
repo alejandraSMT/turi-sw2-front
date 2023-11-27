@@ -25,6 +25,7 @@ import estrella45 from '../images/estrellas/4.5_estrellas.png';
 import estrella5 from '../images/estrellas/5_estrellas.png';
 
 import { useParams } from "react-router-dom"
+import Header from '../../header/Header.js';
 
 function CardElement() {
 
@@ -42,6 +43,8 @@ function CardElement() {
   const [fecha, setFecha] = useState('');
   const [puntaje, setPuntaje] = useState('');
   const [arrayReviews, setArrayReviews] = useState([]);
+
+  const [loaded, setLoaded] = useState(false)
 
   //se obtiene el id del usuario de la sesion actual
 
@@ -273,6 +276,7 @@ function CardElement() {
   async function getAllInfoPlace() {
 
     try {
+      setLoaded(false)
       //llama primero a la funcion "getInfoPlace" para traer la informacion del lugar
       var InfoLugar = await getInfoPlace()
       //llama segundo a la funcion "VerifyFavorite" para verificar si el lugar es favorito
@@ -305,10 +309,11 @@ function CardElement() {
       //setStarFavorite(photo)
       //console.log(photo)
       console.log(starFavorite)
-
+      setLoaded(true)
     } catch (error) {
       //se meustra un error en caso ocurra
       console.log(error)
+      setLoaded(true)
     }
 
   }
@@ -408,163 +413,181 @@ function CardElement() {
       </>
   }
 
-  return (
-    <Container>
-      <Container className="ContainerCardElement">
+  let generalView;
+  if (loaded) {
+    generalView =
+      <>
+        <Container className="ContainerCardElement">
 
-        <Container className="MainInfoElement">
+          <Container className="MainInfoElement">
 
-          <Container className="HeaderElement d-flex" style={{alignItems:"center"}}>
-            <h1>{lugarData.nombre}</h1> {/* Nombre del lugar de lugarData (lo que se devuelve al traer 
-            la informacion del lugar del endpoint) */}
+            <Container className="HeaderElement d-flex" style={{ alignItems: "center" }}>
+              <h1>{lugarData.nombre}</h1> {/* Nombre del lugar de lugarData (lo que se devuelve al traer 
+la informacion del lugar del endpoint) */}
+
+              <br />
+
+              {/*icono de favorito */}
+              <div class="ms-3">
+                {favoriteStar}
+              </div>
+
+              <br />
+              <br />
+            </Container>
 
             <br />
-
-            {/*icono de favorito */}
-            <div class="ms-3">
-              {favoriteStar}
-            </div>
+            {/*muestra la foto del lugar */}
+            <Container>
+              <img src={lugarData.foto} className="PhotoPlace" /> {/* link de imagen*/}
+            </Container>
 
             <br />
             <br />
-          </Container>
-
-          <br />
-          {/*muestra la foto del lugar */}
-          <Container>
-            <img src={lugarData.foto} className="PhotoPlace" /> {/* link de imagen*/}
-          </Container>
-
-          <br />
-          <br />
 
 
-          <Container>
-            <h3>Puntuación:</h3>
-            {/*muestra el puntaje del lugar mostrando la imagen que devuelve la funcion "verificarPuntuacion"*/}
-            <div className="TitlePuntacion">{lugarData.puntaje}
-              <img
-                src={verificarPuntuacion()}
-                className="EstrellasPuntuacion"
-                alt="Puntuacion Icon"
-              />
-            </div>
+            <Container>
+              <h3>Puntuación:</h3>
+              {/*muestra el puntaje del lugar mostrando la imagen que devuelve la funcion "verificarPuntuacion"*/}
+              <div className="TitlePuntacion">{lugarData.puntaje}
+                <img
+                  src={verificarPuntuacion()}
+                  className="EstrellasPuntuacion"
+                  alt="Puntuacion Icon"
+                />
+              </div>
+
+            </Container>
+
+
 
           </Container>
+
+          <Container className="ElementMoreInfo" class="container">
+
+            <Container className="InformationBox">
+              <p>Dirección: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
+
+              {/*muestra la descripcion del lugar*/}
+              <p>Descripción: {lugarData.descripcion}</p>
+
+              {/*muestra el precio Promedio del lugar*/}
+              <p>Precio promedio: s/.{lugarData.costo}</p>
+              {/*muestra el horario del lugar desde su hora de inicio a hora de fin*/}
+              <p>Horario: {lugarData.horaInicio} a {lugarData.horaFin}</p>
+
+              {/* muestra el celular de contacto del lugar*/}
+              <p>Contacto: {lugarData.celular} </p>
+
+              {/* muestra el link del Website del lugar*/}
+              <p>Para consultar más detalles visite el siguiente <a target="_blank" id="link_detail" href={lugarData.linkweb}>  enlace</a></p>
+
+            </Container>
+
+            <Container>
+              {/* muestra las categorias del lugar recorriendo con un map el array Categoria donde estan guardados*/}
+
+              <p className='TitleCategories'>
+                Categorias: {Categories.map((categoria, index) => (<p className="CategoriasElement" key={index}>{categoria}
+                </p>))}
+              </p>
+
+            </Container>
+
+          </Container>
+
 
 
 
         </Container>
 
-        <Container className="ElementMoreInfo" class="container">
+        <Container className="Reviews" class="container">
+          <div className="HeaderReview">
+            <div class="d-flex" style={{ alignItems: "center", alignContent: "center" }}>
+              <h3>Reseñas: </h3>
+              <Button style={{ margin: "1rem", textAlign: "center" }} onClick={() => setShowModal(true)} id="ButtonCrear">Agregar reseña</Button>
+            </div>
 
-          <Container className="InformationBox">
-            <p>Dirección: {lugarData.direccion} {/* muestra la direccion del lugar*/}</p>
+            {/* Modal para agregar review */}
+            <Modal show={showModal} onHide={() => { setShowModal(false); resetValores(); }}>
+              <Modal.Header closeButton>
+                <Modal.Title>Agregue una reseña</Modal.Title>
+              </Modal.Header>
 
-            {/*muestra la descripcion del lugar*/}
-            <p>Descripción: {lugarData.descripcion}</p>
+              <Modal.Body>
+                {/* Formulario dentro del modal */}
+                <Form>
+                  <Form.Group controlId="formComentario" style={{ marginBottom: "1rem" }}>
+                    <Form.Label>Comentario</Form.Label>
+                    <Form.Control
+                      style={{ borderRadius: "20px" }}
+                      as="textarea"
+                      placeholder="Ingresa su comentario"
+                      value={comentario}
+                      rows={5}
+                      onChange={(e) => setComentario(e.target.value)}
+                    />
+                  </Form.Group>
 
-            {/*muestra el precio Promedio del lugar*/}
-            <p>Precio promedio: s/.{lugarData.costo}</p>
-            {/*muestra el horario del lugar desde su hora de inicio a hora de fin*/}
-            <p>Horario: {lugarData.horaInicio} a {lugarData.horaFin}</p>
+                  <Form.Group controlId="formFecha" style={{ marginBottom: "1rem" }}>
+                    <Form.Label>Fecha de visita: </Form.Label>
+                    <Form.Control
+                      type="date"
+                      min="2000-01-02"
+                      max={getDate()}
+                      placeholder="Ingresa la fecha"
+                      value={fecha}
+                      onChange={(e) => setFecha(e.target.value)}
+                    />
+                  </Form.Group>
 
-            {/* muestra el celular de contacto del lugar*/}
-            <p>Contacto: {lugarData.celular} </p>
+                  <Form.Group controlId="formPuntaje" style={{ marginBottom: "1rem" }}>
+                    <Form.Label>Puntaje</Form.Label>
+                    <Form.Control
+                      type="number"
+                      min={0.5}
+                      step={0.5}
+                      max={5}
+                      placeholder="Ingresa el puntaje"
+                      value={puntaje}
+                      onChange={(e) => setPuntaje(e.target.value === '' ? null : roundToNearest(e.target.value, 0.5))}
+                    />
+                  </Form.Group>
 
-            {/* muestra el link del Website del lugar*/}
-            <p>Para consultar más detalles visite el siguiente <a target="_blank" id="link_detail" href={lugarData.linkweb}>  enlace</a></p>
-
-          </Container>
-
-          <Container>
-            {/* muestra las categorias del lugar recorriendo con un map el array Categoria donde estan guardados*/}
-
-            <p className='TitleCategories'>
-              Categorias: {Categories.map((categoria, index) => (<p className="CategoriasElement" key={index}>{categoria}
-              </p>))}
-            </p>
-
-          </Container>
-
-        </Container>
-
-
-
-
-      </Container>
-
-      <Container className="Reviews" class="container">
-        <div className="HeaderReview">
-          <div class="d-flex" style={{ alignItems: "center", alignContent: "center" }}>
-            <h3>Reseñas: </h3>
-            <Button style={{ margin: "1rem", textAlign: "center" }} onClick={() => setShowModal(true)} id="ButtonCrear">Agregar reseña</Button>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button id="cancelButton" onClick={() => { setShowModal(false); resetValores(); }}>
+                  Cerrar
+                </Button>
+                {/* Botón para guardar los datos */}
+                <Button id="Button" onClick={handleGuardarReview}>
+                  Guardar
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
-
-          {/* Modal para agregar review */}
-          <Modal show={showModal} onHide={() => { setShowModal(false); resetValores(); }}>
-            <Modal.Header closeButton>
-              <Modal.Title>Agregue una reseña</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              {/* Formulario dentro del modal */}
-              <Form>
-                <Form.Group controlId="formComentario" style={{ marginBottom: "1rem" }}>
-                  <Form.Label>Comentario</Form.Label>
-                  <Form.Control
-                    style={{ borderRadius: "20px" }}
-                    as="textarea"
-                    placeholder="Ingresa su comentario"
-                    value={comentario}
-                    rows={5}
-                    onChange={(e) => setComentario(e.target.value)}
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="formFecha" style={{ marginBottom: "1rem" }}>
-                  <Form.Label>Fecha de visita: </Form.Label>
-                  <Form.Control
-                    type="date"
-                    min="2000-01-02"
-                    max={getDate()}
-                    placeholder="Ingresa la fecha"
-                    value={fecha}
-                    onChange={(e) => setFecha(e.target.value)}
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="formPuntaje" style={{ marginBottom: "1rem" }}>
-                  <Form.Label>Puntaje</Form.Label>
-                  <Form.Control
-                    type="number"
-                    min={0.5}
-                    step={0.5}
-                    max={5}
-                    placeholder="Ingresa el puntaje"
-                    value={puntaje}
-                    onChange={(e) => setPuntaje(e.target.value === '' ? null : roundToNearest(e.target.value, 0.5))}
-                  />
-                </Form.Group>
-
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button id="cancelButton" onClick={() => { setShowModal(false); resetValores(); }}>
-                Cerrar
-              </Button>
-              {/* Botón para guardar los datos */}
-              <Button id="Button" onClick={handleGuardarReview}>
-                Guardar
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <br />
+        </Container>
+        {reviewsView}
+      </>
+  } else {
+    generalView =
+      <>
+        <div class="container vh-100 d-flex justify-content-center align-items-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+          </div>
         </div>
-        <br />
-      </Container>
-      {reviewsView}
-    </Container>
+      </>
+  }
 
+  return (
+    <>
+      <Container>
+        {generalView}
+      </Container>
+    </>
   );
 }
 export default CardElement;

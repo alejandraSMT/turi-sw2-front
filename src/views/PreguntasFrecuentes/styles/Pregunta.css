@@ -1,0 +1,26 @@
+.TitleScreen {
+    text-align: start;
+}
+
+.response-item {
+    width: 100%;
+    position: relative;
+}
+
+.FavoriteName {
+    margin-top: 40px;
+    color: black;
+    font-size: 40px;
+}
+
+.FavoriteItem {
+    text-align: center;
+    border: 4px solid green;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    justify-content: center;
+    border-radius: 20px;
+    align-items: center;
+    border: 2px solid lightgray;
+
+}

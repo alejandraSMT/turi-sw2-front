@@ -13,7 +13,7 @@ import ModifyItinerary from './views/modifyItinerary/ModifyItinerary';
 import SearchScreen from './views/search/SearchScreen';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
+import PreguntasFrecuentes from './views/PreguntasFrecuentes/PreguntasFrecuentes'
 export default function App() {
   return (
     <div>
@@ -29,6 +29,7 @@ export default function App() {
           <Route path="/MyItineraries" element ={<MyItinerariesScreen/>}/>
           <Route path="/modifyItinerary/:idViaje" element={<ModifyItinerary/>}/>
           <Route path='/searchScreen' element={<SearchScreen/>}/>
+          <Route path="/PreguntasFrecuentes" element ={<PreguntasFrecuentes/>}/>
         </Routes>
       </BrowserRouter>
     </div>
