@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
+import ItemSearch from "./components/ItemSearch";
 let img = require("./hello_kitty.png")
 let logo = require("./logo-turi.png")
 let imgSearch = require("./search.png")
@@ -22,6 +23,10 @@ function Header() {
     const [photo, setPhoto] = useState("");
     const userToken = window.sessionStorage.getItem("userToken");
 
+    const [search, setSearch] = useState("")
+    const [filteredList, setFilteredList] = useState([])
+    const [searchClicked, setSearchClicked] = useState(0)
+
     // función fecth para traer la foto del usuario
     /*async function getProfilePhoto() {
         await fetch(`http://localhost:3000/api/v1/UsuarioRouters/getFoto?token=${userToken}`)
@@ -38,6 +43,24 @@ function Header() {
         await getProfilePhoto();
     }*/
 
+    async function getByName() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                console.log("SEARCH VALUE: ", search)
+                const response = await fetch(`http://localhost:3000/api/v1/LugarRouter/getBarraBusqueda?nombre=${search}`, {
+                    method: "GET"
+                })
+                const data = await response.json()
+                setFilteredList(data)
+                setSearchClicked(1)
+                resolve(data)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
+
     // para la navegación entre pantallas
     const navigate = useNavigate();
 
@@ -45,8 +68,12 @@ function Header() {
         navigate("/itinerary")
     }
 
+    function handleFilterClick() {
+        navigate("/searchScreen")
+    }
+
     function handleSearchClick() {
-        alert("BÚSQUEDA")
+        //alert("BÚSQUEDA")
     }
 
     function handleFavoriteClick() {
@@ -81,21 +108,54 @@ function Header() {
             </>
     }
 
+    let filter;
+    if (Array.isArray(filteredList) && search !== "") {
+        filter =
+            <>
+                {filteredList.map((item) => (
+                    <ItemSearch
+                        item={item}
+                    />
+                ))
+                }
+            </>
+    } else if (!Array.isArray(filteredList) && search !== "") {
+        filter =
+            <>
+                <div style={{ color: "gray" }} className="options">
+                    No se encontraron resultados...
+                </div>
+            </>
+    }
+
     return (
         <>
-            <header class="header p-3 border-bottom">
+            <header class="header p-3 border-bottom w-100">
                 <div class="container" style={{ maxWidth: "100%" }}>
                     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                        <a href="/home" class="col-lg-3 d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                            <button class="btn btn-logo">
+                        <div class="col-lg-3 d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                            <a href="/home" class="btn btn-logo">
                                 <img class="logo" src={logo} width="100" height="60" />
-                            </button>
-                        </a>
-                        <form class="search-bar-components col-lg-7 mb-3 mb-lg-0">
-                            <input type="search" class="form-control search-bar" placeholder="Buscar..." aria-label="Buscar" />
-                            <div class="input-group-btn">
-                                <button class="btn search-button" ><img class="icon-search" onClick={handleSearchClick} src={imgSearch} /></button>
+                            </a>
+                        </div>
+                        <form className="search-bar-dropdown d-flex col-lg-7 mb-3 mb-lg-0" style={{ position: "relative" }}>
+                            <div class="input-group searchBar">
+                                <span class="input-group-text filter" onClick={handleFilterClick} id="basic-addon1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                                    </svg>
+                                </span>
+                                <input type="text" onChange={(e) => setSearch(e.target.value)} class="form-control search-bar" placeholder="Buscar..." aria-label="Buscar" aria-describedby="basic-addon1" />
+                                <span class="input-group-text searchButton" onClick={getByName} id="basic-addon1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                </span>
                             </div>
+
+                            <ul className="list-group group-options">
+                                {filter}
+                            </ul>
                         </form>
 
                         <div class="container-icons d-flex align-items-center justify-content-end">

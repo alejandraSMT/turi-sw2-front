@@ -5,15 +5,15 @@ import CardElement from "./components/CardElement.js"
 import Header from "../header/Header.js";
 
 
-function DetailElement(){
-    return(
-        
+function DetailElement() {
+    return (
+
         <div className="vh-100" >
             {/*agrega el Header */}
-                <Header/>
-                <br/>
-                {/*Llama al componente CardElement donde se muestra toda la informacion del lugar */}
-                <CardElement/>
+            <Header />
+            <br />
+            {/*Llama al componente CardElement donde se muestra toda la informacion del lugar */}
+            <CardElement />
         </div>
     );
 }
