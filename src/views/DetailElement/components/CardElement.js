@@ -4,9 +4,9 @@ import '../styles/Review.css';
 //se llama al CSS que le da diseño a esta pantalla
 import '../styles/DetailElement.css';
 import Review from './Review.js'
-import { Form, Modal, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
+import { Form, Modal, Button } from 'react-bootstrap';
 //importa elementos de react-bootstrap
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 
 //importa elementos de react
@@ -76,7 +76,7 @@ function CardElement() {
     // Asegúrate de incluir el código necesario para enviar los datos
     // Después de enviar, cierra el modal y realiza cualquier acción adicional si es necesario
 
-    if(comentario!=="" && puntaje<=5){
+    if (comentario !== "" && comentario.length <= 90000 && puntaje >= 0.5 && puntaje <= 5) {
 
       // Ejemplo con fetch:
       fetch('http://localhost:3000/api/v1/ResenaRouter/crearResena', {
@@ -97,18 +97,19 @@ function CardElement() {
         .then((data) => {
           // Realiza acciones adicionales si es necesario
           console.log('Datos guardados:', data);
-  
+
           // Cierra el modal después de guardar los datos
           setShowModal(false);
-  
+
           // Puedes recargar la página o hacer otras actualizaciones según tus necesidades
           // window.location.reload();
         })
         .catch((error) => {
           console.error('Error al guardar los datos:', error);
         });
+      resetValores();
       window.location.reload();
-    }else{
+    } else {
       alert("Por favor, revise los campos ingresados.")
     }
   };
@@ -377,6 +378,26 @@ function CardElement() {
 
   }
 
+  function getDate() {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    return `${year}-${month}-${date}`;
+  }
+
+  function roundToNearest(value, step) {
+    const roundedValue = Math.round(value / step) * step;
+    return Math.min(Math.max(roundedValue, parseFloat(step)), parseFloat(5));
+  }
+
+  const resetValores = () => {
+    setComentario('');
+    setPuntaje(null);
+    setFecha('');
+  };
+
+
   let reviewsView;
   if (Array.isArray(arrayReviews)) {
     reviewsView =
@@ -385,7 +406,7 @@ function CardElement() {
           <div key={review.id}>
             <Review
               nombreUsuario={review.nombre}
-              usuario = {review.usuario}
+              usuario={review.usuario}
               id={review.idReseña}
               comentario={review.comentario}
               puntaje={review.puntaje}
@@ -502,7 +523,7 @@ function CardElement() {
           </div>
 
           {/* Modal para agregar review */}
-          <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal show={showModal} onHide={() => { setShowModal(false); resetValores(); }}>
             <Modal.Header closeButton>
               <Modal.Title>Agregue una reseña</Modal.Title>
             </Modal.Header>
@@ -510,7 +531,7 @@ function CardElement() {
             <Modal.Body>
               {/* Formulario dentro del modal */}
               <Form>
-                <Form.Group controlId="formComentario" style={{marginBottom:"1rem"}}>
+                <Form.Group controlId="formComentario" style={{ marginBottom: "1rem" }}>
                   <Form.Label>Comentario</Form.Label>
                   <Form.Control
                     style={{ borderRadius: "20px" }}
@@ -522,32 +543,35 @@ function CardElement() {
                   />
                 </Form.Group>
 
-                <Form.Group controlId="formFecha" style={{marginBottom:"1rem"}}>
+                <Form.Group controlId="formFecha" style={{ marginBottom: "1rem" }}>
                   <Form.Label>Fecha de visita: </Form.Label>
                   <Form.Control
                     type="date"
+                    min="2000-01-02"
+                    max={getDate()}
                     placeholder="Ingresa la fecha"
                     value={fecha}
                     onChange={(e) => setFecha(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group controlId="formPuntaje" style={{marginBottom:"1rem"}}>
+                <Form.Group controlId="formPuntaje" style={{ marginBottom: "1rem" }}>
                   <Form.Label>Puntaje</Form.Label>
                   <Form.Control
                     type="number"
-                    min={0}
+                    min={0.5}
+                    step={0.5}
                     max={5}
                     placeholder="Ingresa el puntaje"
                     value={puntaje}
-                    onChange={(e) => setPuntaje(e.target.value)}
+                    onChange={(e) => setPuntaje(e.target.value === '' ? null : roundToNearest(e.target.value, 0.5))}
                   />
                 </Form.Group>
 
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button id="cancelButton" onClick={() => setShowModal(false)}>
+              <Button id="cancelButton" onClick={() => { setShowModal(false); resetValores(); }}>
                 Cerrar
               </Button>
               {/* Botón para guardar los datos */}

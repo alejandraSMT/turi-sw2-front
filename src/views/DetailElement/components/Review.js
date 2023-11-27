@@ -142,7 +142,7 @@ function Review(props) {
             </div>
             <div class="col" style={{ alignItems: "center", marginBottom: "1rem" }}>
               <h5>Comentario: </h5>
-              {props.comentario}
+              <div class="text" style={{overflow: "hidden", textOverflow: "ellipsis"}}>{props.comentario}</div>
             </div>
             <div class="col" style={{ alignItems: "center", marginBottom: "1rem" }}>
               <h5>Fecha de visita: </h5>
